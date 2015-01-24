@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="kafkaConsumerGroup1Test" class="com.moneylocker.queue.kafka.consumer.KafkaConsumer"
+		init-method="start" destroy-method="close">
+		<property name="prop" value="kafka-consumer.properties" />
+		<property name="topic" value="test11" />
+		<property name="handlerClass" value="com.moneylocker.queue.kafka.handler.LogMessageHandler" />
+		<property name="numThreads" value="1" />
+	</bean>
+
+	<bean id="kafkaConsumerGroup1Test12" class="com.moneylocker.queue.kafka.consumer.KafkaConsumer"
+		init-method="start" destroy-method="close">
+		<property name="prop" value="kafka-consumer.properties" />
+		<property name="topic" value="test12" />
+		<property name="handlerClass" value="com.moneylocker.queue.kafka.handler.LogMessageHandler" />
+		<property name="numThreads" value="3" />
+	</bean>
+	
+	<bean id="kafkaConsumerGroup1Test13" class="com.moneylocker.queue.kafka.consumer.KafkaConsumer"
+		init-method="start" destroy-method="close">
+		<property name="prop" value="kafka-consumer.properties" />
+		<property name="topic" value="test13" />
+		<property name="handlerClass" value="com.moneylocker.queue.kafka.handler.LogMessageHandler" />
+		<property name="numThreads" value="4" />
+	</bean>
+</beans>
