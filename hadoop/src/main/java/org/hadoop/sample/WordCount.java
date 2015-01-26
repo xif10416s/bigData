@@ -23,68 +23,66 @@ import org.apache.hadoop.mapred.TextOutputFormat;
 public class WordCount {
 	public static class Map extends MapReduceBase implements
 			Mapper<LongWritable, Text, Text, IntWritable> {
-		private final static  IntWritable one = new IntWritable(1);
+		private final static IntWritable one = new IntWritable(1);
 		private Text word = new Text();
-		
+
 		@Override
 		public void map(LongWritable key, Text value,
 				OutputCollector<Text, IntWritable> output, Reporter reporter)
 				throws IOException {
 			String line = value.toString();
 			System.out.println(line);
-			
+
 			StringTokenizer stringTokenizer = new StringTokenizer(line);
-			
-			while(stringTokenizer.hasMoreTokens()){
+
+			while (stringTokenizer.hasMoreTokens()) {
 				word.set(stringTokenizer.nextToken());
 				output.collect(word, one);
 			}
-			
-		}
-		
-		public static class Rduce extends MapReduceBase implements Reducer<Text	, IntWritable, Text, IntWritable> {
 
-			@Override
-			public void reduce(Text key, Iterator<IntWritable> values,
-					OutputCollector<Text, IntWritable> output, Reporter reporter)
-					throws IOException {
-				int sum= 0 ;
-				while (values.hasNext()){
-					sum +=values.next().get();
-				}
-				output.collect(key, new IntWritable(sum));
-			}
-			
-		}
-		
-		public static void main(String[] args){
-			JobConf conf = new JobConf(WordCount.class);
-			conf.setJobName("wordcount");
-			
-			conf.setOutputKeyClass(Text.class);
-			conf.setOutputValueClass(IntWritable.class);
-			
-			conf.setMapperClass(Map.class);
-			conf.setReducerClass(Rduce.class);
-			
-			conf.setInputFormat(TextInputFormat.class);
-			conf.setOutputFormat(TextOutputFormat.class);
-			
-			FileInputFormat.setInputPaths(conf, new Path(args[0]));
-			FileOutputFormat.setOutputPath(conf, new Path(args[1]));
-			
-			try {
-				JobClient.runJob(conf);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			
 		}
 
 	}
-	
-	
+
+	public static class Rduce extends MapReduceBase implements
+			Reducer<Text, IntWritable, Text, IntWritable> {
+
+		@Override
+		public void reduce(Text key, Iterator<IntWritable> values,
+				OutputCollector<Text, IntWritable> output, Reporter reporter)
+				throws IOException {
+			int sum = 0;
+			while (values.hasNext()) {
+				sum += values.next().get();
+			}
+			output.collect(key, new IntWritable(sum));
+		}
+
+	}
+
+	public static void main(String[] args) {
+		JobConf conf = new JobConf(WordCount.class);
+		conf.setJobName("wordcount");
+
+		conf.setOutputKeyClass(Text.class);
+		conf.setOutputValueClass(IntWritable.class);
+
+		conf.setMapperClass(Map.class);
+		conf.setReducerClass(Rduce.class);
+
+		conf.setInputFormat(TextInputFormat.class);
+		conf.setOutputFormat(TextOutputFormat.class);
+
+		FileInputFormat.setInputPaths(conf, new Path(args[0]));
+		FileOutputFormat.setOutputPath(conf, new Path(args[1]));
+
+		try {
+			JobClient.runJob(conf);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

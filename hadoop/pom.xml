@@ -35,9 +35,12 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>org.hadoop.sample.WordCount.Main</mainClass>
+                            <mainClass>org.hadoop.sample.WordCount</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
