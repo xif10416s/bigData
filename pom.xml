@@ -36,6 +36,7 @@
 		<fastjson_version>1.1.39</fastjson_version>
 		<cassandra_version>1.2.5</cassandra_version>
 		<hadoop_version>2.6.0</hadoop_version>
+		<jcl_version>1.2</jcl_version>
 
 		<maven_compiler_plugin_version>2.3.2</maven_compiler_plugin_version>
 		<maven_source_plugin_version>2.1.1</maven_source_plugin_version>
@@ -100,11 +101,7 @@
 				<version>${jcl_version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>commons-codec</groupId>
-				<artifactId>commons-codec</artifactId>
-				<version>${commons_codec_version}</version>
-			</dependency>
+	
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>

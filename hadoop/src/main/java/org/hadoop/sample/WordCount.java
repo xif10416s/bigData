@@ -73,7 +73,12 @@ public class WordCount {
 			FileInputFormat.setInputPaths(conf, new Path(args[0]));
 			FileOutputFormat.setOutputPath(conf, new Path(args[1]));
 			
-			JobClient.runJob(conf)
+			try {
+				JobClient.runJob(conf);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
 			
