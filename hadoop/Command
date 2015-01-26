@@ -1,0 +1,7 @@
+ cd /usr/local/hadoop/hadoop-2.3.0/sbin/
+ ./start-all.sh
+
+
+hadoop dfs -mkdir /test
+  
+hadoop jar WordCount.jar org.hadoop.sample.WordCount  /test/input /test/output
