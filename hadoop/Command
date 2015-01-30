@@ -1,7 +1,8 @@
  cd /usr/local/hadoop/hadoop-2.3.0/sbin/
  ./start-all.sh
 
-
+run sampe
 hadoop dfs -mkdir /test
-  
+cd /home/ubuntu/Downloads/
 hadoop jar WordCount.jar org.hadoop.sample.WordCount  /test/input /test/output
+hadoop jar NewWordCount.jar org.hadoop.sample.NewWordCount  /test/input /test/output
