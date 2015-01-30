@@ -17,6 +17,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
 public class NewWordCount extends Configured implements Tool {
 
@@ -73,6 +74,16 @@ public class NewWordCount extends Configured implements Tool {
 				sum += value.get();
 			}
 			context.write(key, new IntWritable(sum));
+		}
+	}
+	
+	public static void main(String[] args){
+		try {
+			int run = ToolRunner.run(new NewWordCount(),args);
+			System.exit(run);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
