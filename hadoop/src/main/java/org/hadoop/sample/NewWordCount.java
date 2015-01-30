@@ -39,7 +39,9 @@ public class NewWordCount extends Configured implements Tool {
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
-		return 0;
+		boolean waitForCompletion = job.waitForCompletion(true);
+		
+		return waitForCompletion ? 0 : 1;
 	}
 	
 	public static class Map extends Mapper<LongWritable, Text, Text	, IntWritable> {
