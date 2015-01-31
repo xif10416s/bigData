@@ -35,7 +35,7 @@
 		<ch.qos.logback-version>1.0.13</ch.qos.logback-version>
 		<fastjson_version>1.1.39</fastjson_version>
 		<cassandra_version>1.2.5</cassandra_version>
-		<hadoop_version>2.6.0</hadoop_version>
+		<hadoop_version>2.3.0</hadoop_version>
 		<jcl_version>1.2</jcl_version>
 
 		<maven_compiler_plugin_version>2.3.2</maven_compiler_plugin_version>

@@ -6,3 +6,10 @@ hadoop dfs -mkdir /test
 cd /home/ubuntu/Downloads/
 hadoop jar WordCount.jar org.hadoop.sample.WordCount  /test/input /test/output
 hadoop jar NewWordCount.jar org.hadoop.sample.NewWordCount  /test/input /test/output
+
+
+#hadoop fs
+hadoop dfs -cat 
+hadoop dfs -get hdfs_path local_path
+hadoop dfs -copyFromLocal local hdfs
+

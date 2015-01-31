@@ -23,7 +23,7 @@ public class NewWordCount extends Configured implements Tool {
 
 	@Override
 	public int run(String[] args) throws Exception {
-		Job job = new Job(getConf());
+		Job job = Job.getInstance(getConf());
 		job.setJarByClass(NewWordCount.class);
 		job.setJobName("newwordcount");
 		
@@ -32,6 +32,8 @@ public class NewWordCount extends Configured implements Tool {
 		
 		job.setMapperClass(Map.class);
 		job.setReducerClass(Reduce.class);
+		
+		job.setCombinerClass(Reduce.class);
 
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
