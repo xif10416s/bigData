@@ -8,6 +8,8 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.compress.CompressionCodec;
+import org.apache.hadoop.io.compress.GzipCodec;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.OutputFormat;
@@ -40,6 +42,12 @@ public class NewWordCount extends Configured implements Tool {
 		
 		FileInputFormat.setInputPaths(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		
+		getConf().setBoolean("mapred.compress.map.output", true);
+		getConf().setBoolean("mapred.output.compress", true);
+		getConf().setIfUnset("mapred.output.compression.type","BLOCK");
+		getConf().setClass("mapred.output.compression.codec", GzipCodec.class, CompressionCodec.class);
+		
 		
 		boolean waitForCompletion = job.waitForCompletion(true);
 		
