@@ -11,6 +11,7 @@
 		<module>kafka</module>
 		<module>Cassandra</module>
     <module>hadoop</module>
+    <module>spark</module>
   </modules>
 
 	<properties>
