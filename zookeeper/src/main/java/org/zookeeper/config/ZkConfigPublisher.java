@@ -19,7 +19,7 @@ import org.apache.commons.io.FileUtils;
 public class ZkConfigPublisher {
 	public static String CONF_DIR = "conf";
 	public static final String CONF_ENCODING = "UTF-8";
-	public static String ZK_CONFIG_ROOTNODE = "/zkSample/conf";
+	public static String ZK_CONFIG_ROOTNODE = "/ml/conf";
 	public static String ZK_CONF_ENCODING = "UTF-8";
 	public static int ZK_TIMEOUT = 30000;
 	public static String ZK_ADDRESS = "";
