@@ -18,7 +18,7 @@
 
 	<context:annotation-config />
 
-	<context:component-scan base-package="com.embracesource.config" />
+	<context:component-scan base-package="org.zookeeper.config" />
 
 	<bean id="zkPropertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -27,7 +27,7 @@
 		<property name="location" value="classpath:zkpublisher.properties" />
 	</bean>
 
-	<bean id="zkSerializer" class="com.embracesource.config.ZkUtils.StringSerializer">
+	<bean id="zkSerializer" class="org.zookeeper.config.ZkUtils.StringSerializer">
 		<constructor-arg value="${ZK_CONF_ENCODING}" />
 	</bean>
 
@@ -37,12 +37,12 @@
 		<property name="zkSerializer" ref="zkSerializer"></property>
 	</bean>
 
-	<bean id="configChangeSubscriber" class="com.embracesource.config.ZkConfigChangeSubscriberImpl">
+	<bean id="configChangeSubscriber" class="org.zookeeper.config.ZkConfigChangeSubscriberImpl">
 		<constructor-arg ref="zkClient"></constructor-arg>
 		<constructor-arg value="${ZK_CONFIG_ROOTNODE}"></constructor-arg>
 	</bean>
 
-	<bean id="helperFactory" class="com.embracesource.config.DynamicPropertiesHelperFactory">
+	<bean id="helperFactory" class="org.zookeeper.config.DynamicPropertiesHelperFactory">
 		<constructor-arg ref="configChangeSubscriber"></constructor-arg>
 	</bean>
 
