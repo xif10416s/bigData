@@ -12,6 +12,7 @@
 		<module>Cassandra</module>
     <module>hadoop</module>
     <module>spark</module>
+    <module>zookeeper</module>
   </modules>
 
 	<properties>
