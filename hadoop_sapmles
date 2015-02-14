@@ -1,11 +1,44 @@
 https://github.com/javachen/learning-hadoop
 https://github.com/hortonworks/simple-yarn-app.git
 
+#host
+/etc/sysconfig/network
+
+#hostname
+/etc/hosts
+scp /etc/hosts h1:/etc
+
+
 #ssh
 ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa
-
+cd .ssh/
 cat id_dsa.pub >> authorized_keys
 
 scp root@sandbox:~/.ssh/id_dsa.pub ./master_dsa.pub
 
 cat master_dsa.pub >> authorized_keys
+
+#network
+/etc/sysconfig/network-scripts/ifcfg-eth1
+
+$ sudo ifconfig eth1 up
+$ sudo dhclient eth1
+
+DEVICE="eth1"
+BOOTPROTO="static"
+DHCP_HOSTNAME="sandbox.hortonworks.com"
+DNS1="8.8.8.8"
+
+IPV6INIT="no"
+ONBOOT="yes"
+TYPE="Ethernet"
+
+NM_CONTROLLED=no
+PEERDNS=no
+IPADDR=192.168.56.1
+NETMASK=255.255.255.0
+
+ /etc/init.d/iptables stop
+
+#ambri
+http://192.168.56.1:8080/
