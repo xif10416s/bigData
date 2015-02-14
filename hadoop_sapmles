@@ -1,2 +1,11 @@
 https://github.com/javachen/learning-hadoop
 https://github.com/hortonworks/simple-yarn-app.git
+
+#ssh
+ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa
+
+cat id_dsa.pub >> authorized_keys
+
+scp root@sandbox:~/.ssh/id_dsa.pub ./master_dsa.pub
+
+cat master_dsa.pub >> authorized_keys
