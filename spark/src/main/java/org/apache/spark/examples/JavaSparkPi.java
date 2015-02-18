@@ -35,7 +35,7 @@ public final class JavaSparkPi {
   public static void main(String[] args) throws Exception {
     SparkConf sparkConf = new SparkConf().setAppName("JavaSparkPi");
     JavaSparkContext jsc = new JavaSparkContext(sparkConf);
-
+    //jsc.addJar("/usr/local/hadoop/spark-1.2.0-bin-hadoop2.3/lib/spark-0.0.1-SNAPSHOT.jar") ;
     int slices = (args.length == 1) ? Integer.parseInt(args[0]) : 2;
     int n = 100000 * slices;
     List<Integer> l = new ArrayList<Integer>(n);
@@ -60,7 +60,7 @@ public final class JavaSparkPi {
     });
 
     System.out.println("Pi is roughly " + 4.0 * count / n);
-
+   
     jsc.stop();
   }
 }
