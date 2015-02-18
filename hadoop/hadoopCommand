@@ -1,0 +1,4 @@
+hadoop fs -copyFromLocal ./* /user/ubuntu/examples/src/main/resources/
+hadoop fs -put ./* /user/ubuntu/examples/src/main/resources/
+
+hadoop fs -mkdir -p /user/ubuntu/examples/src/main/resources/

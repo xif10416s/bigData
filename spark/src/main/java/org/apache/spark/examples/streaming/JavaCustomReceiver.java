@@ -97,10 +97,11 @@ public class JavaCustomReceiver extends Receiver<String> {
 		    @Override public Optional<Integer> call(List<Integer> values, Optional<Integer> state) {
 			      System.out.println(values);  
 			      System.out.println(state);  
-			      int cur = values.size() > 0 ? values.get(0) : 0;
 			      int old = state.orNull() == null ? 0 : state.orNull();
-			      System.out.println(old);  
-		    	  Integer newSum = cur + old ;
+			      Integer newSum =old ;
+			      for(int i : values){
+			    	  newSum+=i;
+			      }
 			      return Optional.of(newSum);
 			    }
 			  })
