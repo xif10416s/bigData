@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.fxi.test</groupId>
 	<artifactId>bigData</artifactId>
@@ -10,10 +11,10 @@
 	<modules>
 		<module>kafka</module>
 		<module>Cassandra</module>
-    <module>hadoop</module>
-    <module>spark</module>
-    <module>zookeeper</module>
-  </modules>
+		<module>hadoop</module>
+		<module>spark</module>
+		<module>zookeeper</module>
+	</modules>
 
 	<properties>
 		<project.basedir>.</project.basedir>
@@ -39,6 +40,7 @@
 		<cassandra_version>1.2.5</cassandra_version>
 		<hadoop_version>2.3.0</hadoop_version>
 		<jcl_version>1.2</jcl_version>
+		<cassandra_driver_version>2.1.4</cassandra_driver_version>
 
 		<maven_compiler_plugin_version>2.3.2</maven_compiler_plugin_version>
 		<maven_source_plugin_version>2.1.1</maven_source_plugin_version>
@@ -103,7 +105,7 @@
 				<version>${jcl_version}</version>
 			</dependency>
 
-	
+
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
@@ -157,12 +159,18 @@
 				<groupId>org.apache.hadoop</groupId>
 				<artifactId>hadoop-common</artifactId>
 				<version>${hadoop_version}</version>
-			</dependency>	
+			</dependency>
 			<dependency>
 				<groupId>org.apache.hadoop</groupId>
 				<artifactId>hadoop-client</artifactId>
 				<version>${hadoop_version}</version>
-			</dependency>	
+			</dependency>
+			<dependency>
+				<groupId>com.datastax.cassandra</groupId>
+				<artifactId>cassandra-driver-core</artifactId>
+				<version>${cassandra_driver_version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -288,16 +296,20 @@
 			<artifactId>hadoop-common</artifactId>
 		</dependency>
 		<dependency>
-				<groupId>org.apache.hadoop</groupId>
-				<artifactId>hadoop-client</artifactId>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
 		</dependency>
-	<dependency>
-		<groupId>jdk.tools</groupId>
-		<artifactId>jdk.tools</artifactId>
-		<version>1.6</version>
-		<scope>system</scope>
-		<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
-	</dependency>  	
+		<dependency>
+			<groupId>jdk.tools</groupId>
+			<artifactId>jdk.tools</artifactId>
+			<version>1.6</version>
+			<scope>system</scope>
+			<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
+		</dependency>
+		<dependency>
+				<groupId>com.datastax.cassandra</groupId>
+				<artifactId>cassandra-driver-core</artifactId>
+			</dependency>
 	</dependencies>
 
 	<build>
@@ -331,16 +343,16 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	  <repositories>   
-        <repository>
-            <id>repo-mirror</id>
-            <url>http://maven.net.cn/content/groups/public/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>   
-        <pluginRepository>
-            <id>plugin-repo-mirror</id>
-            <url>http://maven.net.cn/content/groups/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
+	<repositories>
+		<repository>
+			<id>repo-mirror</id>
+			<url>http://maven.net.cn/content/groups/public/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>plugin-repo-mirror</id>
+			<url>http://maven.net.cn/content/groups/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
 </project>

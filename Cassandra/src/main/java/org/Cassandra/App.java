@@ -6,35 +6,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Host;
+import com.datastax.driver.core.Metadata;
+
 /**
- * Hello world!
- * 
+ * Hello world! hqdb0 00huaQianV2!
  */
 public class App {
+	Cluster cluster;
+
 	public static void main(String[] args) {
-		System.out.println("aaa");
-		try {
-			Class.forName("org.apache.cassandra.cql.jdbc.CassandraDriver");
-			Connection con = DriverManager
-					.getConnection("jdbc:cassandra://122.144.134.67:9042/demodb");
-			String query2 = "select * from user_credit;";
-			PreparedStatement statement = con.prepareStatement(query2);
+		App app = new App();
+		app.connect("122.144.134.67");
+	}
 
-			ResultSet executeQuery = statement.executeQuery();
-
-//			String query = "INSERT INTO user_credit (user_id, right_credit) values ('000000000',10);";
-//			 statement = con.prepareStatement(query);
-//
-//			statement.executeUpdate();
-
-			statement.close();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void connect(String node) {
+		cluster = Cluster.builder().addContactPoint(node).build();
+		Metadata metadata = cluster.getMetadata();
+		System.out.printf("Connected to cluster: %s\n",
+				metadata.getClusterName());
+		for (Host host : metadata.getAllHosts()) {
+			System.out.printf("Datacenter: %s; Host: %s; Rack: %s\n",
+					host.getDatacenter(), host.getAddress(), host.getRack());
 		}
+	}
 
+	public void close() {
+		cluster.close();
 	}
 }
