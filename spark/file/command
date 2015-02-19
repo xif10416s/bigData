@@ -26,6 +26,8 @@ cd /usr/local/hadoop/spark-1.2.0-bin-hadoop2.3/bin
 
 ./spark-submit --class org.apache.spark.examples.cassandra.SparkCassandra  --master local[4] --executor-memory 2G --num-executors 50 /home/ubuntu/Downloads/spark-0.0.1-SNAPSHOT.jar
 
+./spark-submit --class org.apache.spark.examples.cassandra.JavaDemo  --master local[4] --executor-memory 2G --num-executors 50 /home/ubuntu/Downloads/spark-0.0.1-SNAPSHOT.jar local[4] 122.144.134.67
+
 
 #web UI
 http://192.168.56.102:4040

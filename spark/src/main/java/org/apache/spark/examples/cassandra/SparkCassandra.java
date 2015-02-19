@@ -1,21 +1,35 @@
 package org.apache.spark.examples.cassandra;
 
+import java.util.List;
+
 import org.apache.spark.SparkConf;
-import org.apache.spark.SparkContext;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.Function;
 import org.apache.spark.sql.SchemaRDD;
+import org.apache.spark.sql.api.java.JavaSchemaRDD;
+import org.apache.spark.sql.api.java.Row;
 import org.apache.spark.sql.cassandra.CassandraSQLContext;
+import org.apache.spark.sql.cassandra.api.java.JavaCassandraSQLContext;
 
 public class SparkCassandra {
 	public static void main(String[] args) throws Exception {
-		SparkConf sparkConf = new SparkConf(true).setAppName("SparkCassandra").set(
-				"spark.cassandra.connection.host", "122.144.134.67");
-		sparkConf.set("spark.cassandra.auth.username", "hqdb0") ;         
-        sparkConf.set("spark.cassandra.auth.password", "00huaQianV2!");
-		SparkContext sc = new SparkContext(sparkConf);
-		CassandraSQLContext cc = new CassandraSQLContext(sc);
+		SparkConf sparkConf = new SparkConf(true).setAppName("SparkCassandra")
+				.set("spark.cassandra.connection.host", "122.144.134.67");
+		sparkConf.set("spark.cassandra.auth.username", "hqdb0");
+		sparkConf.set("spark.cassandra.auth.password", "00huaQianV2!");
+		sparkConf.set("spark.cassandra.keyspace","test");
+		JavaSparkContext jsc = new JavaSparkContext(sparkConf);
+		JavaCassandraSQLContext cc = new JavaCassandraSQLContext(jsc);
 		
-		SchemaRDD sql = cc.sql("SELECT * from kv ");
-		long count = sql.count();
-		System.out.println(count);
+		JavaSchemaRDD sql = cc.sql("SELECT * from test.kv WHERE 1=1 ;");
+		List<String> teenagerNames = sql.map(new Function<Row, String>() {
+			@Override
+			public String call(Row row) {
+				return "Name: " + row.getString(0);
+			}
+		}).collect();
+		for (String name : teenagerNames) {
+			System.out.println(name);
+		}
 	}
 }
