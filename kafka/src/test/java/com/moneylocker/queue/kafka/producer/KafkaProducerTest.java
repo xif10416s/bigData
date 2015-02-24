@@ -49,4 +49,18 @@ public class KafkaProducerTest {
 		loopSend(kafkaProducerSync,10,"test12","S2");
 		loopSend(kafkaProducerSync,10,"test13","S3");
 	}
+	
+	@Test
+	public void test003() {
+		for(int i = 0 ; i< 100 ; i++){
+			kafkaProducerSync.send("test-topic", i+"", "hello world "+i);
+		}
+		System.out.println("---------------------------------------");
+		try {
+			Thread.sleep(50000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

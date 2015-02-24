@@ -21,12 +21,15 @@ cd /usr/local/hadoop/spark-1.2.0-bin-hadoop2.3/bin
 
 #stream 
 ./spark-submit --class org.apache.spark.examples.streaming.JavaRecoverableNetworkWordCount  --master local[4] --executor-memory 2G --num-executors 50 /home/ubuntu/Downloads/spark-0.0.1-SNAPSHOT.jar   192.168.56.102 9999 ~/checkpoint/ ~/out
+#kafka
+./spark-submit --class org.apache.spark.examples.streaming.JavaKafkaWordCount  --master local[4] --executor-memory 2G --num-executors 50 /home/ubuntu/Downloads/spark-0.0.1-SNAPSHOT.jar 192.168.56.102:2181,192.168.56.103:2181,192.168.56.105:2181 my-consumer-group test-topic 4
 
 
-
+#cassandra
 ./spark-submit --class org.apache.spark.examples.cassandra.SparkCassandra  --master local[4] --executor-memory 2G --num-executors 50 /home/ubuntu/Downloads/spark-0.0.1-SNAPSHOT.jar
 
 ./spark-submit --class org.apache.spark.examples.cassandra.JavaDemo  --master local[4] --executor-memory 2G --num-executors 50 /home/ubuntu/Downloads/spark-0.0.1-SNAPSHOT.jar local[4] 122.144.134.67
+
 
 
 #web UI
