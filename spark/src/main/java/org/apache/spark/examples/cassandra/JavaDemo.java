@@ -1,12 +1,16 @@
 package org.apache.spark.examples.cassandra;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.function.VoidFunction;
 import org.apache.spark.sql.api.java.JavaSchemaRDD;
 import org.apache.spark.sql.cassandra.CassandraSQLContext;
 import org.apache.spark.sql.cassandra.api.java.JavaCassandraSQLContext;
@@ -69,21 +73,80 @@ public class JavaDemo implements Serializable {
 	}
 
 	private void compute(JavaSparkContext sc) {
-		 System.out.println("============================================================");
-		 SparkContextJavaFunctions javaFunctions = CassandraJavaUtil.javaFunctions(sc);
-		 CassandraJavaRDD<CassandraRow> cassandraTable = javaFunctions.cassandraTable("test", "kv");
-		 JavaPairRDD<TestEntry, CassandraRow> keyBy = cassandraTable.keyBy(new Function<CassandraRow, TestEntry>() {
+		System.out
+				.println("============================================================");
+		SparkContextJavaFunctions javaFunctions = CassandraJavaUtil
+				.javaFunctions(sc);
+
+		CassandraJavaRDD<CassandraRow> cassandraTable = javaFunctions
+				.cassandraTable("test", "kv");
+		//select from cassandra
+		JavaPairRDD<String, CassandraRow> keyBy = cassandraTable
+				.keyBy(new Function<CassandraRow, String>() {
+
+					@Override
+					public String call(CassandraRow v1) throws Exception {
+						// TODO Auto-generated method stub
+						System.out.printf(
+								"cassandraTable-------------------- %s %s\n",
+								v1.getString("key"), v1.getInt("value"));
+						return v1.getString("key");
+					}
+				});
+		
+		// spark rdd count value
+		Integer count = keyBy.map(new Function<Tuple2<String,CassandraRow>, Integer>() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
-			public TestEntry call(CassandraRow v1) throws Exception {
+			public Integer call(Tuple2<String, CassandraRow> v1)
+					throws Exception {
 				// TODO Auto-generated method stub
-				System.out.printf("cassandraTable-------------------- %s %s\n", v1.getString("key"),
-						v1.getInt("value"));
-				return null;
+				return v1._2.getInt("value");
+			}
+			
+		}).reduce(new Function2<Integer, Integer, Integer>() {
+			
+			@Override
+			public Integer call(Integer v1, Integer v2) throws Exception {
+				// TODO Auto-generated method stub
+				return v1+v2;
 			}
 		});
-		 
-		 List<Tuple2<TestEntry,CassandraRow>> collect = keyBy.collect();
+		
+		System.out.println("total int ---------------------------------: " + count);
+		
+
+		//return dataset
+		List<Tuple2<String, CassandraRow>> collect = keyBy.collect();
+		for (Tuple2<String, CassandraRow> t : collect) {
+			String key = t._1;
+			int value = t._2.getInt("value");
+			System.out.printf(
+					"List<Tuple2<TestEntry,CassandraRow>> --------%s %s \n",
+					key, value);
+		}
+
+		//
+		cassandraTable
+				.foreachPartition(new VoidFunction<Iterator<CassandraRow>>() {
+
+					@Override
+					public void call(Iterator<CassandraRow> t) throws Exception {
+						while (t.hasNext()) {
+							CassandraRow next = t.next();
+
+							System.out
+									.printf("foreachPartitionAsync-------------------- %s %s\n",
+											next.getString("key"),
+											next.getInt("value"));
+						}
+					}
+				});
 	}
 
 	private void showResults(JavaSparkContext sc) {

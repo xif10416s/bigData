@@ -53,8 +53,12 @@
 			<artifactId>spark-cassandra-connector-java_2.10</artifactId>
 			<version>1.2.0-alpha2</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.apache.spark</groupId> <artifactId>spark-mllib_2.10</artifactId> 
-			<version>1.2.0</version> </dependency> -->
+		<!-- -->
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-mllib_2.10</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 	</dependencies>
 	<!---->
 	<build>

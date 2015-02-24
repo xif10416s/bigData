@@ -1,0 +1,11 @@
+cd /usr/local/hadoop/zookeeper-3.4.6/bin && ./zkServer.sh start
+cd /usr/local/hadoop/kafka_2.9.2-0.8.1.1/bin 
+ ./kafka-server-start.sh ../config/server.properties & 
+ 
+ #help
+ ./kafka-topics.sh --help
+ #create topic
+ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 2 --partitions 4 --topic test-topic
+ 
+ #descrbe
+ ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic test-topic
