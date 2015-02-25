@@ -18,6 +18,7 @@
 package org.apache.spark.examples.streaming;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,7 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.StorageLevels;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.function.PairFlatMapFunction;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
@@ -95,6 +97,15 @@ public class JavaStatefulNetworkWordCount {
         return Lists.newArrayList(SPACE.split(x));
       }
     });
+    words.mapPartitionsToPair(new PairFlatMapFunction<Iterator<String>, String, Integer>() {
+
+		@Override
+		public Iterable<Tuple2<String, Integer>> call(Iterator<String> t)
+				throws Exception {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	});
 
     JavaPairDStream<String, Integer> wordsDstream = words.mapToPair(
         new PairFunction<String, String, Integer>() {
