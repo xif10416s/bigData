@@ -17,6 +17,8 @@
 
 package org.apache.spark.examples.streaming;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -25,12 +27,16 @@ import java.util.regex.Pattern;
 import scala.Tuple2;
 
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
+
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.streaming.Duration;
+import org.apache.spark.streaming.Time;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaPairReceiverInputDStream;
@@ -105,7 +111,15 @@ public final class JavaKafkaWordCount {
           return i1 + i2;
         }
       });
-
+    
+    wordCounts.foreachRDD(new Function2<JavaPairRDD<String, Integer>, Time, Void>() {
+        @Override
+        public Void call(JavaPairRDD<String, Integer> rdd, Time time) throws IOException {
+          String counts = "Counts at time " + time + " " + rdd.collect();
+          System.out.println(counts);
+          return null;
+        }
+      });
     wordCounts.print();
     jssc.start();
     jssc.awaitTermination();
