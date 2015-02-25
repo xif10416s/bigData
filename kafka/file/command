@@ -1,4 +1,6 @@
 cd /usr/local/hadoop/zookeeper-3.4.6/bin && ./zkServer.sh start
+cd /usr/local/hadoop/zookeeper-3.4.6/bin && ./zkServer.sh stop
+cd /usr/local/hadoop/kafka_2.9.2-0.8.1.1/bin & ./kafka-server-stop.sh
 cd /usr/local/hadoop/kafka_2.9.2-0.8.1.1/bin 
  ./kafka-server-start.sh ../config/server.properties & 
  
