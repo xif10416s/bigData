@@ -1,0 +1,4 @@
+yum -y install wget
+#http://my.oschina.net/u/1169607/blog/333406
+yum install ntp
+

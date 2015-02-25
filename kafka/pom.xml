@@ -23,5 +23,10 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.fxi.test</groupId>
+            <artifactId>Cassandra</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 </project>
