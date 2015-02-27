@@ -11,3 +11,14 @@ cd /usr/local/hadoop/kafka_2.9.2-0.8.1.1/bin
  
  #descrbe
  ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic test-topic
+ 
+ 
+ #kafkaoffset monitor
+ java  -Xms512M -Xmx512M -Xss1024K -XX:PermSize=256m -XX:MaxPermSize=512m -cp KafkaOffsetMonitor-assembly-0.2.0.jar \                           
+     com.quantifind.kafka.offsetapp.OffsetGetterWeb \                           
+     --zk 122.144.134.67:2181,122.144.134.67:2182,122.144.134.67:2183 \                         
+     --port 8086 \                          
+     --refresh 10.seconds \                         
+     --retain 7.days &                          
+                            
+ 
