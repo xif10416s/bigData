@@ -53,7 +53,7 @@ public class JavaSparkSQL {
   }
 
   public static void main(String[] args) throws Exception {
-    SparkConf sparkConf = new SparkConf().setAppName("JavaSparkSQL");
+    SparkConf sparkConf = new SparkConf().setMaster("local[4]").setAppName("JavaSparkSQL");
     JavaSparkContext ctx = new JavaSparkContext(sparkConf);
     JavaSQLContext sqlCtx = new JavaSQLContext(ctx);
 
