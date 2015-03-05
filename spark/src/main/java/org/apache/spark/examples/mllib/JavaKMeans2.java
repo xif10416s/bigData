@@ -1,6 +1,7 @@
 package org.apache.spark.examples.mllib;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
@@ -29,6 +30,7 @@ public class JavaKMeans2 {
 
 		@Override
 		public Vector call(String line) {
+			System.out.println(line+"............");
 			String[] tok = SPACE.split(line);
 			double[] point = new double[tok.length];
 			for (int i = 0; i < tok.length; ++i) {
@@ -39,7 +41,7 @@ public class JavaKMeans2 {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		// ÆÁ±Î²»±ØÒªµÄÈÕÖ¾ÏÔÊ¾ÔÚÖÕ¶ËÉÏ
+		// ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Õ¶ï¿½ï¿½ï¿½
 		Logger.getLogger("org.apache.spark").setLevel(Level.WARN);
 		Logger.getLogger("org.eclipse.jetty.server").setLevel(Level.OFF);
 
@@ -48,55 +50,50 @@ public class JavaKMeans2 {
 		JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
 		JavaRDD<String> lines = sc
-				.textFile("C:/Users/fxi/git/spark/data/mllib/kmeans_data.txt");
+				.textFile("examples/src/main/resources/kmeans_data.txt");
 
 		JavaRDD<Vector> points = lines.map(new ParsePoint());
 
 		int k = 2;
-		int iterations = 30;
+		int iterations = 1000;
 		int runs = 1;
 
 		KMeansModel model = KMeans.train(points.rdd(), k, iterations, runs,
 				KMeans.K_MEANS_PARALLEL());
-		// Êý¾ÝÄ£ÐÍµÄÖÐÐÄµã
+		// ï¿½ï¿½ï¿½ï¿½Ä£ï¿½Íµï¿½ï¿½ï¿½ï¿½Äµï¿½
 		System.out.println("Cluster centers:");
 		for (Vector center : model.clusterCenters()) {
 			System.out.println(" " + center);
 		}
 
-		// Ê¹ÓÃÎó²îÆ½·½Ö®ºÍÀ´ÆÀ¹ÀÊý¾ÝÄ£ÐÍ
+		// Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
 		double cost = model.computeCost(points.rdd());
 		System.out.println("Cost: " + cost);
 
-		// Ê¹ÓÃÄ£ÐÍ²âÊÔµ¥µãÊý¾Ý
+		// Ê¹ï¿½ï¿½Ä£ï¿½Í²ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		testPoint("0.2 0.2 0.2",model,sc);
-		testPoint("0.8 0.8 0.8",model,sc);
 		testPoint("9.0 9.0 9.0",model,sc);
+		testPoint("4 3 8",model,sc);
 		
-		testPoint("8 8 8",model,sc);
+		testPoint("3 2 8",model,sc);
 		
 		JavaRDD<Integer> rs = model.predict(points);
-		System.out.println(rs);
+		List<Integer> collect = rs.collect();
+		System.out.println(collect);
 		//rs.saveAsTextFile("rs.txt");
 
 		sc.stop();
 
 	}
 	
-	//Ê¹ÓÃÄ£ÐÍ²âÊÔµ¥µãÊý¾Ý  
+	//Ê¹ï¿½ï¿½Ä£ï¿½Í²ï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  
 	private static void testPoint(String data , KMeansModel model,JavaSparkContext sc) {
-		JavaRDD<String> parallelize = sc.parallelize(Arrays
-				.asList(data.split(" ")));
-
+		List<String> asList = Arrays.asList(data);
+		JavaRDD<String> parallelize = sc.parallelize(asList);
+		JavaRDD<Vector> map2 = parallelize.map(new ParsePoint());
+		JavaRDD<Integer> predict = model.predict(map2);
+		List<Integer> collect = predict.collect();
 		System.out.println("Vectors"+ data+"is belongs to clusters:"
-				+ model.predict(parallelize.map(new ParsePoint())).map(
-						new Function<Integer, Integer>() {
-
-							@Override
-							public Integer call(Integer v1) throws Exception {
-								System.out.println(v1);
-								return v1;
-							}
-						}));
+				+ collect);
 	}
 }
