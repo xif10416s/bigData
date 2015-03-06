@@ -18,18 +18,16 @@ import org.apache.spark.SparkConf;
 public class JavaPipelineExample implements Serializable {
 	public static void main(String[] args) {
 		// Set up contexts.
-		SparkConf conf = new SparkConf().setMaster("local[6]")
-				.setAppName("JavaSimpleTextClassificationPipeline");
+		SparkConf conf = new SparkConf().setMaster("local[6]").setAppName(
+				"JavaSimpleTextClassificationPipeline");
 		JavaSparkContext jsc = new JavaSparkContext(conf);
 		JavaSQLContext jsql = new JavaSQLContext(jsc);
 
 		// Prepare training documents, which are labeled.
 		List<LabeledDocument> localTraining = Lists.newArrayList(
 				new LabeledDocument(0L, "a b c d e spark", 1.0),
-				new LabeledDocument(1L, "b d", 0.0),
-				new LabeledDocument(2L,
-						"spark f g h", 1.0),
-				new LabeledDocument(3L,
+				new LabeledDocument(1L, "b d", 0.0), new LabeledDocument(2L,
+						"spark f g h", 1.0), new LabeledDocument(3L,
 						"hadoop mapreduce", 0.0));
 		JavaSchemaRDD training = jsql.applySchema(
 				jsc.parallelize(localTraining), LabeledDocument.class);
@@ -51,7 +49,7 @@ public class JavaPipelineExample implements Serializable {
 		// Prepare test documents, which are unlabeled.
 		List<Document> localTest = Lists.newArrayList(new Document(4L,
 				"spark i j k"), new Document(5L, "l m n"), new Document(6L,
-				"mapreduce spark"), new Document(7L, "apache hadoop"));
+				"mapreduce spark"), new Document(7L, "apache hadoop"), new Document(8L, "spark k spa"));
 		JavaSchemaRDD test = jsql.applySchema(jsc.parallelize(localTest),
 				Document.class);
 
@@ -65,47 +63,4 @@ public class JavaPipelineExample implements Serializable {
 		}
 	}
 
-}
-
-class Document implements Serializable {
-	private Long id;
-	private String text;
-
-	public Document(Long id, String text) {
-		this.id = id;
-		this.text = text;
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getText() {
-		return this.text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-}
-
-class LabeledDocument extends Document implements Serializable {
-	private Double label;
-
-	public LabeledDocument(Long id, String text, Double label) {
-		super(id, text);
-		this.label = label;
-	}
-
-	public Double getLabel() {
-		return this.label;
-	}
-
-	public void setLabel(Double label) {
-		this.label = label;
-	}
 }
