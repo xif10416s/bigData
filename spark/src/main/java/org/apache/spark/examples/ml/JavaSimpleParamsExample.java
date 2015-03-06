@@ -42,18 +42,19 @@ import org.apache.spark.sql.api.java.Row;
 public class JavaSimpleParamsExample {
 
   public static void main(String[] args) {
-    SparkConf conf = new SparkConf().setAppName("JavaSimpleParamsExample");
+    SparkConf conf = new SparkConf().setMaster("local[4]").setAppName("JavaSimpleParamsExample");
     JavaSparkContext jsc = new JavaSparkContext(conf);
     JavaSQLContext jsql = new JavaSQLContext(jsc);
+    
 
     // Prepare training data.
     // We use LabeledPoint, which is a JavaBean.  Spark SQL can convert RDDs of JavaBeans
     // into SchemaRDDs, where it uses the bean metadata to infer the schema.
     List<LabeledPoint> localTraining = Lists.newArrayList(
-      new LabeledPoint(1.0, Vectors.dense(0.0, 1.1, 0.1)),
-      new LabeledPoint(0.0, Vectors.dense(2.0, 1.0, -1.0)),
-      new LabeledPoint(0.0, Vectors.dense(2.0, 1.3, 1.0)),
-      new LabeledPoint(1.0, Vectors.dense(0.0, 1.2, -0.5)));
+      new LabeledPoint(1.0, Vectors.dense(0.0, 1.1, 0.1,1.2)),
+      new LabeledPoint(0.0, Vectors.dense(2.0, 1.0, -1.0,-2.0)),
+      new LabeledPoint(0.0, Vectors.dense(2.0, 1.3, 1.0,2.1)),
+      new LabeledPoint(1.0, Vectors.dense(0.0, 1.2, -0.5,1.4)));
     JavaSchemaRDD training = jsql.applySchema(jsc.parallelize(localTraining), LabeledPoint.class);
 
     // Create a LogisticRegression instance.  This instance is an Estimator.
@@ -91,9 +92,9 @@ public class JavaSimpleParamsExample {
 
     // Prepare test documents.
     List<LabeledPoint> localTest = Lists.newArrayList(
-        new LabeledPoint(1.0, Vectors.dense(-1.0, 1.5, 1.3)),
-        new LabeledPoint(0.0, Vectors.dense(3.0, 2.0, -0.1)),
-        new LabeledPoint(1.0, Vectors.dense(0.0, 2.2, -1.5)));
+        new LabeledPoint(1.0, Vectors.dense(-1.0, 1.5, 1.3,1.2)),
+        new LabeledPoint(0.0, Vectors.dense(3.0, 2.0, -0.1,1)),
+        new LabeledPoint(0.0, Vectors.dense(0.0, 2.2, -1.5,2)));
     JavaSchemaRDD test = jsql.applySchema(jsc.parallelize(localTest), LabeledPoint.class);
 
     // Make predictions on test documents using the Transformer.transform() method.
