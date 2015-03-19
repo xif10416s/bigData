@@ -21,4 +21,5 @@ cd /usr/local/hadoop/kafka_2.9.2-0.8.1.1/bin
      --refresh 10.seconds \                         
      --retain 7.days &                          
                             
- 
+ #url
+ http://122.144.134.82:8086/
