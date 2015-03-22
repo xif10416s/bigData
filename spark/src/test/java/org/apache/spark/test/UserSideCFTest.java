@@ -1,5 +1,6 @@
 package org.apache.spark.test;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 import org.apache.spark.SparkConf;
@@ -15,19 +16,22 @@ import org.apache.spark.mllib.recommendation.Rating;
 
 import scala.Tuple2;
 
-public class UserSideCFTest {
+public class UserSideCFTest implements Serializable{
 	private static final Pattern TAB = Pattern.compile("\t");
+
 	public static void main(String[] args) {
 
 		UserSideCFTest cf = new UserSideCFTest();
 		JavaRDD<Rating>[] splitData = splitData();
 		MatrixFactorizationModel model = cf.buildModel(splitData[0]);
 
-		
-		
+		Double MSE = cf.getMSE(splitData[0], model);
+		System.out.println("Mean Squared Error = " + MSE); // 训练数据的MSE
+		Double MSE1 = cf.getMSE(splitData[1], model);
+		System.out.println("Mean Squared Error1 = " + MSE1); // 测试数据的MSE
 	}
-	
-	public static JavaRDD<Rating>[] splitData() { //分割数据，一部分用于训练，一部分用于测试
+
+	public static JavaRDD<Rating>[] splitData() { // 分割数据，一部分用于训练，一部分用于测试
 		SparkConf sparkConf = new SparkConf().setAppName("Statistics")
 				.setMaster("local[6]");
 		final JavaSparkContext sc = new JavaSparkContext(sparkConf);
@@ -43,44 +47,62 @@ public class UserSideCFTest {
 				return new Rating(x, y, rating);
 			}
 		});
-		JavaRDD<Rating>[] splits = ratings.randomSplit(new double[]{0.6,0.4}, 11L);
+		JavaRDD<Rating>[] splits = ratings.randomSplit(
+				new double[] { 0.6, 0.4 }, 11L);
 		return splits;
 	}
-	
-	public static MatrixFactorizationModel buildModel(JavaRDD<Rating> rdd) { //训练模型
+
+	public static MatrixFactorizationModel buildModel(JavaRDD<Rating> rdd) { // 训练模型
 		int rank = 10;
 		int numIterations = 20;
-		MatrixFactorizationModel model = ALS.train(rdd.rdd(), rank, numIterations, 0.01);
+		MatrixFactorizationModel model = ALS.train(rdd.rdd(), rank,
+				numIterations, 0.01);
 		return model;
 	}
-	
-	public Double getMSE(JavaRDD<Rating> ratings, MatrixFactorizationModel model) { //计算MSE
-		JavaPairRDD usersProducts = ratings.mapToPair(rating -> new Tuple2<>(rating.user(), rating.product()));
-		JavaPairRDD<Tuple2<Integer, Integer>, Double> predictions = model.predict(usersProducts.rdd())
-			  .toJavaRDD()
-			  .mapToPair(new PairFunction<Rating, Tuple2<Integer, Integer>, Double>() {
-				  @Override
-				  public Tuple2<Tuple2<Integer, Integer>, Double> call(Rating rating) throws Exception {
-					  return new Tuple2<>(new Tuple2<>(rating.user(), rating.product()), rating.rating());
-				  }
-			  });
+
+	public Double getMSE(JavaRDD<Rating> ratings, MatrixFactorizationModel model) { // 计算MSE
+		JavaPairRDD usersProducts = ratings
+				.mapToPair(new PairFunction<Rating, Integer, Integer>() {
+					@Override
+					public Tuple2<Integer, Integer> call(Rating rating)
+							throws Exception {
+						return new Tuple2(rating.user(), rating.product());
+					}
+				});
+		JavaPairRDD<Tuple2<Integer, Integer>, Double> predictions = model
+				.predict(usersProducts.rdd())
+				.toJavaRDD()
+				.mapToPair(
+						new PairFunction<Rating, Tuple2<Integer, Integer>, Double>() {
+							@Override
+							public Tuple2<Tuple2<Integer, Integer>, Double> call(
+									Rating rating) throws Exception {
+								return new Tuple2(new Tuple2(rating.user(),
+										rating.product()), rating.rating());
+							}
+						});
 
 		JavaPairRDD<Tuple2<Integer, Integer>, Double> ratesAndPreds = ratings
-			  .mapToPair(new PairFunction<Rating, Tuple2<Integer, Integer>, Double>() {
-				  @Override
-				  public Tuple2<Tuple2<Integer, Integer>, Double> call(Rating rating) throws Exception {
-					  return new Tuple2<>(new Tuple2<>(rating.user(), rating.product()), rating.rating());
-				  }
-			  });
+				.mapToPair(new PairFunction<Rating, Tuple2<Integer, Integer>, Double>() {
+					@Override
+					public Tuple2<Tuple2<Integer, Integer>, Double> call(
+							Rating rating) throws Exception {
+						return new Tuple2(new Tuple2(rating.user(), rating
+								.product()), rating.rating());
+					}
+				});
 		JavaPairRDD joins = ratesAndPreds.join(predictions);
 
-		return joins.mapToDouble(new DoubleFunction<Tuple2<Tuple2<Integer, Integer>, Tuple2<Double, Double>>>() {
-			@Override
-			public double call(Tuple2<Tuple2<Integer, Integer>, Tuple2<Double, Double>> o) throws Exception {
-				double err = o._2()._1() - o._2()._2();
-				return err * err;
-			}
-		}).mean();
+		return joins
+				.mapToDouble(
+						new DoubleFunction<Tuple2<Tuple2<Integer, Integer>, Tuple2<Double, Double>>>() {
+							@Override
+							public double call(
+									Tuple2<Tuple2<Integer, Integer>, Tuple2<Double, Double>> o)
+									throws Exception {
+								double err = o._2()._1() - o._2()._2();
+								return err * err;
+							}
+						}).mean();
 	}
-
 }

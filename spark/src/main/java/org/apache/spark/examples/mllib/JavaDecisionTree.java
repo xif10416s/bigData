@@ -39,18 +39,22 @@ import org.apache.spark.SparkConf;
 public final class JavaDecisionTree {
 
   public static void main(String[] args) {
-    String datapath = "data/mllib/sample_libsvm_data.txt";
+    String datapath = "data/sample_libsvm_data.txt";
     if (args.length == 1) {
       datapath = args[0];
     } else if (args.length > 1) {
       System.err.println("Usage: JavaDecisionTree <libsvm format data file>");
       System.exit(1);
     }
-    SparkConf sparkConf = new SparkConf().setAppName("JavaDecisionTree");
+    SparkConf sparkConf = new SparkConf().setMaster("local[6]").setAppName("JavaDecisionTree");
     JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
     JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD().cache();
 
+    JavaRDD<LabeledPoint>[] splits = data.randomSplit(new double[]{0.7, 0.3});
+    JavaRDD<LabeledPoint> trainingData = splits[0];
+    JavaRDD<LabeledPoint> testData = splits[1];
+    
     // Compute the number of classes from the data.
     Integer numClasses = data.map(new Function<LabeledPoint, Double>() {
       @Override public Double call(LabeledPoint p) {

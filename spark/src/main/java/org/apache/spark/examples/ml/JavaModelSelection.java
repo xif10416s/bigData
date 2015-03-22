@@ -66,18 +66,23 @@ public class JavaModelSelection {
 		// We use a ParamGridBuilder to construct a grid of parameters to search over.
 		// With 3 values for hashingTF.numFeatures and 2 values for lr.regParam,
 		// this grid will have 3 x 2 = 6 parameter settings for CrossValidator to choose from.
+		//1. 减少feature个数（人工定义留多少个feature、算法选取这些feature）
+		//2. 规格化（留下所有的feature，但对于部分feature定义其parameter非常小）
 		ParamMap[] paramGrid = new ParamGridBuilder()
-		    .addGrid(hashingTF.numFeatures(), new int[]{10, 100, 1000})
-		    .addGrid(lr.regParam(), new double[]{0.1, 0.01})
+		    .addGrid(hashingTF.numFeatures(), new int[]{80, 100, 85})
+		    .addGrid(lr.regParam(), new double[]{0.1,0.01, 0.001})
 		    .build();
 		crossval.setEstimatorParamMaps(paramGrid);
-		crossval.setNumFolds(2); // Use 3+ in practice
+		crossval.setNumFolds(3); // Use 3+ in practice
 
 		// Run cross-validation, and choose the best set of parameters.
 		CrossValidatorModel cvModel = crossval.fit(training);
 		// Get the best LogisticRegression model (with the best set of parameters from paramGrid).
 		Model lrModel = cvModel.bestModel();
-
+		System.out.println("best param fittingParamMap: "+ lrModel.fittingParamMap());
+		System.out.println("best param : "+ cvModel.explainParams());
+		System.out.println("best param : "+ cvModel.fittingParamMap());
+		
 		// Prepare test documents, which are unlabeled.
 		List<Document> localTest = Lists.newArrayList(
 		  new Document(4L, "spark i j k"),

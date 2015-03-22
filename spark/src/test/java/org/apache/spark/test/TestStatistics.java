@@ -1,6 +1,7 @@
 package org.apache.spark.test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -39,5 +40,8 @@ public class TestStatistics {
 	    System.out.println("总数:"+summary.count());
 	    System.out.println("最大值:"+summary.max());
 	    System.out.println("最小值:"+summary.min());
+	    
+	    HashMap<String, Double> hashMap = new HashMap<String, Double>();
+	    
 	}
 }
