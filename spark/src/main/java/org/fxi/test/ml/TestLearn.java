@@ -24,19 +24,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.function.PairFlatMapFunction;
 import org.apache.spark.sql.api.java.JavaSchemaRDD;
 import org.apache.spark.sql.api.java.Row;
 import org.fxi.test.ml.scheams.impl.UserCreditSchemaLoader;
 import org.fxi.test.ml.scheams.impl.UserInfoSchemaLoader;
 import org.junit.Before;
 import org.junit.Test;
+
+import scala.Tuple2;
 
 public class TestLearn implements Serializable {
 
@@ -114,7 +120,7 @@ public class TestLearn implements Serializable {
 							@Override
 							public String call(Row row) {
 								return "id: " + row.getString(0)
-										+ ", activityCredit: " + row.getInt(1);
+										+ ", activityStatus: " + row.getInt(1);
 							}
 						}).collect();
 				for (String name : nameAndCity) {
@@ -125,7 +131,7 @@ public class TestLearn implements Serializable {
 		};
 		SqlHelper
 				.executeSql(
-						"select i.id , c.activityCredit from userInfo i, userCredit c where i.id = c.userId order by c.activityCredit desc limit 10",
+						"select i.id , c.activityStatus from userInfo i, userCredit c where i.id = c.userId order by c.activityStatus desc limit 10",
 						resultHander, new UserInfoSchemaLoader(),
 						new UserCreditSchemaLoader());
 	}
@@ -137,7 +143,7 @@ public class TestLearn implements Serializable {
 	public void testDailyActivityByActivity() {
 		SqlHelper
 				.executeSql(
-						"select count(*) from userInfo i, userCredit c where i.id = c.userId and c.activityCredit >= 10 ",
+						"select count(*) from userInfo i, userCredit c where i.id = c.userId and c.activityStatus >= 10 ",
 						new ResultHander() {
 
 							@Override
@@ -1323,4 +1329,59 @@ be_recommended_2=[645081]
 				new UserCreditSchemaLoader());
 
 	}
+	
+	/**
+	 * be_recommended_0=10886470
+	 * 活跃用户注册分布
+	 */
+	@Test
+	public void testActivityUserRegisterRange() {
+		List<RunTask> list = new ArrayList<RunTask>();
+		list.add(new RunTask(
+				"select o.registerTime from    userInfo o , userCredit c where o.id = c.userId and c.yestodayCredit > 0 order by o.registerTime asc ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						JavaPairRDD<String, Long> flatMapToPair = schema
+								.flatMapToPair(new PairFlatMapFunction<Row, String, Long>() {
+
+									private static final long serialVersionUID = 1576005386847875524L;
+
+									@Override
+									public Iterable<Tuple2<String, Long>> call(
+											Row t) throws Exception {
+										List<Tuple2<String, Long>> list = new ArrayList<Tuple2<String, Long>>();
+										Long timeLong = t.getLong(0);
+										System.out.println(timeLong);
+										SimpleDateFormat sdf =new  SimpleDateFormat("yyyy/MM");
+										list.add(new Tuple2<String, Long>(sdf
+												.format(new Date(timeLong)), 1L));
+										return list;
+									}
+								});
+
+						JavaPairRDD<String, Long> counts = flatMapToPair
+								.reduceByKey(new Function2<Long, Long, Long>() {
+									@Override
+									public Long call(Long i1, Long i2) {
+										return i1 + i2;
+									}
+								});
+						List<Tuple2<String,Long>> collect = counts.collect();
+						for(Tuple2<String,Long> t : collect) {
+							writePropertiesFile(
+									"G:/ml/result/ActivityUserRegisterRange.txt",
+									t._1, t._2 + "");
+						}
+						
+					}
+				}
+
+		));
+
+		SqlHelper.executeSql(list, new UserInfoSchemaLoader(),
+				new UserCreditSchemaLoader());
+	}
+	
 }
