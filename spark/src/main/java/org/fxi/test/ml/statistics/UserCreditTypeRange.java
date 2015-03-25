@@ -1,16 +1,10 @@
 package org.fxi.test.ml.statistics;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.spark.api.java.JavaPairRDD;
-import org.apache.spark.api.java.function.Function2;
-import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.sql.api.java.JavaSchemaRDD;
-import org.apache.spark.sql.api.java.Row;
 import org.fxi.test.ml.ResultHander;
 import org.fxi.test.ml.RunTask;
 import org.fxi.test.ml.SqlHelper;
@@ -18,8 +12,6 @@ import org.fxi.test.ml.scheams.impl.UserCreditSchemaLoader;
 import org.fxi.test.ml.scheams.impl.UserInfoSchemaLoader;
 import org.fxi.test.ml.util.Utils;
 import org.junit.Test;
-
-import scala.Tuple2;
 
 public class UserCreditTypeRange implements Serializable {
 	@Test
@@ -180,6 +172,206 @@ public class UserCreditTypeRange implements Serializable {
 						Utils.writePropertiesFile(
 								"C:/ml/result/getRemainCreditRange.txt",
 								"200000<=R", first + "");
+					}
+				}
+
+		));
+		
+		SqlHelper.executeSql(list, new UserInfoSchemaLoader(),
+				new UserCreditSchemaLoader());
+
+	}
+	
+	
+	
+	/**
+	 * 推荐分布的 积分 分布
+	 */
+	@Test
+	public void getCreditRangeByBeRecommendedRange() {
+		List<RunTask> list = new ArrayList<RunTask>();
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) =1 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId  ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_1", first + "");
+					}
+				}
+
+		));
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) =2 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId  ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_2", first + "");
+					}
+				}
+
+		));
+		
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) =3 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId  ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_3", first + "");
+					}
+				}
+
+		));
+		
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) =4 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId  ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_4", first + "");
+					}
+				}
+
+		));
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) =5 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId  ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_5", first + "");
+					}
+				}
+
+		));
+		
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) >=6 and count(*)<=10 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_6_10", first + "");
+					}
+				}));
+		
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) >=11 and count(*)<=30 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_11_30", first + "");
+					}
+				}));
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) >=31 and count(*)<=50 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_31_50", first + "");
+					}
+				}));
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) >=51 and count(*)<=100 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_51_100", first + "");
+					}
+				}));
+		
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) >=101 and count(*)<=500 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_101_500", first + "");
+					}
+				}));
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) >=501 and count(*)<=5000 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_501_5000", first + "");
+					}
+				}));
+		
+		list.add(new RunTask(
+				" select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u , (select  count(*) , i.userOrigin from userInfo i where i.userOrigin not in ('123456','123456789','\\N','008') group by i.userOrigin having count(*) >=5001 ) t where u.recommendCode = t.userOrigin ) o , userCredit c where o.id = c.userId ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_5001_over", first + "");
+					}
+				}));
+		
+		//m没有填写
+		list.add(new RunTask(
+				"select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u  where u.userOrigin in ('\\N') ) o , userCredit c where o.id = c.userId  ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Object first = schema.first();
+						Utils.writePropertiesFile(
+								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
+								"be_recommended_null", first + "");
 					}
 				}
 
