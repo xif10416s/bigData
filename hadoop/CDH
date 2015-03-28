@@ -1,0 +1,13 @@
+ rpm -qa|grep libxslt
+ yum install libxslt
+/opt/cm-5.3.2/share/cmf/schema/scm_prepare_database.sh mysql cm -hlocalhost -uroot -preverse --scm-host localhost scm scm scm
+
+useradd --system --home=/opt/cm-5.3.2/run/cloudera-scm-server/ --no-create-home --shell=/bin/false --comment "Cloudera SCM User" cloudera-scm
+
+
+/opt/cm-5.3.2/etc/init.d/cloudera-scm-server start
+
+/opt/cm-5.3.2/etc/init.d/cloudera-scm-agent start
+
+/opt/cm-5.3.2/etc/init.d/cloudera-scm-server stop
+/opt/cm-5.3.2/etc/init.d/cloudera-scm-agent stop
