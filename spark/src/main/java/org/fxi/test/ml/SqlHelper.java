@@ -20,7 +20,7 @@ public class SqlHelper implements Serializable {
 
 	public static void executeSql(String sql, ResultHander handler,
 			SchemaLoader... loaderList) {
-		SparkConf sparkConf = new SparkConf().setMaster("local[6]")
+		SparkConf sparkConf = new SparkConf().setMaster("local[6]").set("spark.driver.maxResultSize", "2500m")
 				.setAppName("JavaSparkSQL").set("spark.executor.memory", "11g");
 		JavaSparkContext ctx = new JavaSparkContext(sparkConf);
 		JavaSQLContext sqlCtx = new JavaSQLContext(ctx);

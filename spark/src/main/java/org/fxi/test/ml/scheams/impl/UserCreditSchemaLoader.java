@@ -18,7 +18,7 @@ public class UserCreditSchemaLoader implements SchemaLoader, Serializable {
 		System.out.println("=== Data source: UserCreditSchemaLoader RDD ===");
 		// Load a text file and convert each line to a Java Bean.
 		JavaRDD<UserCredit> userCredit = ctx.textFile(
-				"C:/Users/fxi/Documents/20150319/20150319/hq_user_credit_2015_03_19.csv").map(
+				"I:/data/ml/20150319/hq_user_credit_2015_03_19.csv").map(
 				new Function<String, UserCredit>() {
 					@Override
 					public UserCredit call(String line) {

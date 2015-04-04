@@ -34,3 +34,5 @@ cd /usr/local/hadoop/spark-1.2.0-bin-hadoop2.3/bin
 
 #web UI
 http://192.168.56.102:4040
+
+-XX:-UseGCOverheadLimit -Xmx12024m

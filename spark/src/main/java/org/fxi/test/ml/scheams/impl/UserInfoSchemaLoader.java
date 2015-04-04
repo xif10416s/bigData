@@ -17,7 +17,7 @@ public class UserInfoSchemaLoader implements SchemaLoader , Serializable {
 		System.out.println("=== Data source: UserInfoSchemaLoader RDD ===");
 		// Load a text file and convert each line to a Java Bean.
 		JavaRDD<UserInfo> userInfo = ctx.textFile(
-				"G:/ml/20150319/hq_user_info_2015_03_19.csv").map(
+				"I:/data/ml/20150319/hq_user_info_2015_03_19.csv").map(
 				new Function<String, UserInfo>() {
 					@Override
 					public UserInfo call(String line) {

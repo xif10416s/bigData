@@ -22,7 +22,7 @@ public class UserCreditLogSchemaLoader implements SchemaLoader, Serializable {
 		// Load a text file and convert each line to a Java Bean.
 		JavaRDD<UserCreditLog> userCreditLog = ctx
 				.textFile(
-						"C:/Users/fxi/Documents/20150319/20150319/hq_user_credit_log_2015_03_19.csv")
+						"I:/data/ml/20150319/hq_user_credit_log_2015_03_19.csv")
 				.map(new Function<String, UserCreditLog>() {
 					@Override
 					public UserCreditLog call(String line) {
