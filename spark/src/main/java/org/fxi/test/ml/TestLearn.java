@@ -1384,4 +1384,20 @@ be_recommended_2=[645081]
 				new UserCreditSchemaLoader());
 	}
 	
+	@Test
+	public void testLastRegisterUser() {
+
+		SqlHelper.executeSql("select Max(registerTime) from userInfo ",
+				new ResultHander() {
+
+					@Override
+					public void handler(JavaSchemaRDD schema) {
+						Row first = (Row) schema.first();
+						SimpleDateFormat sdf =new  SimpleDateFormat("yyyy/MM/dd");
+						System.out.println("time : " + sdf
+								.format(new Date(first.getLong(0))));
+					}
+				}, new UserInfoSchemaLoader(), new UserCreditSchemaLoader());
+	}
+	
 }

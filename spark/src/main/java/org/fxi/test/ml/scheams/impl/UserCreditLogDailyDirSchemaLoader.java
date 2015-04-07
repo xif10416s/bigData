@@ -57,7 +57,17 @@ public class UserCreditLogDailyDirSchemaLoader implements SchemaLoader,
 			list.add(userCreditLog);
 		}
 		
-		JavaRDD<UserCreditLogDaily> union = ctx.union(list.get(0),list.get(1));
+		JavaRDD<UserCreditLogDaily> union = null;
+		if(paths.length == 1) {
+			union = list.get(0);
+		}
+		if(paths.length == 2) {
+			union = ctx.union(list.get(0),list.get(1));
+		}
+		if(paths.length == 3) {
+			union = ctx.union(list.get(0),list.get(1),list.get(2));
+		}
+		
 		JavaSchemaRDD schemaPeople = sqlCtx.applySchema(union,
 				UserCreditLogDaily.class);
 		schemaPeople.registerTempTable("userCreditLogDailyDir");
