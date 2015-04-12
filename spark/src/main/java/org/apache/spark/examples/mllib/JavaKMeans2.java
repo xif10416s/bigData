@@ -41,7 +41,6 @@ public class JavaKMeans2 {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		// ���β���Ҫ����־��ʾ���ն���
 		Logger.getLogger("org.apache.spark").setLevel(Level.WARN);
 		Logger.getLogger("org.eclipse.jetty.server").setLevel(Level.OFF);
 
@@ -60,17 +59,14 @@ public class JavaKMeans2 {
 
 		KMeansModel model = KMeans.train(points.rdd(), k, iterations, runs,
 				KMeans.K_MEANS_PARALLEL());
-		// ����ģ�͵����ĵ�
 		System.out.println("Cluster centers:");
 		for (Vector center : model.clusterCenters()) {
 			System.out.println(" " + center);
 		}
 
-		// ʹ�����ƽ��֮������������ģ��
 		double cost = model.computeCost(points.rdd());
 		System.out.println("Cost: " + cost);
 
-		// ʹ��ģ�Ͳ��Ե�������
 		testPoint("0.2 0.2 0.2",model,sc);
 		testPoint("9.0 9.0 9.0",model,sc);
 		testPoint("4 3 8",model,sc);
@@ -86,7 +82,6 @@ public class JavaKMeans2 {
 
 	}
 	
-	//ʹ��ģ�Ͳ��Ե�������  
 	private static void testPoint(String data , KMeansModel model,JavaSparkContext sc) {
 		List<String> asList = Arrays.asList(data);
 		JavaRDD<String> parallelize = sc.parallelize(asList);
