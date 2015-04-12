@@ -9,6 +9,7 @@ import org.apache.spark.sql.api.java.JavaSQLContext;
 import org.apache.spark.sql.api.java.JavaSchemaRDD;
 import org.fxi.test.ml.bean.UserCredit;
 import org.fxi.test.ml.scheams.SchemaLoader;
+import org.fxi.test.ml.util.FilePathConstants;
 import org.fxi.test.ml.util.Utils;
 
 public class UserCreditSchemaLoader implements SchemaLoader, Serializable {
@@ -18,7 +19,7 @@ public class UserCreditSchemaLoader implements SchemaLoader, Serializable {
 		System.out.println("=== Data source: UserCreditSchemaLoader RDD ===");
 		// Load a text file and convert each line to a Java Bean.
 		JavaRDD<UserCredit> userCredit = ctx.textFile(
-				"I:/data/ml/20150319/hq_user_credit_2015_03_19.csv").map(
+				FilePathConstants.USER_CREDIT_INFO_PATH).map(
 				new Function<String, UserCredit>() {
 					@Override
 					public UserCredit call(String line) {

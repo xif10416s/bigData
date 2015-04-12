@@ -1,0 +1,67 @@
+1.网络
+http://blog.csdn.net/jiangzhengdong/article/details/8037043
+/etc/sysconfig/network-scripts/ifcfg-eth0
+cp  /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth1
+=====
+IPADDR=192.168.56.2
+NETMASK=255.255.255.0
+===
+service network restart 
+
+2、hosts & hostnames
+vi /etc/hostname
+vi /etc/hosts
+
+
+3.SSH
+http://blog.csdn.net/ab198604/article/details/8250461
+每个结点分别产生公私密
+ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa
+cd .ssh/
+cat id_dsa.pub >> authorized_keys
+ 让主结点(master)能通过SSH免密码登录两个子结点（slave）
+ node:
+ cd .ssh
+ scp root@n1:~/.ssh/id_dsa.pub ./master_dsa.pub
+ cat master_dsa.pub >> authorized_keys
+ 
+ 
+ 4卸载自带的OpenJdk，使用 rpm -qa | grep java 查询java相关的包，使用 rpm -e --nodeps 包名 卸载之。 
+ rpm -ivh 包名
+ 
+ 5.JAVA_HOME
+ echo "JAVA_HOME=/usr/java/latest/" >> /etc/environment
+ source /etc/environment
+ 
+ 6
+ 4.安装配置MySql（主节点）
+
+通过 yum install mysql-server 安装mysql服务器。
+ chkconfig mysqld on 设置开机启动，
+ 并 service mysqld start 启动mysql服务，
+ 并根据提示设置root的初试密码： mysqladmin -u root password 'reverse' 。
+
+mysql -uroot -preverse 进入mysql命令行，创建以下数据库：
+
+#hive
+create database hive DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+#activity monitor
+create database report DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+ 
+grant all privileges on *.* to 'root'@'%' identified by 'reverse' with grant option;
+flush privileges; 
+ 
+ 
+ 7./etc/selinux/config 下的 SELINUX=disabled 
+ 
+ 6.所有节点配置NTP服务
+ 所有节点安装相关组件
+ yum install ntp
+ 
+ 主节点配置
+ ntpdate -u 65.55.56.206
+vi /etc/ntp.conf
+
+8 cloud
+cd /opt
+tar xzvf /home/lib/cloudera-manager*.tar.gz
