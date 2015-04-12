@@ -21,6 +21,7 @@ import org.apache.spark.mllib.recommendation.Rating;
 import org.apache.spark.util.StatCounter;
 import org.fxi.spark.analytics.learn.bean.ArtistAliasBean;
 import org.fxi.spark.analytics.learn.bean.ArtistDataBean;
+import org.fxi.test.ml.util.StatisticsUtils;
 import org.fxi.test.ml.util.Utils;
 
 import scala.Tuple2;
@@ -141,7 +142,7 @@ public class AudioscrobblerLearn implements Serializable {
 		}
 		System.out.println(str);
 
-		Rating[] recommendUsers = model.recommendProducts(2093760, 5);
+		Rating[] recommendUsers = model.recommendProducts(1000072 , 5);
 		for (Rating a : recommendUsers) {
 			Utils.saveToFile("I:/data/profiledata_06-May-2005/result/trainRs.txt",
 					a.product() + " " + a.rating() + "\r\n");
@@ -150,13 +151,15 @@ public class AudioscrobblerLearn implements Serializable {
 		MatrixFactorizationModel trainImplicit = ALS.trainImplicit(
 				trainData.rdd(), rank, iterations, 0.01, 1);
 
-		recommendUsers = trainImplicit.recommendProducts(2093760, 5);
+		recommendUsers = trainImplicit.recommendProducts(1000072, 5);
 		for (Rating a : recommendUsers) {
 			Utils.saveToFile(
 					"I:/data/profiledata_06-May-2005/result/trainImplicitRs.txt",
 					a.product() + " " + a.rating() + "\r\n");
 		}
-
+		
+		Double mse = StatisticsUtils.getMSE(trainData, trainImplicit);
+		System.out.println("mse : " + mse);
 		ctx.stop();
 	}
 }
