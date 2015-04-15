@@ -7,6 +7,10 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
+import org.apache.spark.api.java.function.Function;
+import org.apache.spark.sql.api.java.JavaSchemaRDD;
+import org.apache.spark.sql.api.java.Row;
+import org.apache.spark.sql.cassandra.api.java.JavaCassandraSQLContext;
 import org.fxi.spark.analytics.learn.bean.ArtistAliasBean;
 
 import com.datastax.spark.connector.japi.CassandraJavaUtil;
@@ -29,34 +33,45 @@ public class SparkCassandra {
 //		session.execute("CREATE TABLE java_api.products (id INT PRIMARY KEY, name TEXT, parents LIST<INT>)");
 //		session.execute("CREATE TABLE java_api.sales (id UUID PRIMARY KEY, product INT, price DECIMAL)");
 //		session.execute("CREATE TABLE java_api.summaries (product INT PRIMARY KEY, summary DECIMAL)");
+//		for(Row r : collect3) {
+//			System.out.println(r.getInt(0));
+//		}
+		
 		SparkContextJavaFunctions javaFunctions = CassandraJavaUtil.javaFunctions(jsc);
-		javaFunctions.cassandraTable(arg0, arg1, arg2, arg3)
-		CassandraJavaRDD<CassandraRow> cassandraTable = javaFunctions.cassandraTable("mltp", "mltp_ad_action_log");
-		JavaRDD<Integer> flatMap = cassandraTable.flatMap(new FlatMapFunction<CassandraRow, Integer>() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -2235195728960646682L;
-
+		CassandraJavaRDD<CassandraRow> cassandraTable = javaFunctions.cassandraTable("mltp", "mltp_ad_action_log_test").where(" day_time = ? ", "20150414");
+		cassandraTable.filter(new Function<CassandraRow, Boolean>() {
+			
 			@Override
-			public Iterable<Integer> call(CassandraRow t) throws Exception {
-				Integer day = t.getInt(1);
-				List<Integer> arrayList = new ArrayList<Integer>();
-				if(day == 20150415) {
-					arrayList.add(t.getInt(0));
-				}
-				
-				return arrayList;
+			public Boolean call(CassandraRow v1) throws Exception {
+				// TODO Auto-generated method stub
+				return  v1.getInt(3) == 20150415;
 			}
 		});
-		
-		List<Integer> collect2 = flatMap.collect();
-		for(int adId : collect2) {
-			System.out.println(adId);
-		}
+//		JavaRDD<Integer> flatMap = cassandraTable.flatMap(new FlatMapFunction<CassandraRow, Integer>() {
+//			/**
+//			 * 
+//			 */
+//			private static final long serialVersionUID = -2235195728960646682L;
+//
+//			@Override
+//			public Iterable<Integer> call(CassandraRow t) throws Exception {
+//				Integer day = t.getInt(1);
+//				List<Integer> arrayList = new ArrayList<Integer>();
+//				if(day == 20150415) {
+//					arrayList.add(t.getInt(0));
+//				}
+//				
+//				return arrayList;
+//			}
+//		});
+//		
+//		List<Integer> collect2 = flatMap.collect();
+//		for(int adId : collect2) {
+//			System.out.println(adId);
+//		}
 		List<CassandraRow> collect = cassandraTable.collect();
 		for(CassandraRow c : collect) {
-			System.out.println(c.getString(0));
+			System.out.println(c.getString(0)+" "+ c.getInt(3));
 		}
 	}
 }
