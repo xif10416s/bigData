@@ -5,8 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Properties;
 
@@ -18,6 +17,12 @@ public class Utils {
 	public static void writePropertiesFile(String filename, String key,
 			String value) {
 		File file = new File(filename);
+		File parent = file.getParentFile();
+		if (parent != null && !parent.exists()) {
+			parent.mkdirs();
+		} else {
+			System.out.println("//目录存在");
+		}
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -27,14 +32,17 @@ public class Utils {
 			}
 		}
 
+
 		Properties properties = new Properties();
 		try {
-			InputStream fis = new FileInputStream(filename);
-			properties.load(fis);
-			OutputStream outputStream = new FileOutputStream(filename);
+			InputStreamReader inputStreamReader = new InputStreamReader(
+					new FileInputStream(new File(filename)));
+			properties.load(inputStreamReader);
+			OutputStreamWriter outputSreamWriter = new OutputStreamWriter(
+					new FileOutputStream(new File(filename)));
 			properties.setProperty(key, value);
-			properties.store(outputStream, "tt");
-			outputStream.close();
+			properties.store(outputSreamWriter, "tt");
+			outputSreamWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
