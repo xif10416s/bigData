@@ -8,15 +8,11 @@ import java.util.List;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.sql.api.java.JavaSQLContext;
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
-import org.fxi.test.ml.bean.UserCredit;
-import org.fxi.test.ml.bean.UserCreditLog;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.SQLContext;
 import org.fxi.test.ml.bean.UserCreditLogDaily;
 import org.fxi.test.ml.scheams.SchemaLoader;
 import org.fxi.test.ml.util.Utils;
-
-import akka.util.Collections;
 
 public class UserCreditLogDailyDirSchemaLoader implements SchemaLoader,
 		Serializable {
@@ -30,7 +26,7 @@ public class UserCreditLogDailyDirSchemaLoader implements SchemaLoader,
 
 	private String[] paths;
 	@Override
-	public void loadSchema(JavaSparkContext ctx, JavaSQLContext sqlCtx) {
+	public void loadSchema(JavaSparkContext ctx, SQLContext sqlCtx) {
 		System.out
 				.println("=== Data source: UserCreditLogSchemaLoader RDD ===");
 		// Load a text file and convert each line to a Java Bean.
@@ -68,13 +64,13 @@ public class UserCreditLogDailyDirSchemaLoader implements SchemaLoader,
 			union = ctx.union(list.get(0),list.get(1),list.get(2));
 		}
 		
-		JavaSchemaRDD schemaPeople = sqlCtx.applySchema(union,
+		DataFrame schemaPeople = sqlCtx.createDataFrame(union,
 				UserCreditLogDaily.class);
 		schemaPeople.registerTempTable("userCreditLogDailyDir");
 	}
 
 	public static void main(String[] args) {
-		File file = new File("I:/data/ml/20150319/hq_user_credit_log_daily");
+		File file = new File("I:/data/ml/hq_user_credit_log_daily");
 		File[] listFiles = file.listFiles();
 		for(int i = 0 ; i < listFiles.length ; i ++) {
 			System.out.println(listFiles[i].getAbsolutePath());

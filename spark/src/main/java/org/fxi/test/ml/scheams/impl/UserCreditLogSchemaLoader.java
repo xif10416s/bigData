@@ -5,24 +5,23 @@ import java.io.Serializable;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.sql.api.java.JavaSQLContext;
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.SQLContext;
 import org.fxi.test.ml.bean.UserCredit;
 import org.fxi.test.ml.bean.UserCreditLog;
-import org.fxi.test.ml.bean.UserInfo;
 import org.fxi.test.ml.scheams.SchemaLoader;
 import org.fxi.test.ml.util.Utils;
 
 public class UserCreditLogSchemaLoader implements SchemaLoader, Serializable {
 
 	@Override
-	public void loadSchema(JavaSparkContext ctx, JavaSQLContext sqlCtx) {
+	public void loadSchema(JavaSparkContext ctx, SQLContext sqlCtx) {
 		System.out
 				.println("=== Data source: UserCreditLogSchemaLoader RDD ===");
 		// Load a text file and convert each line to a Java Bean.
 		JavaRDD<UserCreditLog> userCreditLog = ctx
 				.textFile(
-						"I:/data/ml/20150319/hq_user_credit_log_2015_03_19.csv")
+						"I:/data/ml/hq_user_credit_log_2015_03_19.csv")
 				.map(new Function<String, UserCreditLog>() {
 					@Override
 					public UserCreditLog call(String line) {
@@ -55,7 +54,7 @@ public class UserCreditLogSchemaLoader implements SchemaLoader, Serializable {
 					}
 				});
 		// Apply a schema to an RDD of Java Beans and register it as a table.
-		JavaSchemaRDD schemaPeople = sqlCtx.applySchema(filteruserCreditLog,
+		DataFrame schemaPeople = sqlCtx.createDataFrame(filteruserCreditLog,
 				UserCredit.class);
 		schemaPeople.registerTempTable("userCreditLog");
 	}

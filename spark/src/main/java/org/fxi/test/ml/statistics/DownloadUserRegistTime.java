@@ -12,15 +12,12 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
-import org.apache.spark.sql.api.java.JavaSQLContext;
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
-import org.apache.spark.sql.api.java.Row;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Row;
 import org.fxi.test.ml.ResultHander;
 import org.fxi.test.ml.RunTask;
 import org.fxi.test.ml.SqlHelper;
-import org.fxi.test.ml.scheams.SchemaLoader;
 import org.fxi.test.ml.scheams.impl.UserCreditLogDailyDirSchemaLoader;
-import org.fxi.test.ml.scheams.impl.UserCreditSchemaLoader;
 import org.fxi.test.ml.scheams.impl.UserInfoSchemaLoader;
 import org.fxi.test.ml.util.Utils;
 import org.junit.Test;
@@ -135,10 +132,10 @@ public class DownloadUserRegistTime implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						schema.registerTempTable("downloadUsers");
 						schema.cache();
-						List<Row> collect = schema.collect();
+						List<Row> collect =  schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getString(0));
@@ -156,9 +153,9 @@ public class DownloadUserRegistTime implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						StringBuffer sb = new StringBuffer();
-						JavaPairRDD<String, Long> mapToPair = schema.mapToPair(new PairFunction<Row, String,Long>() {
+						JavaPairRDD<String, Long> mapToPair =  schema.toJavaRDD().mapToPair(new PairFunction<Row, String,Long>() {
 
 							private static final long serialVersionUID = 7318496638126551217L;
 

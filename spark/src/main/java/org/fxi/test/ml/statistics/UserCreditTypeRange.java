@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
+import org.apache.spark.sql.DataFrame;
 import org.fxi.test.ml.ResultHander;
 import org.fxi.test.ml.RunTask;
 import org.fxi.test.ml.SqlHelper;
@@ -22,7 +22,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						
 						Utils.writePropertiesFile(
@@ -54,7 +54,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						
 						Utils.writePropertiesFile(
@@ -85,7 +85,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						
 						Utils.writePropertiesFile(
@@ -102,7 +102,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						
 						Utils.writePropertiesFile(
@@ -118,7 +118,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						
 						Utils.writePropertiesFile(
@@ -134,7 +134,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						
 						Utils.writePropertiesFile(
@@ -150,7 +150,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						
 						Utils.writePropertiesFile(
@@ -166,7 +166,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						
 						Utils.writePropertiesFile(
@@ -185,7 +185,7 @@ public class UserCreditTypeRange implements Serializable {
 	
 	
 	/**
-	 * ÍÆ¼ö·Ö²¼µÄ »ý·Ö×ÜÌå ·Ö²¼
+	 * ï¿½Æ¼ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö²ï¿½
 	 */
 	@Test
 	public void getCreditRangeByBeRecommendedRange() {
@@ -195,7 +195,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -210,7 +210,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -226,7 +226,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -242,7 +242,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -257,7 +257,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -273,7 +273,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -287,7 +287,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -300,7 +300,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -313,7 +313,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -327,7 +327,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -340,7 +340,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -353,7 +353,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -361,13 +361,13 @@ public class UserCreditTypeRange implements Serializable {
 					}
 				}));
 		
-		//mÃ»ÓÐÌîÐ´
+		//mÃ»ï¿½ï¿½ï¿½ï¿½Ð´
 		list.add(new RunTask(
 				"select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u  where u.userOrigin in ('\\N') ) o , userCredit c where o.id = c.userId  ",
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getCreditRangeByBeRecommendedRange.txt",
@@ -385,7 +385,7 @@ public class UserCreditTypeRange implements Serializable {
 	
 	
 	/**
-	 * »îÔ¾ÓÃ»§ÍÆ¼ö·Ö²¼µÄ »ý·Ö×ÜÌå ·Ö²¼ »îÔ¾Öµ¡·=11
+	 * ï¿½ï¿½Ô¾ï¿½Ã»ï¿½ï¿½Æ¼ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö²ï¿½ ï¿½ï¿½Ô¾Öµï¿½ï¿½=11
 	 */
 	@Test
 	public void getActivityUserCreditRangeByBeRecommendedRange() {
@@ -395,7 +395,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -410,7 +410,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -426,7 +426,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -442,7 +442,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -457,7 +457,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -473,7 +473,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -487,7 +487,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -500,7 +500,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -513,7 +513,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -527,7 +527,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -540,7 +540,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -553,7 +553,7 @@ public class UserCreditTypeRange implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",
@@ -561,13 +561,13 @@ public class UserCreditTypeRange implements Serializable {
 					}
 				}));
 		
-		//mÃ»ÓÐÌîÐ´
+		//mÃ»ï¿½ï¿½ï¿½ï¿½Ð´
 		list.add(new RunTask(
 				"select sum(creditRevenue),sum(creditRemaining) ,sum(recommendCredit) ,sum(downloadCredit) ,sum(signCredit) ,sum(actionCredit)  ,sum(rightCredit)  ,sum(shareCredit) ,sum(activityCredit) from ( select u.id from  userInfo u  where u.userOrigin in ('\\N') ) o , userCredit c where o.id = c.userId  ",
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						Utils.writePropertiesFile(
 								"C:/ml/result/getActivityUserCreditRangeByBeRecommendedRange.txt",

@@ -66,16 +66,16 @@ public final class JavaDecisionTree {
     //  Empty categoricalFeaturesInfo indicates all features are continuous.
     HashMap<Integer, Integer> categoricalFeaturesInfo = new HashMap<Integer, Integer>();
     String impurity = "gini";
-    Integer maxDepth = 5;
-    Integer maxBins = 32;
+    Integer maxDepth = 20;
+    Integer maxBins = 200;
 
     // Train a DecisionTree model for classification.
-    final DecisionTreeModel model = DecisionTree.trainClassifier(data, numClasses,
+    final DecisionTreeModel model = DecisionTree.trainClassifier(trainingData, numClasses,
       categoricalFeaturesInfo, impurity, maxDepth, maxBins);
 
     // Evaluate model on training instances and compute training error
     JavaPairRDD<Double, Double> predictionAndLabel =
-      data.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
+    		testData.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
         @Override public Tuple2<Double, Double> call(LabeledPoint p) {
           return new Tuple2<Double, Double>(model.predict(p.features()), p.label());
         }
@@ -85,18 +85,18 @@ public final class JavaDecisionTree {
         @Override public Boolean call(Tuple2<Double, Double> pl) {
           return !pl._1().equals(pl._2());
         }
-      }).count() / data.count();
+      }).count() / testData.count();
     System.out.println("Training error: " + trainErr);
     System.out.println("Learned classification tree model:\n" + model);
 
     // Train a DecisionTree model for regression.
     impurity = "variance";
-    final DecisionTreeModel regressionModel = DecisionTree.trainRegressor(data,
+    final DecisionTreeModel regressionModel = DecisionTree.trainRegressor(trainingData,
         categoricalFeaturesInfo, impurity, maxDepth, maxBins);
 
     // Evaluate model on training instances and compute training error
     JavaPairRDD<Double, Double> regressorPredictionAndLabel =
-      data.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
+    		testData.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
         @Override public Tuple2<Double, Double> call(LabeledPoint p) {
           return new Tuple2<Double, Double>(regressionModel.predict(p.features()), p.label());
         }
@@ -111,7 +111,7 @@ public final class JavaDecisionTree {
         @Override public Double call(Double a, Double b) {
           return a + b;
         }
-      }) / data.count();
+      }) / testData.count();
     System.out.println("Training Mean Squared Error: " + trainMSE);
     System.out.println("Learned regression tree model:\n" + regressionModel);
 

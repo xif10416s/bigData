@@ -5,8 +5,8 @@ import java.io.Serializable;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.sql.api.java.JavaSQLContext;
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.SQLContext;
 import org.fxi.test.ml.bean.UserInfo;
 import org.fxi.test.ml.scheams.SchemaLoader;
 import org.fxi.test.ml.util.FilePathConstants;
@@ -14,7 +14,7 @@ import org.fxi.test.ml.util.FilePathConstants;
 public class UserInfoSchemaLoader implements SchemaLoader , Serializable {
 
 	@Override
-	public void loadSchema(JavaSparkContext ctx, JavaSQLContext sqlCtx) {
+	public void loadSchema(JavaSparkContext ctx, SQLContext sqlCtx) {
 		System.out.println("=== Data source: UserInfoSchemaLoader RDD ===");
 		// Load a text file and convert each line to a Java Bean.
 		JavaRDD<UserInfo> userInfo = ctx.textFile(
@@ -52,7 +52,7 @@ public class UserInfoSchemaLoader implements SchemaLoader , Serializable {
 					}
 				});
 		// Apply a schema to an RDD of Java Beans and register it as a table.
-		JavaSchemaRDD schemaPeople = sqlCtx.applySchema(filterUserInfo,
+		DataFrame schemaPeople = sqlCtx.createDataFrame(filterUserInfo,
 				UserInfo.class);
 		schemaPeople.registerTempTable("userInfo");
 	}

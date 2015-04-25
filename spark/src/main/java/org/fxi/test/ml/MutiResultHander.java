@@ -2,8 +2,8 @@ package org.fxi.test.ml;
 
 import java.io.Serializable;
 
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
+import org.apache.spark.sql.DataFrame;
 
 public interface MutiResultHander extends Serializable {
-	public void  handler(JavaSchemaRDD... schemas);
+	public void  handler(DataFrame... schemas);
 }

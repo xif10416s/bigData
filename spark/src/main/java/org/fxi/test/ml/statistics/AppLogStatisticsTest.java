@@ -9,8 +9,8 @@ import java.util.List;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
-import org.apache.spark.sql.api.java.Row;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Row;
 import org.fxi.test.ml.ResultHander;
 import org.fxi.test.ml.RunTask;
 import org.fxi.test.ml.SqlHelper;
@@ -30,8 +30,8 @@ public class AppLogStatisticsTest implements Serializable {
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						JavaPairRDD<String, Long> mapToPair = schema.mapToPair(new PairFunction<Row, String,Long>() {
+					public void handler(DataFrame schema) {
+						JavaPairRDD<String, Long> mapToPair =  schema.toJavaRDD().mapToPair(new PairFunction<Row, String,Long>() {
 
 							private static final long serialVersionUID = 7318496638126551217L;
 

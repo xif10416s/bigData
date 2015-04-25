@@ -4,20 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.spark.api.java.JavaPairRDD;
-import org.apache.spark.api.java.function.PairFunction;
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
-import org.apache.spark.sql.api.java.Row;
+import org.apache.spark.sql.DataFrame;
 import org.fxi.test.ml.ResultHander;
 import org.fxi.test.ml.RunTask;
 import org.fxi.test.ml.SqlHelper;
 import org.fxi.test.ml.scheams.impl.UserCreditLogDailyDirSchemaLoader;
-import org.fxi.test.ml.scheams.impl.UserCreditSchemaLoader;
 import org.fxi.test.ml.scheams.impl.UserInfoSchemaLoader;
 import org.fxi.test.ml.util.Utils;
 import org.junit.Test;
-
-import scala.Tuple2;
 
 public class UserCreditLogDailyEveryDayUserObtainRangeFromDir implements Serializable {
 	
@@ -139,7 +133,7 @@ public class UserCreditLogDailyEveryDayUserObtainRangeFromDir implements Seriali
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						if(schema.count() != 0) {
 							schema.registerTempTable(tempTableName);
 							schema.cache();
@@ -155,7 +149,7 @@ public class UserCreditLogDailyEveryDayUserObtainRangeFromDir implements Seriali
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						if(schema.count() != 0) {
 							String count = "1	"+schema.count()+Utils.SPLIT_LINE;
 							Utils.saveToFile("I:/data/ml/result/dailyCreditUserCount/"+ saveFileName,count);
@@ -169,7 +163,7 @@ public class UserCreditLogDailyEveryDayUserObtainRangeFromDir implements Seriali
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						if(schema.count() != 0) {
 							String count = "2	"+schema.count()+Utils.SPLIT_LINE;
 							Utils.saveToFile("I:/data/ml/result/dailyCreditUserCount/"+ saveFileName,count);
@@ -183,7 +177,7 @@ public class UserCreditLogDailyEveryDayUserObtainRangeFromDir implements Seriali
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						if(schema.count() != 0) {
 							String count = "5	"+schema.count()+Utils.SPLIT_LINE;
 							Utils.saveToFile("I:/data/ml/result/dailyCreditUserCount/"+ saveFileName,count);
@@ -197,7 +191,7 @@ public class UserCreditLogDailyEveryDayUserObtainRangeFromDir implements Seriali
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						if(schema.count() != 0) {
 							String count = "6	"+schema.count()+Utils.SPLIT_LINE;
 							Utils.saveToFile("I:/data/ml/result/dailyCreditUserCount/"+ saveFileName,count);
@@ -211,7 +205,7 @@ public class UserCreditLogDailyEveryDayUserObtainRangeFromDir implements Seriali
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						if(schema.count() != 0) {
 							String count = "7	"+schema.count()+Utils.SPLIT_LINE;
 							Utils.saveToFile("I:/data/ml/result/dailyCreditUserCount/"+ saveFileName,count);

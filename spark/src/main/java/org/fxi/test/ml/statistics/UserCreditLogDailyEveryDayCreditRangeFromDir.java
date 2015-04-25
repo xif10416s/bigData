@@ -4,20 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.spark.api.java.JavaPairRDD;
-import org.apache.spark.api.java.function.PairFunction;
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
-import org.apache.spark.sql.api.java.Row;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Row;
 import org.fxi.test.ml.ResultHander;
 import org.fxi.test.ml.RunTask;
 import org.fxi.test.ml.SqlHelper;
 import org.fxi.test.ml.scheams.impl.UserCreditLogDailyDirSchemaLoader;
-import org.fxi.test.ml.scheams.impl.UserCreditSchemaLoader;
 import org.fxi.test.ml.scheams.impl.UserInfoSchemaLoader;
 import org.fxi.test.ml.util.Utils;
 import org.junit.Test;
-
-import scala.Tuple2;
 
 public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializable {
 	@Test
@@ -28,7 +23,7 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
+					public void handler(DataFrame schema) {
 						Object first = schema.first();
 						System.out.println("count : " + first);
 					}
@@ -44,8 +39,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -69,8 +64,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -89,8 +84,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -109,8 +104,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -130,8 +125,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -161,8 +156,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -181,8 +176,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -211,8 +206,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -231,8 +226,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -262,8 +257,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -282,8 +277,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -312,8 +307,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -332,8 +327,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -362,8 +357,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -382,8 +377,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -412,8 +407,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -432,8 +427,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -462,8 +457,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -482,8 +477,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -512,8 +507,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -532,8 +527,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect = schema.toJavaRDD().collect();
 						StringBuffer sb = new StringBuffer();
 						for(Row r : collect) {
 							sb.append(r.getInt(0));
@@ -560,8 +555,8 @@ public class UserCreditLogDailyEveryDayCreditRangeFromDir implements Serializabl
 				new ResultHander() {
 
 					@Override
-					public void handler(JavaSchemaRDD schema) {
-						List<Row> collect = schema.collect();
+					public void handler(DataFrame schema) {
+						List<Row> collect =  schema.toJavaRDD().collect();
 						for(Row r : collect)
 						System.out.println("count : " + r.getString(0) +"  " + r.getInt(1));
 					}
