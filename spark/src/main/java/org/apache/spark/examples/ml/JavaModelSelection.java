@@ -15,15 +15,15 @@ import org.apache.spark.ml.param.ParamMap;
 import org.apache.spark.ml.tuning.CrossValidator;
 import org.apache.spark.ml.tuning.CrossValidatorModel;
 import org.apache.spark.ml.tuning.ParamGridBuilder;
-import org.apache.spark.sql.api.java.JavaSQLContext;
-import org.apache.spark.sql.api.java.JavaSchemaRDD;
-import org.apache.spark.sql.api.java.Row;
+import org.apache.spark.sql.DataFrame;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SQLContext;
 
 public class JavaModelSelection {
 	public static void main(String[] args) {
 		SparkConf conf = new SparkConf().setMaster("local[6]").setAppName("JavaCrossValidatorExample");
 		JavaSparkContext jsc = new JavaSparkContext(conf);
-		JavaSQLContext jsql = new JavaSQLContext(jsc);
+		SQLContext jsql = new SQLContext(jsc);
 		
 		// Prepare training documents, which are labeled.
 		List<LabeledDocument> localTraining = Lists.newArrayList(
@@ -39,7 +39,7 @@ public class JavaModelSelection {
 		  new LabeledDocument(9L, "a e c l", 0.0),
 		  new LabeledDocument(10L, "spark compile", 1.0),
 		  new LabeledDocument(11L, "hadoop software", 0.0));
-		JavaSchemaRDD training =
+		DataFrame training =
 		    jsql.applySchema(jsc.parallelize(localTraining), LabeledDocument.class);
 		
 		
@@ -89,11 +89,11 @@ public class JavaModelSelection {
 		  new Document(5L, "l m n"),
 		  new Document(6L, "mapreduce spark"),
 		  new Document(7L, "apache hadoop"));
-		JavaSchemaRDD test = jsql.applySchema(jsc.parallelize(localTest), Document.class);
+		DataFrame test = jsql.applySchema(jsc.parallelize(localTest), Document.class);
 
 		// Make predictions on test documents. cvModel uses the best model found (lrModel).
 		cvModel.transform(test).registerAsTable("prediction");
-		JavaSchemaRDD predictions = jsql.sql("SELECT id, text, score, prediction FROM prediction");
+		DataFrame predictions = jsql.sql("SELECT id, text, score, prediction FROM prediction");
 		for (Row r: predictions.collect()) {
 		  System.out.println("(" + r.get(0) + ", " + r.get(1) + ") --> score=" + r.get(2)
 		      + ", prediction=" + r.get(3));

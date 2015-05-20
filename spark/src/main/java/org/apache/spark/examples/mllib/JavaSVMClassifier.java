@@ -58,5 +58,9 @@ public class JavaSVMClassifier {
 		double auROC = metrics.areaUnderROC();
 
 		System.out.println("Area under ROC = " + auROC);
+		
+		// Save and load model
+//	    model.save(sc, "myModelPath");
+//	    SVMModel sameModel = SVMModel.load(sc, "myModelPath");
 	}
 }

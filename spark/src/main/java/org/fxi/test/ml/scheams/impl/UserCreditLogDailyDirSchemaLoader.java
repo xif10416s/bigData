@@ -41,12 +41,17 @@ public class UserCreditLogDailyDirSchemaLoader implements SchemaLoader,
 							String[] parts = line.split("	");
 							UserCreditLogDaily userCreditLog = new UserCreditLogDaily();
 							userCreditLog.setUserId(parts[0]);
-							userCreditLog.setCredit(Utils.valueOf(parts[3]));
-							userCreditLog.setAdId(parts[2]);
-							userCreditLog.setType(Utils.valueOf(parts[1]));
-							userCreditLog.setServerLogTime(parts[4]);
-							userCreditLog.setClientObtainTime(parts[5]);
-							userCreditLog.setClientSyncTime(parts[6]);
+//							userCreditLog.setCredit(Utils.valueOf(parts[3]));
+//							userCreditLog.setAdId(parts[2]);
+//							userCreditLog.setType(Utils.valueOf(parts[1]));
+//							userCreditLog.setServerLogTime(parts[4]);
+							if("\\N".equals(parts[5])) {
+								userCreditLog.setClientObtainTime(parts[4]);
+							} else {
+								userCreditLog.setClientObtainTime(parts[5]);
+							}
+							
+//							userCreditLog.setClientSyncTime(parts[6]);
 							return userCreditLog;
 						}
 					});

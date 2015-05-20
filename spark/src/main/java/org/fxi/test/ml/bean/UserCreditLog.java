@@ -8,12 +8,6 @@ public class UserCreditLog implements Serializable{
 	private String drawRealName;
 	private String drawAccount;
 	private long logTime;
-	//3);//提现
-	//4);//充值
-	//10);//流量
-	//5);//预订提现
-	// 6);//预订充值
-	//11);//预订流量
 	private int commodityType;
 	
 	private int credit;

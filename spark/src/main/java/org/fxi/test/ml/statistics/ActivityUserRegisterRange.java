@@ -26,7 +26,7 @@ import scala.Tuple2;
 
 public class ActivityUserRegisterRange implements Serializable {
 
-	public static final String BASE_PATH_CREDIT_LOG = "I:/data/ml/20150319/hq_user_credit_log_daily/hq_user_credit_log_daily_%s_%s.txt";
+	public static final String BASE_PATH_CREDIT_LOG = "I:/data/ml/hq_user_credit_log_daily/hq_user_credit_log_daily_%s_%s.txt";
 
 	/**
 	 * 
@@ -89,6 +89,8 @@ public class ActivityUserRegisterRange implements Serializable {
 
 		};
 		
+		userRegInfo.loadSchema(ctx, sqlCtx);
+		
 		handler("05","13","05","12",ctx , sqlCtx);
 		handler("05","12","05","11",ctx , sqlCtx);
 		handler("05","11","05","10",ctx , sqlCtx);
@@ -106,7 +108,7 @@ public class ActivityUserRegisterRange implements Serializable {
 				String.format(BASE_PATH_CREDIT_LOG, endMonth, endDay) });
 		userCreditLogDailyDirSchemaLoader.loadSchema(ctx, sqlCtx);
 
-		DataFrame activityUserDf = sqlCtx.sql("u.registerTime from  (select distinct userId  from  userCreditLogDailyDir where clientObtainTime like '%2015-"
+		DataFrame activityUserDf = sqlCtx.sql("select u.registerTime from  (select distinct userId  from  userCreditLogDailyDir where clientObtainTime like '%2015-"
 				+ endMonth + "-" + endDay + "%') t , userInfo u where t.userId = u.id order by u.registerTime");
 		
 		JavaPairRDD<String, Long> mapToPair = activityUserDf.toJavaRDD().mapToPair(new PairFunction<Row, String,Long>() {
@@ -137,13 +139,11 @@ public class ActivityUserRegisterRange implements Serializable {
 		List<Tuple2<String, Long>> collect = reduceByKey.collect();
 		
 		for(Tuple2<String, Long> t : collect) {
-			Utils.writePropertiesFile(
-					"C:/ml/result/ActivityUserRegRange2015"+ endMonth + endDay +".txt",
-					t._1, t._2 + "");
+			Utils.saveToFile(
+					"I:/data/ml/result/ActivityUserRegRange2015"+ endMonth + endDay +".txt",
+					t._1+"	"+ t._2 + Utils.SPLIT_LINE);
 			
 		}
 		
-
-		sqlCtx.sql("");
 	}
 }

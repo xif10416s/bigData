@@ -39,22 +39,18 @@ import org.apache.spark.SparkConf;
 public final class JavaDecisionTree {
 
   public static void main(String[] args) {
-    String datapath = "data/sample_libsvm_data.txt";
+    String datapath = "data/mllib/sample_libsvm_data.txt";
     if (args.length == 1) {
       datapath = args[0];
     } else if (args.length > 1) {
       System.err.println("Usage: JavaDecisionTree <libsvm format data file>");
       System.exit(1);
     }
-    SparkConf sparkConf = new SparkConf().setMaster("local[6]").setAppName("JavaDecisionTree");
+    SparkConf sparkConf = new SparkConf().setAppName("JavaDecisionTree");
     JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
     JavaRDD<LabeledPoint> data = MLUtils.loadLibSVMFile(sc.sc(), datapath).toJavaRDD().cache();
 
-    JavaRDD<LabeledPoint>[] splits = data.randomSplit(new double[]{0.7, 0.3});
-    JavaRDD<LabeledPoint> trainingData = splits[0];
-    JavaRDD<LabeledPoint> testData = splits[1];
-    
     // Compute the number of classes from the data.
     Integer numClasses = data.map(new Function<LabeledPoint, Double>() {
       @Override public Double call(LabeledPoint p) {
@@ -66,16 +62,16 @@ public final class JavaDecisionTree {
     //  Empty categoricalFeaturesInfo indicates all features are continuous.
     HashMap<Integer, Integer> categoricalFeaturesInfo = new HashMap<Integer, Integer>();
     String impurity = "gini";
-    Integer maxDepth = 20;
-    Integer maxBins = 200;
+    Integer maxDepth = 5;
+    Integer maxBins = 32;
 
     // Train a DecisionTree model for classification.
-    final DecisionTreeModel model = DecisionTree.trainClassifier(trainingData, numClasses,
+    final DecisionTreeModel model = DecisionTree.trainClassifier(data, numClasses,
       categoricalFeaturesInfo, impurity, maxDepth, maxBins);
 
     // Evaluate model on training instances and compute training error
     JavaPairRDD<Double, Double> predictionAndLabel =
-    		testData.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
+      data.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
         @Override public Tuple2<Double, Double> call(LabeledPoint p) {
           return new Tuple2<Double, Double>(model.predict(p.features()), p.label());
         }
@@ -85,18 +81,18 @@ public final class JavaDecisionTree {
         @Override public Boolean call(Tuple2<Double, Double> pl) {
           return !pl._1().equals(pl._2());
         }
-      }).count() / testData.count();
+      }).count() / data.count();
     System.out.println("Training error: " + trainErr);
     System.out.println("Learned classification tree model:\n" + model);
 
     // Train a DecisionTree model for regression.
     impurity = "variance";
-    final DecisionTreeModel regressionModel = DecisionTree.trainRegressor(trainingData,
+    final DecisionTreeModel regressionModel = DecisionTree.trainRegressor(data,
         categoricalFeaturesInfo, impurity, maxDepth, maxBins);
 
     // Evaluate model on training instances and compute training error
     JavaPairRDD<Double, Double> regressorPredictionAndLabel =
-    		testData.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
+      data.mapToPair(new PairFunction<LabeledPoint, Double, Double>() {
         @Override public Tuple2<Double, Double> call(LabeledPoint p) {
           return new Tuple2<Double, Double>(regressionModel.predict(p.features()), p.label());
         }
@@ -111,7 +107,7 @@ public final class JavaDecisionTree {
         @Override public Double call(Double a, Double b) {
           return a + b;
         }
-      }) / testData.count();
+      }) / data.count();
     System.out.println("Training Mean Squared Error: " + trainMSE);
     System.out.println("Learned regression tree model:\n" + regressionModel);
 
