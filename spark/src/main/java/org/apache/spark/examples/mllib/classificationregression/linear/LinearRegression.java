@@ -1,4 +1,4 @@
-package org.apache.spark.examples.mllib;
+package org.apache.spark.examples.mllib.classificationregression.linear;
 
 import scala.Tuple2;
 
@@ -13,7 +13,7 @@ import org.apache.spark.SparkConf;
 
 public class LinearRegression {
   public static void main(String[] args) {
-    SparkConf conf = new SparkConf().setAppName("Linear Regression Example");
+    SparkConf conf = new SparkConf().setMaster("local[6]").setAppName("Linear Regression Example");
     JavaSparkContext sc = new JavaSparkContext(conf);
     
     // Load and parse the data

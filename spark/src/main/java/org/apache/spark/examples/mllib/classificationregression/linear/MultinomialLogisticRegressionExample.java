@@ -1,4 +1,4 @@
-package org.apache.spark.examples.mllib;
+package org.apache.spark.examples.mllib.classificationregression.linear;
 import scala.Tuple2;
 
 import org.apache.spark.api.java.*;
