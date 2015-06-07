@@ -1,4 +1,6 @@
 package org.apache.spark.examples.mllib.classificationregression.linear;
+import java.util.List;
+
 import scala.Tuple2;
 
 import org.apache.spark.api.java.*;
@@ -23,7 +25,17 @@ public class MultinomialLogisticRegressionExample {
 //    JavaRDD<LabeledPoint>[] splits = data.randomSplit(new double[] {0.6, 0.4}, 11L);
 //    JavaRDD<LabeledPoint> training = splits[0].cache();
 //    JavaRDD<LabeledPoint> test = splits[1];
-    
+    List<LabeledPoint> collect = data.collect();
+    for(LabeledPoint l : collect) {
+    	System.out.println(l.label());
+    	double[] array = l.features().toArray();
+    	String s = "";
+    	for(double d : array) {
+    		s+=d;
+    		s+=":";
+    	}
+    	System.out.println(s);
+    }
     JavaRDD<LabeledPoint> training = data.sample(false, 0.6, 11L);
 	training.cache();
 	JavaRDD<LabeledPoint> test = data.subtract(training);
