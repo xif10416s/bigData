@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="allLogConsumer" class="com.moneylocker.common.kafka.api.consumer.KafkaConsumer"
+		init-method="start" destroy-method="close">
+		<property name="properties">
+			<util:properties location="all-log-consumer.properties" />
+		</property>
+		<property name="messageHandlerBuilder" ref="logMessageHandlerBuilder" />
+		<property name="topicMap">
+			<description>Lists how many threads should read from each topic.</description>
+			<util:map map-class="java.util.HashMap">
+				<entry key="ml_obtain_credit_log" value="4" />
+				<entry key="ml_ad_right_slide_log" value="4" />
+				<entry key="ml_ad_exposure_log" value="4" />
+				<entry key="ml_ad_left_slide_log" value="4" />
+				<entry key="ml_ad_install_log" value="4" /> 
+				<entry key="ml_login_log" value="2" />
+				<entry key="ml_verify_log" value="2"></entry><!-- -->
+			</util:map>
+		</property>
+	</bean>
+
+	<bean id="logMessageHandlerBuilder" class="com.moneylocker.common.kafka.api.handler.LogMessageHandlerBuilder">
+		<property name="cassandraClient" ref="cassandraClient" />
+	</bean>
+</beans>

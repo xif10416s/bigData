@@ -1,7 +1,6 @@
 package com.moneylocker.consumer.consumer;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -15,52 +14,51 @@ import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 
 import com.moneylocker.consumer.handler.MessageHandler;
+import com.moneylocker.consumer.handler.MessageHandlerBuilder;
 
 public class KafkaConsumer {
 
-	public String prop;
+	private Properties properties;
 
 	private ConsumerConnector consumer;
 
 	private String topic;
 
-	private MessageHandler messageHandler;
+	private MessageHandlerBuilder messageHandlerBuilder;
 
-	private String numThreads;
+	private Map<String, Integer> topicMap;
 
 	private ExecutorService executor;
 
-	public String getNumThreads() {
-		return numThreads;
+	public Map<String, Integer> getTopicMap() {
+		return topicMap;
 	}
 
-	public void setNumThreads(String numThreads) {
-		this.numThreads = numThreads;
+	public void setTopicMap(Map<String, Integer> topicMap) {
+		this.topicMap = topicMap;
 	}
 
 	public KafkaConsumer() {
-
 	}
 
 	public void start() throws IOException {
-		Properties props = new Properties();
-		props.load(KafkaConsumer.class.getClassLoader().getResourceAsStream((prop)));
-
-		consumer = Consumer.createJavaConsumerConnector(new ConsumerConfig(props));
-		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
-
-		topicCountMap.put(topic, new Integer(numThreads));
-		Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = consumer.createMessageStreams(topicCountMap);
-
-		List<KafkaStream<byte[], byte[]>> streams = consumerMap.get(topic);
-
-		executor = Executors.newFixedThreadPool(topicCountMap.get(topic));
-
-		int threadNumber = 0;
-
-		for (final KafkaStream<byte[], byte[]> stream : streams) {
-			executor.submit(new ConsumerHandler(stream, threadNumber, messageHandler, topic));
-			threadNumber++;
+		consumer = Consumer.createJavaConsumerConnector(new ConsumerConfig(properties));
+		Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = consumer.createMessageStreams(topicMap);
+		int size = 0;
+		for (List<KafkaStream<byte[], byte[]>> topic : consumerMap.values()) {
+			size += topic == null ? 0 : topic.size();
+		}
+		if (size > 0) {
+			List<KafkaStream<byte[], byte[]>> partStreams = null;
+			executor = Executors.newFixedThreadPool(size);
+			for (String topic : consumerMap.keySet()) {
+				partStreams = consumerMap.get(topic);
+				if (partStreams != null) {
+					for (final KafkaStream<byte[], byte[]> stream : partStreams) {
+						executor.submit(new ConsumerHandler(stream, messageHandlerBuilder.build(), topic));
+					}
+				}
+			}
 		}
 	}
 
@@ -71,12 +69,12 @@ public class KafkaConsumer {
 			executor.shutdown();
 	}
 
-	public String getProp() {
-		return prop;
+	public Properties getProperties() {
+		return properties;
 	}
 
-	public void setProp(String prop) {
-		this.prop = prop;
+	public void setProperties(Properties prop) {
+		this.properties = prop;
 	}
 
 	public String getTopic() {
@@ -87,39 +85,34 @@ public class KafkaConsumer {
 		this.topic = topic;
 	}
 
-	public MessageHandler getMessageHandler() {
-		return messageHandler;
+	public MessageHandlerBuilder getMessageHandlerBuilder() {
+		return messageHandlerBuilder;
 	}
 
-	public void setMessageHandler(MessageHandler messageHandler) {
-		this.messageHandler = messageHandler;
-	}
-}
-
-class ConsumerHandler implements Runnable {
-
-	private KafkaStream<byte[], byte[]> mStream;
-
-	private int mThreadNumber;
-
-	private MessageHandler messageHandler;
-
-	private String topic;
-
-	public ConsumerHandler(KafkaStream<byte[], byte[]> mStream, int mThreadNumber, MessageHandler messageHandler,
-			String topic) {
-		this.mThreadNumber = mThreadNumber;
-		this.mStream = mStream;
-		this.messageHandler = messageHandler;
-		this.topic = topic;
+	public void setMessageHandlerBuilder(MessageHandlerBuilder messageHandlerBuilder) {
+		this.messageHandlerBuilder = messageHandlerBuilder;
 	}
 
-	@Override
-	public void run() {
-		ConsumerIterator<byte[], byte[]> it = mStream.iterator();
+	private static class ConsumerHandler implements Runnable {
 
-		while (it.hasNext()) {
-			messageHandler.onMessage(it.next(), mThreadNumber, topic);
+		private KafkaStream<byte[], byte[]> mStream;
+
+		private MessageHandler messageHandler;
+
+		private String topic;
+
+		public ConsumerHandler(KafkaStream<byte[], byte[]> mStream, MessageHandler messageHandler, String topic) {
+			this.mStream = mStream;
+			this.messageHandler = messageHandler;
+			this.topic = topic;
+		}
+
+		@Override
+		public void run() {
+			ConsumerIterator<byte[], byte[]> it = mStream.iterator();
+			while (it.hasNext()) {
+				messageHandler.onMessage(it.next(), topic);
+			}
 		}
 	}
 }
