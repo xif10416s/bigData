@@ -20,6 +20,8 @@ import org.apache.commons.lang.StringUtils;
 public class DynamicPropertiesHelper {
 	private ConcurrentHashMap<String, String> properties = new ConcurrentHashMap<String, String>();
 	private ConcurrentHashMap<String, List<PropertyChangeListener>> propListeners = new ConcurrentHashMap<String, List<PropertyChangeListener>>();
+	private PropertyConvertHandler convertHandler ;
+	
 
 	public DynamicPropertiesHelper(String initValue) {
 		Properties props = parse(initValue);
@@ -117,19 +119,34 @@ public class DynamicPropertiesHelper {
 		}
 		listeners.add(listener);
 	}
+	
+	public void registerHandler(PropertyConvertHandler handler) {
+		this.convertHandler = handler;
+		for(String key : this.properties.keySet()) {
+			convertHandler.convert(key, properties.get(key));
+		}
+	}
 
 	private void firePropertyChanged(String key, String oldValue,
 			String newValue) {
+		if(convertHandler != null) {
+			convertHandler.convert(key, newValue);
+		}
 		List<PropertyChangeListener> listeners = (List<PropertyChangeListener>) this.propListeners.get(key);
 		if ((listeners == null) || (listeners.size() == 0)) {
 			return;
 		}
 		for (PropertyChangeListener listener : listeners)
 			listener.propertyChanged(oldValue, newValue);
+		
 	}
 
 	public static abstract interface PropertyChangeListener {
 		public abstract void propertyChanged(String paramString1,
 				String paramString2);
+	}
+	
+	public static abstract interface PropertyConvertHandler {
+		public abstract void convert(String key  , String value);
 	}
 }

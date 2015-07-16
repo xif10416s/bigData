@@ -13,6 +13,7 @@ public class ReadPropertiesTest extends TestCase {
 				"test-spring-config.xml");
 		this.helperFactory = ((DynamicPropertiesHelperFactory) ctx
 				.getBean(DynamicPropertiesHelperFactory.class));
+		
 	}
 
 	public void testReadProperties() throws InterruptedException {

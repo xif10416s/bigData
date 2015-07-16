@@ -1,4 +1,4 @@
-package org.zookeeper.config;
+package org.zookeeper.config.zkimpl;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,20 +13,19 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * zk配置文件发布者类
+ * 
  * @author june
  *
  */
 public class ZkConfigPublisher {
 	public static String CONF_DIR = "conf";
-	public static final String CONF_ENCODING = "UTF-8";
 	public static String ZK_CONFIG_ROOTNODE = "/ml/conf";
 	public static String ZK_CONF_ENCODING = "UTF-8";
 	public static int ZK_TIMEOUT = 30000;
 	public static String ZK_ADDRESS = "";
 
 	private static final void loadProperties() {
-		InputStream is = ZkConfigPublisher.class
-				.getResourceAsStream("/zkpublisher.properties");
+		InputStream is = ClassLoader.getSystemResourceAsStream("zkpublisher.properties");
 		if (is == null) {
 			throw new RuntimeException("找不到zkpublisher.properties资源文件.");
 		}
@@ -42,6 +41,7 @@ public class ZkConfigPublisher {
 		ZK_CONF_ENCODING = props.getProperty("ZK_CONF_ENCODING");
 		ZK_TIMEOUT = Integer.parseInt(props.getProperty("ZK_TIMEOUT"));
 		ZK_ADDRESS = props.getProperty("ZK_ADDRESS");
+		CONF_DIR = props.getProperty("CONF_DIR");
 	}
 
 	public static void main(String[] args) {
@@ -59,8 +59,7 @@ public class ZkConfigPublisher {
 		publishConfigs(client, ZK_CONFIG_ROOTNODE, confDir);
 	}
 
-	public static void publishConfigs(ZkClient client, String rootNode,
-			File confDir) {
+	public static void publishConfigs(ZkClient client, String rootNode, File confDir) {
 		File[] confs = confDir.listFiles();
 		int success = 0;
 		int failed = 0;
@@ -68,20 +67,19 @@ public class ZkConfigPublisher {
 			if (!conf.isFile()) {
 				continue;
 			}
-			
+
 			boolean isSucc = publishConfig(client, rootNode, conf);
-			if(isSucc) {
+			if (isSucc) {
 				success++;
 			} else {
 				failed++;
 			}
-			
+
 		}
 		System.out.println("提示: 完成配置发布，成功" + success + "，失败" + failed + "。");
 	}
-	
-	public static boolean publishConfig(ZkClient client, String rootNode,
-			File conf) {
+
+	public static boolean publishConfig(ZkClient client, String rootNode, File conf) {
 		String name = conf.getName();
 		String path = ZkUtils.getZkPath(rootNode, name);
 		ZkUtils.mkPaths(client, path);
@@ -100,8 +98,7 @@ public class ZkConfigPublisher {
 				System.err.println("错误: 尝试发布配置失败: " + e.getMessage());
 				return false;
 			}
-			System.out.println("提示: 已经成功将配置文件" + conf + "内容发布为新的ZK配置"
-					+ path);
+			System.out.println("提示: 已经成功将配置文件" + conf + "内容发布为新的ZK配置" + path);
 		} else {
 			try {
 				client.writeData(path, content);
@@ -111,7 +108,7 @@ public class ZkConfigPublisher {
 			}
 			System.out.println("提示: 已经成功将配置文件" + conf + "内容更新到ZK配置" + path);
 		}
-		
+
 		return true;
 	}
 }

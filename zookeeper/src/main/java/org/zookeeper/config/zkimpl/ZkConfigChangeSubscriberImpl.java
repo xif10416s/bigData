@@ -1,10 +1,12 @@
-package org.zookeeper.config;
+package org.zookeeper.config.zkimpl;
 
 import java.util.List;
 
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.lang.StringUtils;
+import org.zookeeper.config.ConfigChangeListener;
+import org.zookeeper.config.ConfigChangeSubscriber;
 
 /**
  * 订阅者实现类，当订阅到zk数据改变时，会触发ConfigChangeListener

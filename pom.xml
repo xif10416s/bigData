@@ -11,7 +11,7 @@
 		<module>kafka</module>
 		<module>Cassandra</module>
 		<module>hadoop</module>
-		<module>spark</module>
+		<module>sparkLearn</module>
 		<module>zookeeper</module>
     <module>showData</module>
   </modules>
@@ -40,7 +40,7 @@
 		<cassandra_version>1.2.5</cassandra_version>
 		<hadoop_version>2.3.0</hadoop_version>
 		<jcl_version>1.2</jcl_version>
-		<cassandra_driver_version>2.1.4</cassandra_driver_version>
+		<cassandra_driver_version>2.1.6</cassandra_driver_version>
 
 		<maven_compiler_plugin_version>2.3.2</maven_compiler_plugin_version>
 		<maven_source_plugin_version>2.1.1</maven_source_plugin_version>
