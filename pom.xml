@@ -14,7 +14,8 @@
 		<module>sparkLearn</module>
 		<module>zookeeper</module>
     <module>showData</module>
-  </modules>
+    <module>Elasticsearch</module>
+	</modules>
 
 	<properties>
 		<project.basedir>.</project.basedir>
