@@ -21,7 +21,7 @@ import org.apache.spark.streaming.kafka._
  *
  * ./start_ad_action_monitor_exposure.sh 10.144.134.92:12181,10.144.134.93:12181,10.144.134.94:12181 sparkStreamAdAction2 ml_ad_exposure_log 32 2 120 120 jdbc:mysql://10.144.134.70:3306/hqlog log1 log1_huaqian spark://10.144.134.82:7077 4g 8
  */
-object AdActionMonitor {
+object KafkaSteam {
   //val url = "jdbc:mysql://10.144.134.67:3306/servicedb"
   def main(args: Array[String]) {
     if (args.length < 4) {
