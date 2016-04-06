@@ -1,8 +1,7 @@
-package com.moneylocker.data.analysis.util
+package com.fxi.test.spark.common.utils
 
-import java.sql.{DriverManager, Connection}
+import java.sql.{Connection, DriverManager}
 
-import org.apache.spark.rdd.JdbcRDD
 import org.apache.spark.rdd.JdbcRDD.ConnectionFactory
 
 /**

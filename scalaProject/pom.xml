@@ -4,17 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.moneylocker.data.analysis.online</groupId>
-    <artifactId>ml-data-analysis-online</artifactId>
+    <groupId>com.fxi.test</groupId>
+    <artifactId>scala-test</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>stream</module>
+        <module>scala-spark</module>
     </modules>
     <packaging>pom</packaging>
-    <name>ml-data-analysis-online</name>
+    <name>scala-test</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spark.version>1.3.1</spark.version>
+        <spark.version>1.6.1</spark.version>
         <scala.version>2.10.5</scala.version>
         <kafka_version>0.8.2-beta</kafka_version>
         <scala.binary.version>2.10</scala.binary.version>

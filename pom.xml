@@ -11,7 +11,7 @@
 		<module>kafka</module>
 		<module>Cassandra</module>
 		<module>hadoop</module>
-		<module>sparkLearn</module>
+		<module>spark</module>
 		<module>zookeeper</module>
     <module>showData</module>
     <module>Elasticsearch</module>
