@@ -1,4 +1,4 @@
-package com.fxi.test.spark
+package com.fxi.test.spark.stream
 
 import com.alibaba.fastjson.JSON
 
