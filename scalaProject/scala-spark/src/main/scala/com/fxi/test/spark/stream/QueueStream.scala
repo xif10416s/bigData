@@ -13,6 +13,10 @@ import scala.collection.mutable.Queue
   */
 object QueueStream {
   def main(args: Array[String]): Unit = {
+    import org.apache.log4j.{Level, Logger}
+    val logLevel = Level.DEBUG
+    Logger.getLogger("org").setLevel(logLevel)
+
     val Array(batchDuration , master ,windowLength, slidingInterval) = Array("5","local[*]" ,"5","5");
 //    val Array(batchDuration , master ,windowLength, slidingInterval) = Array("5","spark://122.144.134.67:50002" ,"10","10");
 
