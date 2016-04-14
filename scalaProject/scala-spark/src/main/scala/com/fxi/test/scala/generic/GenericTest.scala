@@ -11,17 +11,16 @@ import scala.reflect.ClassTag
   */
 class GenericTest {
   def runJob[T, U: ClassTag](rdd: RDD[T], func: Iterator[T] => U): Array[U] = {
-    println("**********runJob[T, U: ClassTag](rdd: RDD[T], func: Iterator[T] => U): Array[U]******")
+    println("1---runJob[T, U: ClassTag](rdd: RDD[T], func: Iterator[T] => U): Array[U]******")
     println(func(rdd.toLocalIterator))
     runJob(rdd, func, 0 until rdd.partitions.length)
   }
 
-  def runJob[T, U: ClassTag](
-                              rdd: RDD[T],
-                              func: Iterator[T] => U,
-                              partitions: Seq[Int]): Array[U] = {
+  def runJob[T, U: ClassTag](rdd: RDD[T],func: Iterator[T] => U,partitions: Seq[Int]): Array[U] = {
+    println("2----runJob[T, U: ClassTag](rdd: RDD[T],func: Iterator[T] => U,partitions: Seq[Int]): Array[U]")
     val cleanedFunc = clean(func)
-    runJob(rdd, (ctx: TaskContext, it: Iterator[T]) => cleanedFunc(it), partitions)
+    println(cleanedFunc(rdd.toLocalIterator))
+    runJob(rdd, (ctx: TaskContext, it: Iterator[T]) => cleanedFunc(it), partitions) //TODO
   }
 
   def runJob[T, U: ClassTag](
@@ -29,6 +28,8 @@ class GenericTest {
                               func: (TaskContext, Iterator[T]) => U,
                               partitions: Seq[Int]): Array[U] = {
     val results = new Array[U](partitions.size)
+    println("3----")
+    println(func(null , rdd.toLocalIterator))
     runJob[T, U](rdd, func, partitions, (index, res) => results(index) = res)
     results
   }
@@ -61,6 +62,15 @@ class GenericTest {
     val sc = new SparkContext(sparkConf)
     val emptyRDD = sc.makeRDD(1 to 100000000, 10)
     runJob( emptyRDD, getIteratorSize _)
+  }
+
+  @Test
+  def testType() :Unit ={
+    println(testT((s:String, b:Int) => "aa".toString))
+  }
+
+  def testT[U](func : (String , Int ) => U) : U ={
+    func("a",1)
   }
 }
 
