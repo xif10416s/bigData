@@ -64,13 +64,18 @@ class GenericTest {
     runJob( emptyRDD, getIteratorSize _)
   }
 
+  /**
+    * (s:String, b:Iterator[Long]) 参数列表
+    *  =>
+    *   { println(s) ;getIteratorSize(b) ;} 函数体
+    */
   @Test
   def testType() :Unit ={
-    println(testT((s:String, b:Int) => "aa".toString))
+    println(testT((s:String, b:Iterator[Long]) => { println(s) ;getIteratorSize(b) ;} ))
   }
 
-  def testT[U](func : (String , Int ) => U) : U ={
-    func("a",1)
+  def testT[U](func : (String , Iterator[Long] ) => U) : U ={
+    func("a", Array(1L,2L,3L).iterator)
   }
 }
 
