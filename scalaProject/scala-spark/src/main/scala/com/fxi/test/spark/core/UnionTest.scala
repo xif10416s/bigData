@@ -11,13 +11,13 @@ import org.apache.spark.{SparkContext, SparkConf}
 object UnionTest {
   def main(args: Array[String]): Unit = {
     import org.apache.log4j.{Level, Logger}
-    val logLevel = Level.DEBUG
+    val logLevel = Level.ERROR
     Logger.getLogger("org").setLevel(logLevel)
 
     val Array(master) = Array("local[*]");
     val sparkConf = new SparkConf().setAppName("UnionTest").setMaster(master)
     val sc = new SparkContext(sparkConf)
-    sc.setCheckpointDir("./scalaProject/checkpoint/")
+//    sc.setCheckpointDir("./scalaProject/checkpoint/")
     var rdd:RDD[Int] = null
     val rdd1 =  sc.makeRDD(1 to 100000000, 10)
     val rdd2 =  sc.makeRDD(1 to 100000000, 10)
@@ -44,6 +44,8 @@ object UnionTest {
 
     println("rdd==>"+rdd.count())
     rdd.checkpoint()
+
+    println("sc.union(rddArr) ==>" + sc.union(rddArr).count())
 
     Thread.sleep(1000000);
   }
