@@ -164,4 +164,14 @@ class BaseTest {
     f(1)
   }
 
+  @Test
+  def testFolds() = {
+    val list  = List(5,4,8,6,2)
+    val a = (1 /:list){ (z,i) => println(z + i) ; z+i }
+    println(a)
+
+    val b = (list :\ 1){ (z,i) => println(z + i) ; z+i }
+    println(b)
+  }
+
 }
