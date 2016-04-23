@@ -15,6 +15,7 @@
 		<module>zookeeper</module>
     <module>showData</module>
     <module>Elasticsearch</module>
+		<module>javaTest</module>
 	</modules>
 
 	<properties>
