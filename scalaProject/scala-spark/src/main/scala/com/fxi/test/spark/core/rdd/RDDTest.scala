@@ -8,7 +8,9 @@ import org.junit.Test
   * Created by seki on 16/4/23.
   */
 class RDDTest {
-  val sparkConf = new SparkConf().setAppName("RDDTest").setMaster("local[*]")
+//  val master ="local[*]
+  val master ="spark://xifei-HP-Z228-Microtower-Workstation:7077"
+  val sparkConf = new SparkConf().setAppName("RDDTest").setMaster(master)
   val sc = new SparkContext(sparkConf)
 
   @Test

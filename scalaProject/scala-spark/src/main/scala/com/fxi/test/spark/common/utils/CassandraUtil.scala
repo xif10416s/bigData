@@ -8,6 +8,8 @@ import com.datastax.spark.connector.{CassandraRow, ColumnName, SparkContextFunct
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Row
 
+import scala.collection.mutable.ArrayBuffer
+
 
 /**
  * Created by xifei on 15-9-29.
@@ -74,20 +76,17 @@ object CassandraUtil {
   }
 
   def queryCassandra(day:Long  , scf:SparkContextFunctions ,keySpace:String ,table:String ,fileds:Array[String]):RDD[CassandraRow] ={
-    val rddList =  new util.ArrayList[CassandraRDD[CassandraRow]]()
-    val filedsCol = new  Array[ColumnName](fileds.length)
-    for(i <- 0 to fileds.length -1 ){
+    val rddArray = ArrayBuffer[CassandraRDD[CassandraRow]]()
+    val filedsCol = new Array[ColumnName](fileds.length)
+    for (i <- 0 to fileds.length - 1) {
       filedsCol(i) = new ColumnName(fileds(i), Option.empty[String])
     }
     val whereSql = "action_day_key = ? ";
-    for(i <- 0 to 255){
-      rddList.add(scf.cassandraTable(keySpace,table).where(whereSql,day*1000L+i).select(filedsCol:_*))
+    for (i <- 0 to 255) {
+      rddArray +=scf.cassandraTable(keySpace, table).where(whereSql, day * 1000L + i).select(filedsCol: _*);
     }
-    var unionRdd:RDD[CassandraRow] = rddList.get(0)
-    for(i <- 1 to 255){
-      unionRdd = unionRdd.union(rddList.get(i))
-    }
-    unionRdd
+
+    scf.sc.union(rddArray)
   }
 
   def queryCassandraWithConnect(day:Long  , scf:SparkContextFunctions ,keySpace:String ,table:String ,fileds:Array[String],cassandraConnector: CassandraConnector):RDD[CassandraRow] ={
