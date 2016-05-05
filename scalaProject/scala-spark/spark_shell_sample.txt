@@ -17,7 +17,7 @@ val cc = new org.apache.spark.sql.cassandra.CassandraSQLContext(sc);
 //cassandra sql select return DataFrame
 val df = cc.sql("select user_id , action_day_key , obtain_time from mlapp.ml_obtain_credit_log where action_day_key in(%s)".format(CassandraUtil.formatActionDayKeyParam(20150919)))
 // for merge  table registerTempTable ==> cc.sql("select user_id from ml_obtain_credit_log");
-df.registerTempTable("ml_obtain_credit_log")
+df.registerTempTable("ML_OBTAIN_CREDIT_LOG")
 
 //jdbc sample
 // define structure

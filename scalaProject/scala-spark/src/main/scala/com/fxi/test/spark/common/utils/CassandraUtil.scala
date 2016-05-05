@@ -89,6 +89,14 @@ object CassandraUtil {
     scf.sc.union(rddArray)
   }
 
+  def queryCassandra(days:Array[Long]  , scf:SparkContextFunctions ,keySpace:String ,table:String ,fileds:Array[String]):RDD[CassandraRow] ={
+    val rddArray = ArrayBuffer[RDD[CassandraRow]]()
+    for(day <- days ){
+      rddArray += queryCassandra(day,scf,keySpace,table,fileds)
+    }
+    scf.sc.union(rddArray)
+  }
+
   def queryCassandraWithConnect(day:Long  , scf:SparkContextFunctions ,keySpace:String ,table:String ,fileds:Array[String],cassandraConnector: CassandraConnector):RDD[CassandraRow] ={
     val rddList =  new util.ArrayList[CassandraRDD[CassandraRow]]()
     val filedsCol = new  Array[ColumnName](fileds.length)
