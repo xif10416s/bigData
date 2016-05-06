@@ -79,4 +79,11 @@ class RDDTest {
     })
     println(d.collect())
   }
+
+  @Test
+  def testZip(): Unit = {
+    val a  = sc.makeRDD(Array("a","b","c"))
+    val b  = sc.makeRDD(Array("1","2","3"))
+    a.zip(b).foreach(println _)
+  }
 }
