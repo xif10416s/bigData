@@ -31,7 +31,7 @@ object DecisionTreeRunner {
   import ImpurityType._
 
   case class Params(
-                     input: String = null,
+                     input: String = "./spark/data/mllib/sample_binary_classification_data.txt",
                      testInput: String = "",
                      dataFormat: String = "libsvm",
                      algo: Algo = Classification,
@@ -40,7 +40,7 @@ object DecisionTreeRunner {
                      maxBins: Int = 32,
                      minInstancesPerNode: Int = 1,
                      minInfoGain: Double = 0.0,
-                     numTrees: Int = 1,
+                     numTrees: Int = 3,
                      featureSubsetStrategy: String = "auto",
                      fracTest: Double = 0.2,
                      useNodeIdCache: Boolean = false,
@@ -107,9 +107,8 @@ object DecisionTreeRunner {
       opt[String]("dataFormat")
         .text("data format: libsvm (default), dense (deprecated in Spark v1.1)")
         .action((x, c) => c.copy(dataFormat = x))
-      arg[String]("<input>")
+      opt[String]("<input>")
         .text("input path to labeled examples")
-        .required()
         .action((x, c) => c.copy(input = x))
       checkConfig { params =>
         if (params.fracTest < 0 || params.fracTest > 1) {
@@ -236,7 +235,7 @@ object DecisionTreeRunner {
 
   def run(params: Params) {
 
-    val conf = new SparkConf().setAppName(s"DecisionTreeRunner with $params")
+    val conf = new SparkConf().setAppName(s"DecisionTreeRunner with $params").setMaster("local[*]")
     val sc = new SparkContext(conf)
 
     println(s"DecisionTreeRunner with parameters:\n$params")
