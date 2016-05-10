@@ -3,6 +3,7 @@ package com.fxi.test.spark.mllib.regression
 import com.fxi.test.spark.mllib.AbstractParams
 import com.fxi.test.spark.mllib.classification.BinaryClassification.RegType
 import org.apache.log4j.{Level, Logger}
+import org.apache.spark.mllib.evaluation.RegressionMetrics
 import org.apache.spark.mllib.optimization.{L1Updater, SquaredL2Updater}
 import org.apache.spark.mllib.regression.LinearRegressionWithSGD
 import org.apache.spark.mllib.util.MLUtils
@@ -69,6 +70,23 @@ object LinearRegression {
     val rmse = math.sqrt(loss / numTest)
 
     println(s"Test RMSE = $rmse.")
+
+    //---------
+    // Instantiate metrics object
+    val metrics = new RegressionMetrics(predictionAndLabel)
+
+    // Squared error
+    println(s"MSE = ${metrics.meanSquaredError}")
+    println(s"RMSE = ${metrics.rootMeanSquaredError}")
+
+    // R-squared
+    println(s"R-squared = ${metrics.r2}")
+
+    // Mean absolute error
+    println(s"MAE = ${metrics.meanAbsoluteError}")
+
+    // Explained variance
+    println(s"Explained variance = ${metrics.explainedVariance}")
 
     sc.stop()
   }
