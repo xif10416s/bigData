@@ -18,11 +18,12 @@
 // scalastyle:off println
 package com.fxi.test.spark.mllib.featureextraction
 
+import com.fxi.test.spark.mllib.KeyedPoint
 import org.apache.spark.{SparkConf, SparkContext}
+
 // $example on$
-import org.apache.spark.mllib.feature.{StandardScaler, StandardScalerModel}
-import org.apache.spark.mllib.linalg.Vectors
-import org.apache.spark.mllib.util.MLUtils
+import org.apache.spark.mllib.feature.{Normalizer, StandardScaler, StandardScalerModel}
+
 // $example off$
 
 object StandardScalerExample {
@@ -33,29 +34,63 @@ object StandardScalerExample {
     val sc = new SparkContext(conf)
 
     // $example on$
-    val data = MLUtils.loadLibSVMFile(sc, "./spark/data/mllib/sample_libsvm_data.txt")
+    //    val data = MLUtils.loadLibSVMFile(sc, "./spark/data/mllib/sample_libsvm_data.txt")
+
+    //    val scaler1 = new StandardScaler().fit(data.map(x => x.features))
+    //    val scaler2 = new StandardScaler(withMean = true, withStd = true).fit(data.map(x => x.features))
+    //    // scaler3 is an identical model to scaler2, and will produce identical transformations
+    //    val scaler3 = new StandardScalerModel(scaler2.std, scaler2.mean)
+    //    // data1 will be unit variance.
+    //    val data1 = data.map(x => (x.label, scaler1.transform(x.features)))
+    //
+    //    // Without converting the features into dense vectors, transformation with zero mean will raise
+    //    // exception on sparse vector.
+    //    // data2 will be unit variance and zero mean.
+    //    val data2 = data.map(x => (x.label, scaler2.transform(Vectors.dense(x.features.toArray))))
+
+    // $example off$
+
+    val path = "./scalaProject/scala-spark/data/test/userInfo"
+    val data = sc.textFile(path).map(KeyedPoint.parse).cache()
 
     val scaler1 = new StandardScaler().fit(data.map(x => x.features))
     val scaler2 = new StandardScaler(withMean = true, withStd = true).fit(data.map(x => x.features))
     // scaler3 is an identical model to scaler2, and will produce identical transformations
     val scaler3 = new StandardScalerModel(scaler2.std, scaler2.mean)
-
     // data1 will be unit variance.
-    val data1 = data.map(x => (x.label, scaler1.transform(x.features)))
+    val data1 = data.map(x => (x.label,scaler1.transform(x.features)))
 
     // Without converting the features into dense vectors, transformation with zero mean will raise
     // exception on sparse vector.
     // data2 will be unit variance and zero mean.
-    val data2 = data.map(x => (x.label, scaler2.transform(Vectors.dense(x.features.toArray))))
-    // $example off$
+    val data2 = data.map(x => (x.label,scaler2.transform(x.features)))
+
 
     println("data1: ")
-    data1.foreach(x => println(x))
+    data1.sortByKey().collect().foreach(x => println(x))
 
     println("data2: ")
-    data2.foreach(x => println(x))
+    data2.sortByKey().collect().foreach(x => println(x))
+
+    //
+    val normalizer1 = new Normalizer()
+    val normalizer2 = new Normalizer(p = Double.PositiveInfinity)
+
+    // Each sample in data1 will be normalized using $L^2$ norm.
+    val data11 = data1.map(x => (x._1, normalizer1.transform(x._2)))
+
+    // Each sample in data2 will be normalized using $L^\infty$ norm.
+    val data22 = data1.map(x => (x._1, normalizer2.transform(x._2)))
+    // $example off$
+
+//    println("data1: normal ")
+//    data11.sortByKey().collect().foreach(x => println(x))
+//
+//    println("data2: normal ")
+//    data22.sortByKey().collect().foreach(x => println(x))
 
     sc.stop()
   }
 }
+
 // scalastyle:on println

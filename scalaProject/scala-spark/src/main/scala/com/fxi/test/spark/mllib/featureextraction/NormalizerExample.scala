@@ -18,6 +18,7 @@
 // scalastyle:off println
 package com.fxi.test.spark.mllib.featureextraction
 
+import com.fxi.test.spark.mllib.KeyedPoint
 import org.apache.spark.{SparkConf, SparkContext}
 // $example on$
 import org.apache.spark.mllib.feature.Normalizer
@@ -31,24 +32,45 @@ object NormalizerExample {
     val conf = new SparkConf().setAppName("NormalizerExample").setMaster("local[*]")
     val sc = new SparkContext(conf)
 
-    // $example on$
-    val data = MLUtils.loadLibSVMFile(sc, "./spark/data/mllib/sample_libsvm_data.txt")
+//    // $example on$
+//    val data = MLUtils.loadLibSVMFile(sc, "./spark/data/mllib/sample_libsvm_data.txt")
+//
+//    val normalizer1 = new Normalizer()
+//    val normalizer2 = new Normalizer(p = Double.PositiveInfinity)
+//
+//    // Each sample in data1 will be normalized using $L^2$ norm.
+//    val data1 = data.map(x => (x.label, normalizer1.transform(x.features)))
+//
+//    // Each sample in data2 will be normalized using $L^\infty$ norm.
+//    val data2 = data.map(x => (x.label, normalizer2.transform(x.features)))
+//    // $example off$
+//
+//    println("data1: ")
+//    data1.foreach(x => println(x))
+//
+//    println("data2: ")
+//    data2.foreach(x => println(x))
+
+
+
+    val path = "./scalaProject/scala-spark/data/test/userInfo"
+    val data = sc.textFile(path).map(KeyedPoint.parse).cache()
 
     val normalizer1 = new Normalizer()
     val normalizer2 = new Normalizer(p = Double.PositiveInfinity)
 
     // Each sample in data1 will be normalized using $L^2$ norm.
-    val data1 = data.map(x => (x.label, normalizer1.transform(x.features)))
+    val data11 = data.map(x => (x.label, normalizer1.transform(x.features)))
 
     // Each sample in data2 will be normalized using $L^\infty$ norm.
-    val data2 = data.map(x => (x.label, normalizer2.transform(x.features)))
+    val data22 = data.map(x => (x.label, normalizer2.transform(x.features)))
     // $example off$
 
-    println("data1: ")
-    data1.foreach(x => println(x))
+    println("data1: normal ")
+    data11.sortByKey().collect().foreach(x => println(x))
 
-    println("data2: ")
-    data2.foreach(x => println(x))
+    println("data2: normal ")
+    data22.sortByKey().collect().foreach(x => println(x))
 
     sc.stop()
   }

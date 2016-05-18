@@ -2,7 +2,7 @@ package com.fxi.test.spark.sql
 
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkContext, SparkConf}
-
+import org.apache.spark.sql.functions._
 /**
   * Created by xifei on 16-5-5.
   */
@@ -20,7 +20,7 @@ object DataFrameTest {
 
     df.filter("age > 20").show()
 
-    println(df.groupBy("age").count())
+    println(df.groupBy("age").count().orderBy(desc("count")).show())
 
     sqlContext.sql("SELECT * FROM json.`./spark/main/resources/people.json`").show()
   }
