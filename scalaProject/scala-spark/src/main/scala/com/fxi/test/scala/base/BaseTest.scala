@@ -174,4 +174,19 @@ class BaseTest {
     println(b)
   }
 
+  @Test
+  def testBitOperation() = {
+    val x = 3L;
+    println(x.toBinaryString)
+    println(x << 1  )
+
+    println(0xFFFF.toInt.toBinaryString)
+  }
+
+  @Test
+  def testSplit() = {
+    val x = "aa"
+    print(x.split("#").length)
+  }
+
 }
