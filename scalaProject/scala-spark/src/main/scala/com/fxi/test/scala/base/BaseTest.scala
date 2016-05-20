@@ -96,7 +96,7 @@ class BaseTest {
     //===>定义了一个函数first 函数体又是一个函数
     def first(x: Int) = (y: Int) => x + y
     println(first(1)(3)) //相当于调用两次函数,第一次first(1) 返回一个函数 在调用 (3)
-    //单个括号的时候可以用 花括号
+  //单个括号的时候可以用 花括号
     println(first {
       1
     } {
@@ -133,7 +133,7 @@ class BaseTest {
     def myAssert(predicate: () => Boolean) =
       if (assertionsEnabled && !predicate())
         throw new AssertionError
-    //    myAssert(()=>3>5)
+//    myAssert(()=>3>5)
 
     //==> “() => Boolean”   --> “=> Boolean”
 
@@ -148,15 +148,15 @@ class BaseTest {
       if (assertionsEnabled && !predicate)
         throw new AssertionError
 
-    byNameAssert(10 / 0 == 0)
-    boolAssert(10 / 10 == 0)
+    byNameAssert(10/0 ==0)
+    boolAssert(10/10 == 0)
     println("")
   }
 
   @Test
   def testImplicitParam() = {
     implicit val s = "aaa";
-    def f(a: Int)(implicit s: String): Unit = {
+    def f(a:Int)(implicit s:String): Unit = {
       println(s)
       println(a)
     }
@@ -166,11 +166,11 @@ class BaseTest {
 
   @Test
   def testFolds() = {
-    val list = List(5, 4, 8, 6, 2)
-    val a = (1 /: list) { (z, i) => println(z + i); z + i }
+    val list  = List(5,4,8,6,2)
+    val a = (1 /:list){ (z,i) => println(z + i) ; z+i }
     println(a)
 
-    val b = (list :\ 1) { (z, i) => println(z + i); z + i }
+    val b = (list :\ 1){ (z,i) => println(z + i) ; z+i }
     println(b)
   }
 
@@ -178,7 +178,7 @@ class BaseTest {
   def testBitOperation() = {
     val x = 3L;
     println(x.toBinaryString)
-    println(x << 1)
+    println(x << 1  )
 
     println(Long.MaxValue.toBinaryString)
     println((~(Long.MaxValue << 7)).toBinaryString)
