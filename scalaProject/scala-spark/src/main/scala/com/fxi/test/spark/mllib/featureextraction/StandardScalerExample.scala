@@ -67,10 +67,10 @@ object StandardScalerExample {
 
 
     println("data1: ")
-    data1.sortByKey().collect().foreach(x => println(x))
+    data1.sortByKey().collect().foreach(x => println(x._1 +" , " + x._2.toArray.map(f => "%.3f".format(f)).mkString("\t")))
 
     println("data2: ")
-    data2.sortByKey().collect().foreach(x => println(x))
+    data2.sortByKey().collect().foreach(x => println(x._1 +" , " + x._2.toArray.map(f => "%.3f".format(f)).mkString("\t")))
 
     //
     val normalizer1 = new Normalizer()
@@ -82,12 +82,12 @@ object StandardScalerExample {
     // Each sample in data2 will be normalized using $L^\infty$ norm.
     val data22 = data1.map(x => (x._1, normalizer2.transform(x._2)))
     // $example off$
-
+//
 //    println("data1: normal ")
-//    data11.sortByKey().collect().foreach(x => println(x))
+//    data11.sortByKey().collect().foreach(x => println(x._1 +" , " + x._2.toArray.map(f => "%.3f".format(f)).mkString("\t")))
 //
 //    println("data2: normal ")
-//    data22.sortByKey().collect().foreach(x => println(x))
+//    data22.sortByKey().collect().foreach(x => println(x._1 +" , " + x._2.toArray.map(f => "%.3f".format(f)).mkString("\t")))
 
     sc.stop()
   }

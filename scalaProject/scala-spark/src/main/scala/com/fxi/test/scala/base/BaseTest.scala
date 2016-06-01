@@ -235,4 +235,43 @@ class BaseTest {
     println(doConvertion(doConvertion(y)))
   }
 
+  @Test
+  def testParseCount() = {
+    val a = Integer.parseInt("1111000000000000000000000000000", 2)
+
+    def timeReduceFunction(alpha: Double , days:Int): Double ={
+      return (1 + alpha * days*days)
+    }
+    def parseActivityDays(days: Long, alpha: Double): Double = {
+      val charArray = days.toBinaryString.toCharArray.reverse
+      var summaryCnt = 0.0;
+      for(i <- 0 until charArray.length){
+          println(s"$i  ${charArray(i)}")
+          if(charArray(i) == ("1".charAt(0))){
+            summaryCnt+=1.toDouble/timeReduceFunction(alpha,i)
+            println(1.toDouble/timeReduceFunction(alpha,i))
+          }
+      }
+      summaryCnt
+    }
+
+    def parseArrayCnt(array: String, alpha: Double): Double = {
+      val items = array.split("#")
+      var summaryCnt = 0.0;
+      for(i <- 0 until items.length){
+        summaryCnt+=items(i).toDouble/timeReduceFunction(alpha,i)
+      }
+      summaryCnt
+    }
+
+    println( parseActivityDays(a,0.03))
+
+  }
+
+  @Test
+  def testVectorOperation() = {
+
+
+  }
+
 }
