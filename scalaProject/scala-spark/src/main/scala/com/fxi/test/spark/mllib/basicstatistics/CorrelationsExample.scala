@@ -2,6 +2,7 @@ package com.fxi.test.spark.mllib.basicstatistics
 
 import org.apache.spark.mllib.linalg._
 import org.apache.spark.mllib.stat.Statistics
+import org.apache.spark.mllib.util.MLUtils
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkContext, SparkConf}
 
@@ -10,7 +11,7 @@ import org.apache.spark.{SparkContext, SparkConf}
   */
 object CorrelationsExample {
   def main(args: Array[String]): Unit = {
-    val conf = new SparkConf().setAppName("CorrelationsExample")
+    val conf = new SparkConf().setAppName("CorrelationsExample").setMaster("local[*]")
     val sc = new SparkContext(conf)
 
     // $example on$
@@ -32,8 +33,12 @@ object CorrelationsExample {
 
     // calculate the correlation matrix using Pearson's method. Use "spearman" for Spearman's method
     // If a method is not specified, Pearson's method will be used by default.
-    val correlMatrix: Matrix = Statistics.corr(data, "pearson")
-    println(correlMatrix.toString)
+    val datas = MLUtils.loadLibSVMFile(sc, "./scalaProject/scala-spark/data/test/svmSapmle").map[Vector](f=>{
+      f.features
+    })
+    val correlMatrix: Matrix = Statistics.corr(datas, "pearson")
+    println(correlMatrix.asInstanceOf[DenseMatrix].toString())
+    println(correlMatrix.asInstanceOf[DenseMatrix].toSparse.toString())
     // $example off$
 
     sc.stop()

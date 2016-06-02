@@ -67,12 +67,36 @@ object FileUtils {
 
     if(!file.exists()){
       file.createNewFile()
+    }else {
+      file.delete()
     }
 
     var out:BufferedWriter = null;
     try{
       out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file,true)))
       out.write(context.toString())
+    } finally {
+      if(out !=null){
+        out.close();
+      }
+    }
+  }
+
+  def saveToFile(path: String, context: Array[Any]): Unit = {
+    val file = new File(path);
+    val parent = file.getParentFile;
+    if(parent != null && !parent.exists()){
+      parent.mkdirs()
+    }
+
+    if(!file.exists()){
+      file.createNewFile()
+    }
+
+    var out:BufferedWriter = null;
+    try{
+      out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file,true)))
+      out.write(context.mkString("\n"))
     } finally {
       if(out !=null){
         out.close();

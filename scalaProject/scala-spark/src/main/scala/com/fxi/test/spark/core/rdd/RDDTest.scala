@@ -86,4 +86,13 @@ class RDDTest {
     val b  = sc.makeRDD(Array("1","2","3"))
     a.zip(b).foreach(println _)
   }
+
+  @Test
+  def testCountByKey(): Unit = {
+    val a  = sc.makeRDD(Array(("a",1),("b",1),("a",1),("a",1),("c",1),("d",1),("d",1),("d",1)))
+    a.countByKey().toList.sortBy( f => f._2).reverse.take(3).foreach(println _)
+    a.groupByKey().map[(String,Long)]( f=>{
+      (f._1 ,f._2.size)
+    }).sortBy( f=>f._2,false).zipWithIndex().filter( f => f._2 <= 2).map[(String,(Long,Long))](f => (f._1._1,(f._1._2,f._2))).collect().foreach(println _)
+  }
 }
