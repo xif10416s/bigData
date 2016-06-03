@@ -29,14 +29,20 @@ object CorrelationsForItemExample {
     itemIndexRdd.collect().foreach(println _)
 
 
-    val svmFormat = examples.join(itemIndexRdd).map[(String, Long)](f => {
-      (f._2._1, f._2._2+1)
-    }).groupByKey.map[String] {
-      f => {
-        val items = f._2.toList.sortBy(f =>f).mkString(":1 ")+":1"
-        s"1 $items"
-      }
-    }
+    val svmFormat = examples.join(itemIndexRdd).map[(String, String)](f => {
+      (f._2._1, (f._2._2+1).toString)
+    }).reduceByKey((f1,f2)=>{f1+" "+f2}).map(f =>{
+      "1" + f._2.split(" ").map[Int,String]( f=> f.toInt).sorted.mkString(":1 ")+":1"
+    })
+
+//      .groupByKey.map[String] {
+//      f => {
+//        val items = f._2.toList.sortBy(f =>f).mkString(":1 ")+":1"
+//        s"1 $items"
+//      }
+//    }
+    examples.cogroup(itemIndexRdd)
+
     svmFormat.collect().foreach(println _)
     FileUtils.saveToFile("./scalaProject/scala-spark/data/test/rs/svmRs",svmFormat.collect())
     // calculate the correlation matrix using Pearson's method. Use "spearman" for Spearman's method

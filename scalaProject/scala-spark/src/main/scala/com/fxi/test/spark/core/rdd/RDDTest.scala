@@ -91,8 +91,21 @@ class RDDTest {
   def testCountByKey(): Unit = {
     val a  = sc.makeRDD(Array(("a",1),("b",1),("a",1),("a",1),("c",1),("d",1),("d",1),("d",1)))
     a.countByKey().toList.sortBy( f => f._2).reverse.take(3).foreach(println _)
-    a.groupByKey().map[(String,Long)]( f=>{
-      (f._1 ,f._2.size)
+    a.map(f=>(f._1,1)).reduceByKey(_ + _) .map[(String,Long)]( f=>{
+      (f._1 ,f._2)
     }).sortBy( f=>f._2,false).zipWithIndex().filter( f => f._2 <= 2).map[(String,(Long,Long))](f => (f._1._1,(f._1._2,f._2))).collect().foreach(println _)
+  }
+
+  @Test
+  def testCogroup(): Unit = {
+    val a  = sc.makeRDD(Array(("a",1),("b",1),("a",1),("a",1),("c",1),("d",1),("d",1),("d",1)))
+    val b  = sc.makeRDD(Array(("a",1),("b",1),("a",1),("a",1),("c",1),("d",1),("d",1),("d",1),("e",1)))
+    a.cogroup(b).foreach(println _)
+  }
+
+  @Test
+  def testGroup(): Unit = {
+    val a  = sc.makeRDD(Array(("a",1),("b",1),("a",2),("a",3),("c",1),("d",1),("d",2),("d",3)))
+    a.map(f=>(f._1,f._2.toString)).reduceByKey((f1,f2)=>{f1+":1 "+f2}).map(f =>(f._1,f._2 + ":1")).foreach(println _)
   }
 }
