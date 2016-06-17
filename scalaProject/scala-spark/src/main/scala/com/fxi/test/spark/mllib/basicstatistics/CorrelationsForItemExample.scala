@@ -32,7 +32,8 @@ object CorrelationsForItemExample {
     val svmFormat = examples.join(itemIndexRdd).map[(String, String)](f => {
       (f._2._1, (f._2._2+1).toString)
     }).reduceByKey((f1,f2)=>{f1+" "+f2}).map(f =>{
-      "1" + f._2.split(" ").map[Int,String]( f=> f.toInt).sorted.mkString(":1 ")+":1"
+      val a = f._2.split(" ").map( f=> f.toInt)
+      "1 " + a.sorted.mkString(":1 ")+":1"
     })
 
 //      .groupByKey.map[String] {

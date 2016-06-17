@@ -1,5 +1,7 @@
 package com.fxi.test.scala.base
 
+import java.util.UUID
+
 import org.junit.Test
 
 /**
@@ -274,4 +276,24 @@ class BaseTest {
 
   }
 
+  @Test
+  def testCollectionOperation() = {
+//    val a ="2 5 1 8 3".split(" ").map(f => f.toInt  ).sorted
+//    a.foreach(println _)
+//   println(("2 5 1 8 3".split(" ").toList.contains("21")))
+    val m = Array(("a",1),("b",2),("c",3),("d",4),("e",5))
+    println(m.toMap.keySet.contains("c1"))
+  }
+
+  @Test
+  def testUUID() = {
+    println(UUID.randomUUID().toString)
+  }
+
+  @Test
+  def testReplace() = {
+    val a ="11#22#44#0"
+    println(a.substring(0,a.lastIndexOf("#0")+1)+"1")
+    println(String.valueOf(null))
+  }
 }

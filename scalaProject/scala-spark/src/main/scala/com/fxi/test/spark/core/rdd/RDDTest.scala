@@ -106,6 +106,6 @@ class RDDTest {
   @Test
   def testGroup(): Unit = {
     val a  = sc.makeRDD(Array(("a",1),("b",1),("a",2),("a",3),("c",1),("d",1),("d",2),("d",3)))
-    a.map(f=>(f._1,f._2.toString)).reduceByKey((f1,f2)=>{f1+":1 "+f2}).map(f =>(f._1,f._2 + ":1")).foreach(println _)
+    a.map(f=>(f._1,f._2.toString)).reduceByKey((f1,f2)=>{ println(f1+"--"+f2) ;f1+":1 "+f2 }).map(f =>(f._1,f._2 + ":1")).foreach(println _)
   }
 }
