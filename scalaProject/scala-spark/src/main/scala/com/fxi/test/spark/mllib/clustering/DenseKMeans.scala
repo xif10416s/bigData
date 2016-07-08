@@ -43,7 +43,7 @@ object DenseKMeans {
 
   case class Params(
       input: String = "./spark/data/mllib/kmeans_data.txt",
-      k: Int = 3,
+      k: Int = 15,
       numIterations: Int = 10,
       initializationMode: InitializationMode = Parallel) extends AbstractParams[Params]
 
@@ -101,6 +101,7 @@ object DenseKMeans {
 
     val cost = model.computeCost(examples)
 
+    model.clusterCenters.foreach(println _)
     println(s"Total cost = $cost.")
 
     sc.stop()
