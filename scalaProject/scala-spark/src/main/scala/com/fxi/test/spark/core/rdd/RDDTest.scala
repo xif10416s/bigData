@@ -100,7 +100,13 @@ class RDDTest {
   def testCogroup(): Unit = {
     val a  = sc.makeRDD(Array(("a",1),("b",1),("a",1),("a",1),("c",1),("d",1),("d",1),("d",1)))
     val b  = sc.makeRDD(Array(("a",1),("b",1),("a",1),("a",1),("c",1),("d",1),("d",1),("d",1),("e",1)))
+    val c  = sc.makeRDD(Array(("a",1),("b",1),("a",1),("a",1),("c",2),("d",1),("d",1),("d",1),("e",1)))
     a.cogroup(b).foreach(println _)
+    val arr = Array(a,b,c)
+    val a1 = arr(0)
+    for( i <- 1 until arr.size){
+      a1.leftOuterJoin(arr(i))
+    }
   }
 
   @Test
@@ -108,4 +114,15 @@ class RDDTest {
     val a  = sc.makeRDD(Array(("a",1),("b",1),("a",2),("a",3),("c",1),("d",1),("d",2),("d",3)))
     a.map(f=>(f._1,f._2.toString)).reduceByKey((f1,f2)=>{ println(f1+"--"+f2) ;f1+":1 "+f2 }).map(f =>(f._1,f._2 + ":1")).foreach(println _)
   }
+
+  @Test
+  def testRddElement(): Unit = {
+    val a = Array(A("1",B("b")),A("1",B("b")),A("1",B("b")))
+    sc.makeRDD(a.toSeq).map( f=>{
+      f.b.getB()
+      f.getTag
+    }).collect().foreach(f => f.foreach(println _))
+  }
+
+
 }

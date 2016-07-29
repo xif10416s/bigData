@@ -1,7 +1,8 @@
 package com.fxi.test.scala.base
 
-import java.util.UUID
+import java.util.{Calendar, UUID}
 
+import org.apache.commons.lang3.time.StopWatch
 import org.junit.Test
 
 /**
@@ -98,7 +99,7 @@ class BaseTest {
     //===>定义了一个函数first 函数体又是一个函数
     def first(x: Int) = (y: Int) => x + y
     println(first(1)(3)) //相当于调用两次函数,第一次first(1) 返回一个函数 在调用 (3)
-  //单个括号的时候可以用 花括号
+    //单个括号的时候可以用 花括号
     println(first {
       1
     } {
@@ -135,7 +136,7 @@ class BaseTest {
     def myAssert(predicate: () => Boolean) =
       if (assertionsEnabled && !predicate())
         throw new AssertionError
-//    myAssert(()=>3>5)
+    //    myAssert(()=>3>5)
 
     //==> “() => Boolean”   --> “=> Boolean”
 
@@ -150,15 +151,15 @@ class BaseTest {
       if (assertionsEnabled && !predicate)
         throw new AssertionError
 
-    byNameAssert(10/0 ==0)
-    boolAssert(10/10 == 0)
+    byNameAssert(10 / 0 == 0)
+    boolAssert(10 / 10 == 0)
     println("")
   }
 
   @Test
   def testImplicitParam() = {
     implicit val s = "aaa";
-    def f(a:Int)(implicit s:String): Unit = {
+    def f(a: Int)(implicit s: String): Unit = {
       println(s)
       println(a)
     }
@@ -168,11 +169,11 @@ class BaseTest {
 
   @Test
   def testFolds() = {
-    val list  = List(5,4,8,6,2)
-    val a = (1 /:list){ (z,i) => println(z + i) ; z+i }
+    val list = List(5, 4, 8, 6, 2)
+    val a = (1 /: list) { (z, i) => println(z + i); z + i }
     println(a)
 
-    val b = (list :\ 1){ (z,i) => println(z + i) ; z+i }
+    val b = (list :\ 1) { (z, i) => println(z + i); z + i }
     println(b)
   }
 
@@ -180,12 +181,12 @@ class BaseTest {
   def testBitOperation() = {
     val x = 3L;
     println(x.toBinaryString)
-    println(x << 1  )
+    println(x << 1)
 
     println(Long.MaxValue.toBinaryString)
     println((~(Long.MaxValue << 7)).toBinaryString)
 
-    val a = Integer.parseInt("10010100011", 2)
+    val a = Integer.parseInt("100101000110", 2)
     val b = a.toBinaryString.toCharArray
     val c = b.slice(b.length - 6, b.length)
     c.foreach(print _)
@@ -201,14 +202,14 @@ class BaseTest {
         p == ("1".charAt(0))
       })
     }
-    println(parseActivityDays(a, 60))
+    println(parseActivityDays(Long.MaxValue, 65))
 
     def parseArrayCnt(array: String, between: Int): Int = {
       val items = array.split("#").map(f => f.toInt)
       val length = Math.min(between, items.length)
       items.slice(items.length - length, items.length).sum
     }
-    println( parseArrayCnt("1#2#3#4#5",2))
+    //    println(parseArrayCnt("1#2#3#4#5", 2))
   }
 
   @Test
@@ -241,18 +242,18 @@ class BaseTest {
   def testParseCount() = {
     val a = Integer.parseInt("1111000000000000000000000000000", 2)
 
-    def timeReduceFunction(alpha: Double , days:Int): Double ={
-      return (1 + alpha * days*days)
+    def timeReduceFunction(alpha: Double, days: Int): Double = {
+      return (1 + alpha * days * days)
     }
     def parseActivityDays(days: Long, alpha: Double): Double = {
       val charArray = days.toBinaryString.toCharArray.reverse
       var summaryCnt = 0.0;
-      for(i <- 0 until charArray.length){
-          println(s"$i  ${charArray(i)}")
-          if(charArray(i) == ("1".charAt(0))){
-            summaryCnt+=1.toDouble/timeReduceFunction(alpha,i)
-            println(1.toDouble/timeReduceFunction(alpha,i))
-          }
+      for (i <- 0 until charArray.length) {
+        println(s"$i  ${charArray(i)}")
+        if (charArray(i) == ("1".charAt(0))) {
+          summaryCnt += 1.toDouble / timeReduceFunction(alpha, i)
+          println(1.toDouble / timeReduceFunction(alpha, i))
+        }
       }
       summaryCnt
     }
@@ -260,13 +261,13 @@ class BaseTest {
     def parseArrayCnt(array: String, alpha: Double): Double = {
       val items = array.split("#")
       var summaryCnt = 0.0;
-      for(i <- 0 until items.length){
-        summaryCnt+=items(i).toDouble/timeReduceFunction(alpha,i)
+      for (i <- 0 until items.length) {
+        summaryCnt += items(i).toDouble / timeReduceFunction(alpha, i)
       }
       summaryCnt
     }
 
-    println( parseActivityDays(a,0.03))
+    println(parseActivityDays(a, 0.03))
 
   }
 
@@ -278,10 +279,10 @@ class BaseTest {
 
   @Test
   def testCollectionOperation() = {
-//    val a ="2 5 1 8 3".split(" ").map(f => f.toInt  ).sorted
-//    a.foreach(println _)
-//   println(("2 5 1 8 3".split(" ").toList.contains("21")))
-    val m = Array(("a",1),("b",2),("c",3),("d",4),("e",5))
+    //    val a ="2 5 1 8 3".split(" ").map(f => f.toInt  ).sorted
+    //    a.foreach(println _)
+    //   println(("2 5 1 8 3".split(" ").toList.contains("21")))
+    val m = Array(("a", 1), ("b", 2), ("c", 3), ("d", 4), ("e", 5))
     println(m.toMap.keySet.contains("c1"))
   }
 
@@ -292,8 +293,109 @@ class BaseTest {
 
   @Test
   def testReplace() = {
-    val a ="11#22#44#0"
-    println(a.substring(0,a.lastIndexOf("#0")+1)+"1")
-    println(String.valueOf(null))
+    val a = "11#22#44#0"
+    println(a.substring(0, a.lastIndexOf("#0") + 1) + "1")
+    //    println(String.valueOf(null))
+
+    def sumArryCnt = (arrStr: String, sliceNum: Int) => {
+      val arr = arrStr.split("#")
+      println(arr.slice(0, arr.size))
+      val startNum = if (sliceNum <= arr.size) arr.size - sliceNum else 0
+      arr.slice(startNum, arr.size).map(_.toInt).sum
+    }
+    println(sumArryCnt("11#22#44#1", 1))
+    println("------------")
+    val b = "22#1#1".split("#")
+    val c = "11#22#44#0".split("#")
+    val d = c.slice(c.size - b.size, c.size)
+
+    d.foreach(println _)
+    println(d.map(_.toDouble).sum / b.map(_.toDouble).sum)
+  }
+
+  @Test
+  def testToLong() = {
+    val a = try {
+      "a".toLong
+    } catch {
+      case e: Exception => "-100"
+    }
+    println(a)
+  }
+
+  @Test
+  def testTimeBet() = {
+    def getBetweenDays(from: Calendar, to: Calendar): Int = {
+      ((to.getTimeInMillis - from.getTimeInMillis) / (1000 * 60 * 60 * 24)).toInt
+    }
+
+    println(getBetweenDays(Calendar.getInstance(), Calendar.getInstance()))
+  }
+
+  /**
+    * apply ==>绑定元祖参数 到 class   <== injection
+    * unapply ==> 从class中抽取 参数, case 时候调用 <== extraction
+    */
+  @Test
+  def testApplyAndUnApply() = {
+    object Twice {
+      def apply(x: Int): Int = x * 2
+
+      def unapply(z: Int): Option[Int] = if (z % 2 == 0) Some(z / 2) else None
+    }
+    val x = Twice(21) //apply
+    x match {
+      case Twice(n) => Console.println(n)
+    } // prints
+
+
+    case class User(firstName: String, lastName: String, score: Int)
+    def advance(xs: List[User]) = xs match {
+      case _ :: User(_, _, score1) :: User(_, _, score2) :: _ => score1 - score2
+      case _ => 0
+    }
+
+    println(advance(List[User](User("a","b",13),User("a","b",12),User("a","b",11))))
+
+  }
+
+  /**
+    * 限定必须是A的子类
+    * 装饰器
+    */
+  @Test
+  def testTraitSelf() = {
+    class A { def hi = "hi" }
+    trait B {
+      self:A =>
+      override def toString = "B" + hi
+    }
+
+    trait C {
+      self:A =>
+      override def toString = super.toString().reverse
+    }
+
+
+    println("---"+new A with B with C)
+  }
+
+  @Test
+  def testStopWatch() ={
+    val stopWatch: StopWatch = new StopWatch
+    stopWatch.start()
+    Thread.sleep(3000)
+    stopWatch.split()
+    println("1 :" + stopWatch.getSplitTime)
+    Thread.sleep(3000)
+    stopWatch.split()
+    println("2 :" + stopWatch.getSplitTime)
+    Thread.sleep(3000)
+    stopWatch.split()
+    println("3 :" + stopWatch.getSplitTime)
+    stopWatch.stop()
+    println("4 :" + stopWatch.getTime)
   }
 }
+
+
