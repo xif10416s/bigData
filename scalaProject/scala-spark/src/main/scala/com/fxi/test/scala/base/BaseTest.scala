@@ -396,6 +396,12 @@ class BaseTest {
     stopWatch.stop()
     println("4 :" + stopWatch.getTime)
   }
+
+  @Test
+  def testForEach() ={
+    val a = for(i <- 0 to 5 ; j<- 0 to 10) yield (i,j)
+    a.foreach(println _)
+  }
 }
 
 
