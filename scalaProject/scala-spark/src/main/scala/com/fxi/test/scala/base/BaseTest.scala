@@ -1,5 +1,6 @@
 package com.fxi.test.scala.base
 
+import java.util
 import java.util.{Calendar, UUID}
 
 import org.apache.commons.lang3.time.StopWatch
@@ -401,6 +402,17 @@ class BaseTest {
   def testForEach() ={
     val a = for(i <- 0 to 5 ; j<- 0 to 10) yield (i,j)
     a.foreach(println _)
+  }
+
+  @Test
+  def testFlatmap() ={
+    val l  = List(1,2,3,4,5,6)
+
+    println( l.map( _ * 2))
+
+    def g(v:Int) = List(v-1,v)
+    println( l.map( g(_)))
+    println( l.flatMap( g(_)))
   }
 }
 
