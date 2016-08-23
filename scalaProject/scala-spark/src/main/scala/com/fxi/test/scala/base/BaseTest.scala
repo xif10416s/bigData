@@ -361,15 +361,19 @@ class BaseTest {
   }
 
   /**
-    * 限定必须是A的子类
+    * 限定实现类必须是A的子类
     * 装饰器
     */
   @Test
   def testTraitSelf() = {
     class A { def hi = "hi" }
+    class M { def hi = "hi" }
     trait B {
       self:A =>
       override def toString = "B" + hi
+      trait B1 {
+
+      }
     }
 
     trait C {
@@ -377,6 +381,7 @@ class BaseTest {
       override def toString = super.toString().reverse
     }
 
+//    new M with B
 
     println("---"+new A with B with C)
   }
