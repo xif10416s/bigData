@@ -53,15 +53,15 @@ object QueueStreamWithStateful {
 
     val stateDstream = mappedStream.mapWithState(
       StateSpec.function(mappingFunc))
-
-    stateDstream.foreachRDD(rdd => {
-      println("************************************************")
-      rdd.foreachPartition(p => {
-        p.foreach(f => {
-          println(f._1 + " ==>" + f._2)
-        })
-      })
-    })
+    stateDstream.print()
+//    stateDstream.foreachRDD(rdd => {
+//      println("************************************************")
+//      rdd.foreachPartition(p => {
+//        p.foreach(f => {
+//          println(f._1 + " ==>" + f._2)
+//        })
+//      })
+//    })
 
     ssc.start()
 
