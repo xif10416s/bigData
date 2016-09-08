@@ -1,8 +1,8 @@
 package org.fxi.test.collection;
 
-import org.junit.Test;
-
 import java.util.ArrayList;
+
+import org.junit.Test;
 
 /**
  * Created by seki on 16/4/23.
@@ -24,9 +24,7 @@ public class BaseTest {
      */
     @Test
     public void testList(){
-        ArrayList<String> strings = new ArrayList<>();
-
-
+        ArrayList<String> strings = new ArrayList<String>();
     }
 
 }

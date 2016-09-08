@@ -12,3 +12,7 @@ case class Number(num: Double) extends Expr
 case class UnOp(operator: String, arg: Expr) extends Expr
 case class BinOp(operator: String,
                  left: Expr, right: Expr) extends Expr
+
+//case class Var2() extends Expr
+//
+//case class Var3() extends Var2
