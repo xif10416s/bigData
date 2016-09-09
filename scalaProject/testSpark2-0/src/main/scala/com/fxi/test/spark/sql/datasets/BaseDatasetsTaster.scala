@@ -19,11 +19,22 @@ class BaseDatasetsTaster {
     import spark.implicits._
 
     val df = spark.read.json("../../spark/main/resources/people.json")
-    df.show()
-    df.printSchema()
-    val ds = spark.read.json("../../spark/main/resources/people.json").as[Person]
-    ds.filter(ds("age")>19).show()
-    println(ds.schema)
+    df.createOrReplaceTempView("people")
+    val query = spark.sql("select * from  (select * from people  where name is not null limit 10) p1 join people p2 on p1.name = p2.name where p1.age > 19 limit 100 ")
+    query.collect()
+    println("+++++++++++++++++++logical plan ++++++++++++++++++")
+    println(query.queryExecution.logical)
+    println("+++++++++++++++++++analyzed plan ++++++++++++++++++")
+    println( query.queryExecution.analyzed)
+    println("+++++++++++++++++++optimizedPlan plan ++++++++++++++++++")
+    println( query.queryExecution.optimizedPlan)
+    println("+++++++++++++++++++executedPlan plan ++++++++++++++++++")
+    println( query.queryExecution.executedPlan)
+    //    df.show()
+//    df.printSchema()
+//    val ds = spark.read.json("../../spark/main/resources/people.json").as[Person]
+//    ds.filter($"age">19).show()
+//    println(ds.schema)
     spark.stop()
   }
 
