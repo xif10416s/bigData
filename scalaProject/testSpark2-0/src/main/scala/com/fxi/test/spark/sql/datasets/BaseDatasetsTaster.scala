@@ -20,7 +20,9 @@ class BaseDatasetsTaster {
 
     val df = spark.read.json("../../spark/main/resources/people.json")
     df.createOrReplaceTempView("people")
-    val query = spark.sql("select * from  (select * from people  where name is not null limit 10) p1 join people p2 on p1.name = p2.name where p1.age > 19 limit 100 ")
+//    val query = spark.sql("select * from  (select * from people  where name is not null limit 10) p1 join people p2 on p1.name = p2.name where p1.age > 19 limit 100 ")
+    val query = spark.sql("select * from people where age > 19 limit 100 ")
+
     query.collect()
     println("+++++++++++++++++++logical plan ++++++++++++++++++")
     println(query.queryExecution.logical)

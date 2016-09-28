@@ -15,13 +15,24 @@ class TestProduct(val a: String, val b: Int) extends Product {
 
   override def canEqual(that: Any): Boolean = true
 
+  def iter() ={
+    println(productIterator.size)
+    productIterator
+    productIterator.map( {
+      case i:String => i+"==>ss"
+      case k:Int => k+1
+    }).foreach(println _)
+  }
+
 }
 
 object TestProduct {
   def main(args: Array[String]) {
-    val p = new TestProduct("1", 1)
+    val p = new TestProduct("1", 2)
     println(p.productElement(0))
     println(p.productElement(1))
+
+    p.iter()
 
     val p2 = new TestProduct4("1",1,"2",3L)
     println(p2._1)

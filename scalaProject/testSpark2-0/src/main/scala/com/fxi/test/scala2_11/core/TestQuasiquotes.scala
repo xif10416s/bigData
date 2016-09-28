@@ -28,5 +28,14 @@ object TestQuasiquotes {
 
     showRaw(a)
     println(tb.eval(a))
+
+    val src = "case class A(a:String) \n " +
+      "val testa = A(\"a\") \n " +
+      "println(testa.a)"
+    val rs = tb.eval(q"$src")
+
+    println(rs)
   }
 }
+
+case class A(a:String)

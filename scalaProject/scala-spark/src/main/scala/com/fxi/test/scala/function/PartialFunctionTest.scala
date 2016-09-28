@@ -29,7 +29,7 @@ object PartialFunctionTest {
       }
     }
     publisher.subscribe({
-      case i => 1
+      case i => i+1
     })
 
 
