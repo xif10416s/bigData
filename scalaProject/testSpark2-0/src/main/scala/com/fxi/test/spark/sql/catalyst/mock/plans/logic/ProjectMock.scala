@@ -1,7 +1,7 @@
-package com.fxi.test.spark.sql.catalyst.mock
+package com.fxi.test.spark.sql.catalyst.mock.plans.logic
 
 import org.apache.spark.sql.Column
-import org.apache.spark.sql.catalyst.expressions.{ Attribute}
+import org.apache.spark.sql.catalyst.expressions.Attribute
 
 /**
   * Created by xifei on 16-10-14.

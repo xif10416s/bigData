@@ -1,5 +1,6 @@
 package com.fxi.test.spark.sql.catalyst.mock
 
+import com.fxi.test.spark.sql.catalyst.mock.plans.logic.{ProjectMock, LogicalPlanMock, FilterMock}
 import org.apache.spark.sql._
 import org.apache.spark.sql.catalyst.encoders._
 
@@ -47,7 +48,7 @@ class DataSetMock[T]( val sparkSession: SparkSessionMock,
     LogUtil.doLog("********执行查询操作filter($\"(age + 1)\" > 20)",this.getClass)
     withTypedPlan {
       LogUtil.doLog("********解析过滤条件，生成过滤计划Ｆｉｌｔｅｒ------------",this.getClass)
-      FilterMock(condition, logicalPlan)
+      FilterMock(null, logicalPlan)
     }
   }
 
@@ -56,5 +57,11 @@ class DataSetMock[T]( val sparkSession: SparkSessionMock,
   @inline private def withTypedPlan[U](logicalPlan: => LogicalPlanMock): DataSetMock[T] = {
     LogUtil.doLog("********将logicＦｉｌｔｅｒ　计划生成DataSet　（StructType）------------",this.getClass)
     new DataSetMock(sparkSession, logicalPlan, encoder)
+  }
+
+  def collect(): Array[T]= {
+    queryExecution.executedPlan.executeCollect()
+    LogUtil.doLog("*******将收集的Array[InternalRow]通过boundEnc转换成对象------------",this.getClass)
+    null
   }
 }

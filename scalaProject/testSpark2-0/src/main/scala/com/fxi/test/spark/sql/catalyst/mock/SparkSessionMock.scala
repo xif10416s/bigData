@@ -2,6 +2,7 @@ package com.fxi.test.spark.sql.catalyst.mock
 
 import javassist.bytecode.stackmap.TypeTag
 
+import com.fxi.test.spark.sql.catalyst.mock.plans.logic.LocalRelationMock
 import org.apache.spark.sql.{Encoder, SparkSession}
 import org.apache.spark.sql.catalyst.encoders._
 import org.apache.spark.sql.catalyst.expressions.AttributeReference

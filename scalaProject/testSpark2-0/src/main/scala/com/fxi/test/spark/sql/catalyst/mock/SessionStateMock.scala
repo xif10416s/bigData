@@ -1,5 +1,7 @@
 package com.fxi.test.spark.sql.catalyst.mock
 
+import com.fxi.test.spark.sql.catalyst.mock.plans.logic.LogicalPlanMock
+
 /**
   * Created by xifei on 16-10-14.
   */

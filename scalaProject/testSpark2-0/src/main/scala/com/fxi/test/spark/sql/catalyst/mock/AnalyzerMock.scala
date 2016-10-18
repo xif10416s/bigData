@@ -1,5 +1,6 @@
 package com.fxi.test.spark.sql.catalyst.mock
 
+import com.fxi.test.spark.sql.catalyst.mock.plans.logic.LogicalPlanMock
 import org.apache.spark.sql.catalyst.rules.Rule
 
 /**

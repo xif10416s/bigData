@@ -1,4 +1,4 @@
-package com.fxi.test.spark.sql.catalyst.mock
+package com.fxi.test.spark.sql.catalyst.mock.plans.logic
 
 import org.apache.spark.sql.catalyst.plans.QueryPlan
 

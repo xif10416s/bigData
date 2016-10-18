@@ -22,7 +22,12 @@ object Driver {
     LogUtil.doLog(" 创建DataSet",this.getClass)
     val mock: DataSetMock[Person] = sparkMock.createDataset[Person](data)
     LogUtil.doLog("******************************执行查询操作*****************************",this.getClass)
-    mock.select($"age" + 1,$"name").filter($"(age + 1)" > 20)
+    val query =  mock.select($"age",$"name").filter($"age" > 20)
+
+    println(query.queryExecution.optimizedPlan)
+    println(query.queryExecution.executedPlan)
+
+    query.collect()
   }
 }
 
