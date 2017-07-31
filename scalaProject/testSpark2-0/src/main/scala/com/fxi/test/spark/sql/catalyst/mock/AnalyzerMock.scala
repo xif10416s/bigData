@@ -20,7 +20,7 @@ class AnalyzerMock extends RuleExecutorMock[LogicalPlanMock] {
   def checkAnalysis(plan: LogicalPlanMock): Unit = {
     // We transform up and order the rules so as to catch the first possible failure instead
     // of the result of cascading resolution failures.
-    LogUtil.doLog("＝＝＝＝检查解析结果＝＝＝＝＝开始"+plan.hashCode(),this.getClass)
+    LogUtil.doLog("检查解析结果＝＝＝＝================＝开始"+plan.hashCode(),this.getClass)
     plan.foreachUp {
       case _ =>
       LogUtil.doLog("检查没有解析的关系",this.getClass)
@@ -28,7 +28,7 @@ class AnalyzerMock extends RuleExecutorMock[LogicalPlanMock] {
       LogUtil.doLog("检查不匹配的参数类型",this.getClass)
       LogUtil.doLog("各种基础检查．．．",this.getClass)
     }
-    LogUtil.doLog("＝＝＝＝检查解析结果＝＝＝＝＝结束"+plan.hashCode(),this.getClass)
+    LogUtil.doLog("检查解析结果＝＝＝＝================＝结束"+plan.hashCode(),this.getClass)
   }
 
 

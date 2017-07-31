@@ -5,7 +5,7 @@ import org.apache.spark.TaskContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.expressions.codegen._
-import org.apache.spark.sql.catalyst.expressions.{Attribute, AttributeSet, BoundReference}
+import org.apache.spark.sql.catalyst.expressions.{UnsafeRow, Attribute, AttributeSet, BoundReference}
 import org.apache.spark.sql.catalyst.plans.physical.Partitioning
 import org.apache.spark.sql.execution._
 import org.apache.spark.sql.execution.aggregate.HashAggregateExec
@@ -93,7 +93,7 @@ trait CodegenSupportMock extends SparkPlanMock {
     */
   protected def evaluateVariables(variables: Seq[ExprCode]): String = {
     val evaluate = variables.filter(_.code != "").map(_.code.trim).mkString("\n")
-    variables.foreach(_.code = "")
+//    variables.foreach(_.code = "")
     evaluate
   }
 
@@ -109,7 +109,7 @@ trait CodegenSupportMock extends SparkPlanMock {
     variables.zipWithIndex.foreach { case (ev, i) =>
       if (ev.code != "" && required.contains(attributes(i))) {
         evaluateVars.append(ev.code.trim + "\n")
-        ev.code = ""
+//        ev.code = ""
       }
     }
     evaluateVars.toString()
@@ -199,7 +199,21 @@ case class WholeStageCodegenExecMock (child: SparkPlanMock) extends SparkPlanMoc
 
 
     LogUtil.doLog("＝＝＝＝WholeStageCodegenExecMock　doExecute　 开始全局生成执行代码＝＝＝＝＝＝＝＝＝＝＝＝结束＝＝＝＝＝＝＝＝＝＝",this.getClass)
-    Driver.spark.sparkContext.emptyRDD
+     val rows = Seq(new UnsafeRow(),new UnsafeRow(),new UnsafeRow(),new UnsafeRow())
+    Driver.spark.sparkContext.makeRDD(rows,2).mapPartitionsWithIndex { (index, iter) =>
+      println("1========doExecute mapPartitionsWithIndex   change iterator=======")
+      val buffer = new BufferedRowIteratorMock()
+      buffer.init(index, Array(iter))
+      new Iterator[InternalRow] {
+        override def hasNext: Boolean = {
+          println("3========doExecute mapPartitionsWithIndex   hasNext=======")
+          val v = buffer.hasNext
+          v
+        }
+        override def next: InternalRow = buffer.next()
+      }
+    }
+//    Driver.spark.sparkContext.emptyRDD
   }
 
   override def inputRDDs(): Seq[RDD[InternalRow]] = {
@@ -223,17 +237,31 @@ case class WholeStageCodegenExecMock (child: SparkPlanMock) extends SparkPlanMoc
     rs
   }
 
-  override def generateTreeString(
-                                   depth: Int,
-                                   lastChildren: Seq[Boolean],
-                                   builder: StringBuilder,
-                                   verbose: Boolean,
-                                   prefix: String = ""): StringBuilder = {
-    child.generateTreeString(depth, lastChildren, builder, verbose, "*")
-  }
+//   def generateTreeString(
+//                                   depth: Int,
+//                                   lastChildren: Seq[Boolean],
+//                                   builder: StringBuilder,
+//                                   verbose: Boolean,
+//                                   prefix: String = ""): StringBuilder = {
+//    child.generateTreeString(depth, lastChildren, builder, verbose, "*")
+//  }
 
 
   override def children: Seq[SparkPlanMock] = child :: Nil
 
   override def output: Seq[Attribute] = Nil
+}
+
+ class BufferedRowIteratorMock() extends BufferedRowIterator {
+   var scan_input:Iterator[InternalRow] = null ;
+  override def init(index: Int, iters: Array[Iterator[InternalRow]]): Unit = {
+    scan_input = iters(0)
+  }
+
+  override def processNext(): Unit = {
+    System.err.println("=============BufferedRowIteratorMock processNext 生成代码处理===")
+    while (scan_input.hasNext) {
+      println(scan_input.next().hashCode())
+    }
+  }
 }

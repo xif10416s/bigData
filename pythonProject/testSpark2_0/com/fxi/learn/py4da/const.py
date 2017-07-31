@@ -1,0 +1,7 @@
+base_path = '/Users/seki/work/data/python/pydata-book/pydata-book-master/'
+base_path_02 = base_path +'ch02/'
+base_path_02_gov = base_path_02 +'usagov_bitly_data2012-03-16-1331923249.txt'
+base_path_02_move_movie= base_path_02 +'movielens/movies.dat'
+base_path_02_move_rate= base_path_02 +'movielens/ratings.dat'
+base_path_02_move_users= base_path_02 +'movielens/users.dat'
+base_path_02_yous= base_path_02 +'names/'

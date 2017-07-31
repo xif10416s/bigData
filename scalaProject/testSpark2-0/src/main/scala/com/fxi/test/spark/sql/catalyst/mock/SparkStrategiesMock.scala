@@ -43,8 +43,8 @@ abstract class SparkStrategiesMock {
       plan match {
         case ProjectMock(projectList, child) =>
           ProjectExecMock(projectList, planLater(child)) :: Nil
-        case FilterMock(projectList, child) =>
-          FilterExecMock(projectList, planLater(child)) :: Nil
+        case FilterMock(null, child) =>
+          FilterExecMock(null, planLater(child)) :: Nil
         case e:LocalRelationMock =>
           LocalTableScanExecMock() :: Nil
       }

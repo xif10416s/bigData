@@ -2,7 +2,6 @@ package com.fxi.test.spark.sql
 
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkContext, SparkConf}
-import spire.implicits
 
 /**
   * Created by xifei on 16-5-5.

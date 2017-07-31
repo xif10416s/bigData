@@ -124,5 +124,17 @@ class RDDTest {
     }).collect().foreach(f => f.foreach(println _))
   }
 
+  @Test
+  def testReduce(): Unit = {
+    val a  = sc.makeRDD(Array((1,1),(2,1),(3,2)))
+    println(a.reduce((f1,f2) => (f1._1 + f2._1 , f1._2 + f2._2)))
+  }
 
+
+  @Test
+  def testGroup2(): Unit = {
+    val a  = sc.makeRDD(Array(("a",1),("a",1),("b",1),("a",2),("a",3),("c",1),("d",1),("d",2),("d",3)))
+
+    a.distinct().map[(Int,Int)](f=>(f._2,1)).countByKey().foreach(println _)
+  }
 }

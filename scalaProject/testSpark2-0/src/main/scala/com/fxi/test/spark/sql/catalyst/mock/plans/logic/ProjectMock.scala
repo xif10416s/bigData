@@ -11,4 +11,5 @@ case class ProjectMock(projectList: Seq[Column], child: LogicalPlanMock)  extend
   override def output: Seq[Attribute] = Nil
 
   override def children: Seq[LogicalPlanMock] = child :: Nil
+
 }

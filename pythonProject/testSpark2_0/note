@@ -1,0 +1,26 @@
+http://matplotlib.org/examples/index.html
+
+//prepare
+touch ~/.pydistutils.cfg
+echo "[install]\nprefix=" >> ~/.pydistutils.cfg
+//path
+cd /Library/Python/2.7/site-packages
+brew install gcc
+sudo pip install --prefix /Library/Python/2.7/site-packages   scikit-learn -t .
+
+///usr/local/lib/python2.7/site-packages/sklearn/uti
+#install note
+sudo pip install jupyter --user -U
+sudo pip install pandas_datareader --user -U
+sudo pip install pydotplus --user -U
+sudo pip install graphviz --user -U
+//web
+sudo pip install flask  --user -U
+
+#run notebook
+ipython notebook
+ ipython notebook /Users/seki/git/learn/bigData/pythonProject/testSpark2_0/com/fxi/learn/py4da
+ %pylab inline
+
+ #决策树可视化
+ http://www.cnblogs.com/pinard/p/6056319.html

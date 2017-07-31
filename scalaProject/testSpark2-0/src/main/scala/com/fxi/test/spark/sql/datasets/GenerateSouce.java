@@ -7,7 +7,7 @@ import org.apache.spark.unsafe.types.UTF8String;
 /**
  * Created by xifei on 16-9-30.
  */
-public class GenerateSouce {
+public class  GenerateSouce {
 
     /* 001 */ public Object generate(Object[] references) {
 /* 002 */   return new GeneratedIterator(references);

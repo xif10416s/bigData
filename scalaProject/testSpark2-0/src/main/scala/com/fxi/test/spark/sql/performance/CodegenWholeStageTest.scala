@@ -21,14 +21,14 @@ object CodegenWholeStageTest {
       .master("local[*]")
       .getOrCreate()
     import spark.implicits._
-//    spark.conf.set("spark.sql.codegen.wholeStage", false)
-//    benchmark("Spark 1.6") {
-//      spark.range(1000L * 1000 * 1000).join(spark.range(1000L).toDF(), "id").selectExpr("count(*)").explain(true)
-//    }
-
-    spark.conf.set("spark.sql.codegen.wholeStage", true)
-    benchmark("Spark 2.0") {
+    spark.sqlContext.setConf("spark.sql.codegen.wholeStage", "false")
+    benchmark("Spark 1.6") {
       spark.range(1000L * 1000 * 1000).join(spark.range(1000L).toDF(), "id").selectExpr("count(*)").explain(true)
     }
+
+//    spark.sqlContext.setConf("spark.sql.codegen.wholeStage", "true")
+//    benchmark("Spark 2.0") {
+//      spark.range(1000L * 1000 * 1000).join(spark.range(1000L).toDF(), "id").selectExpr("count(*)").explain(true)
+//    }
   }
 }

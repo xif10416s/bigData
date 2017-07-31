@@ -54,6 +54,7 @@ class BaseDatasetsTaster {
     // Encoders are created for case classes
     val caseClassDS = Seq(Person("Andy", 32),Person("jude", 20)).toDS()
     val query = caseClassDS.select($"age" + 1,$"name").filter($"(age + 1)" > 20)
+    query.explain()
 //    println("+++++++++++++++++++logical plan ++++++++++++++++++")
 //    println(query.queryExecution.logical)
 //    println("+++++++++++++++++++analyzed plan ++++++++++++++++++")
@@ -66,7 +67,7 @@ class BaseDatasetsTaster {
 //    println( query.queryExecution.sparkPlan)
 //    println("+++++++++++++++++++executedPlan plan ++++++++++++++++++")
 //    println( query.queryExecution.executedPlan)
-    println(query.count() )
+//    println(query.count() )
   }
 }
 

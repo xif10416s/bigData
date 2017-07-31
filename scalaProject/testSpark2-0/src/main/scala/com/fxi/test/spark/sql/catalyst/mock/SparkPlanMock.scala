@@ -14,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * Created by xifei on 16-10-17.
   */
-abstract class SparkPlanMock extends QueryPlan[SparkPlanMock] {
+abstract class SparkPlanMock extends QueryPlan[SparkPlanMock] with Serializable {
   final def execute(): RDD[InternalRow] = doExecute()
 
   protected def doExecute(): RDD[InternalRow]
@@ -33,13 +33,16 @@ abstract class SparkPlanMock extends QueryPlan[SparkPlanMock] {
 
 
   private def getByteArrayRdd(n: Int = -1): RDD[Array[Byte]] = {
-    LogUtil.doLog("＝＝＝＝SparkPlan 获取ｂｙｔｅ数组的ＲＤＤ　　　开始＝＝＝＝＝＝＝＝＝＝",this.getClass)
+    LogUtil.doLog("＝＝＝＝SparkPlan 最后将计算结果InternalRow映射byte数组方便序列化传输　　　开始＝＝＝＝＝＝＝＝＝＝",this.getClass)
+
     execute().mapPartitions { iter =>
+      println("2＝＝＝＝SparkPlan 执行将结果 internallRow 映射成 byte array＝＝＝＝＝＝＝＝＝＝")
       var count = 0
       val buffer = new Array[Byte](4 << 10)  // 4K
       val bos = new ByteArrayOutputStream()
       val out = new DataOutputStream(bos)
       while (iter.hasNext && (n < 0 || count < n)) {
+        println("4＝＝＝＝SparkPlan mapPartitions internallRow to byte array do iterator＝＝＝＝＝＝＝＝＝＝")
         val row = iter.next().asInstanceOf[UnsafeRow]
         out.writeInt(row.getSizeInBytes)
         row.writeToStream(out, buffer)

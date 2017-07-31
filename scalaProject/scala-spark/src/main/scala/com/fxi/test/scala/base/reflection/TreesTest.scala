@@ -38,7 +38,7 @@ object TreesTest {
     val expr = reify { class Flower { def name = "Rose" } }
 
     def test = macro Macros.impl
-    test
+//    test
 
 
     val tree2 = reify { "test".length }.tree
@@ -54,7 +54,7 @@ object TreesTest {
 
 
     import Macros._
-    printf("hello %s","www")
+//    printf("hello %s","www")
   }
 
 }
