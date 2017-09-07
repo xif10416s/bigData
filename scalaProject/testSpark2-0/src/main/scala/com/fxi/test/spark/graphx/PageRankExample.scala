@@ -50,7 +50,7 @@ object PageRankExample {
       (fields(0).toLong, fields(1))
     }
     val ranksByUsername = users.join(ranks).map {
-      case (id, (username, rank)) => (username, rank)
+      case (id, (username, rank)) => (id,username, rank)
     }
     // Print the result
     println(ranksByUsername.collect().mkString("\n"))
