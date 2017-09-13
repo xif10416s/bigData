@@ -8,13 +8,15 @@ import scala.math._
 /**
   * Created by xifei on 16-8-15.
   */
-class BaseTaster {
-  @Test
-  def test01() = {
+object BaseTaster {
+
+
+  def main(args: Array[String]): Unit = {
     val spark = SparkSession
       .builder
       .appName("Spark Pi")
-      .master("local[*]")
+      .config("spark.jars","scalaProject/testSpark2-0/target/scala-test-spark2.0-1.0-SNAPSHOT.jar")
+      .master("spark://192.168.70.176:61070")
       .getOrCreate()
     val slices = 2
     val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
@@ -26,5 +28,6 @@ class BaseTaster {
     println("Pi is roughly " + 4.0 * count / (n - 1))
     spark.stop()
   }
+
 
 }
