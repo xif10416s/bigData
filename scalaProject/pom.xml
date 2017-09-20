@@ -10,16 +10,17 @@
     <modules>
         <module>scala-spark</module>
         <module>scala-test-spark2.0</module>
+        <module>scala-test-spark2.2</module>
     </modules>
     <packaging>pom</packaging>
     <name>scala-test</name>
 
 
     <dependencies>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-compiler</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.scala-lang</groupId>-->
+            <!--<artifactId>scala-compiler</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
