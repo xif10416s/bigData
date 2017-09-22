@@ -1,0 +1,78 @@
+scrapy shell "https://shopsearch.taobao.com/search?app=shopsearch&q=%E9%9F%A9%E5%9B%BD%E4%BB%A3%E8%B4%AD&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20170921&ie=utf8&sort=credit-desc"
+
+scrapy shell "https://shop71156213.taobao.com/"
+
+scrapy shell "https://77741896.taobao.com/category-986247871.htm?search=y&catName=%B6%FA%B6%A4%5C%D0%D8%D5%EB%5C%CF%EE%C1%B4"
+
+
+scrapy crawl taobao
+
+//list
+https://shopsearch.taobao.com/search?app=shopsearch&q=%E9%9F%A9%E5%9B%BD%E4%BB%A3%E8%B4%AD&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20170921&ie=utf8&sort=credit-desc
+https://shopsearch.taobao.com/search?app=shopsearch&q=%E9%9F%A9%E5%9B%BD%E4%BB%A3%E8%B4%AD&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20170921&ie=utf8&sort=credit-desc&s=20
+body=response.body.decode("utf-8","ignore")
+// shop
+https://shop528586885.taobao.com/?spm=a230r.7195193.1997079397.20.YcLj4d
+https://shop71156213.taobao.com/
+body=response.body.decode("gbk","ignore")
+
+https://77741896.taobao.com/i/asynSearch.htm?_ksTS=1506003755504_137&callback=jsonp138&mid=w-4671763195-0&wid=4671763195&path=/search.htm&search=y&spm=a1z10.1-c.0.0.1e133125oBEk1c
+https://77741896.taobao.com/i/asynSearch.htm?path=/search.htm&search=y
+
+
+//item list
+https://77741896.taobao.com/category-986247871.htm?search=y&catName=%B6%FA%B6%A4%5C%D0%D8%D5%EB%5C%CF%EE%C1%B4
+https://77741896.taobao.com/category-986247871.htm?spm=a1z10.5-c.w4002-4671747398.95.a1869a2RcHphj&_ksTS=1505969064551_142&callback=jsonp143&mid=w-4671747398-0&wid=4671747398&path=%2Fcategory-986247871.htm&search=y&catName=%B6%FA%B6%A4%5C%D0%D8%D5%EB%5C%CF%EE%C1%B4&catId=986247871&pageNo=2#anchor
+https://77741896.taobao.com/category-680688670.htm?search=y&catName=%CD%B7%CA%CE%C6%B7%5C%B7%A2%CA%CE#bd
+
+https://shop71156213.taobao.com/i/asynSearch.htm?_ksTS=1506006412311_137&callback=jsonp138&mid=w-4671763195-0&wid=4671763195&path=/search.htm&search=y&pageNo=1
+
+//item detail
+https://item.taobao.com/item.htm?id=555261924638
+//summary commo
+https://rate.taobao.com/detailCommon.htm?auctionNumId=555261924638&userNumId=372553982&ua=098%23E1hvv9vUvbpvUvCkvvvvvjiPP2dvljr2R2cWsjD2PmPvtj18P2MwljtnP2Mv6jibRphvChCvvvvEvpCWBWBOv8W4a6XQcneYr2E9Zj%2BO3w0AhjHCJ9kx6fItb9gDN%2BFhdit3ZVQEfw9fd5lWfvF61Ce4w6a%2BVd0DW3CQoAnmsXZpejHbWDNBl4yCvv3vpvBt6lCG4OyCvvXmp99WV1ktvpvIphvvcvvvphBvpCBAvvCvlyCvHUUvvhPjphvZw9vvpAtvpCBAvvC2b9hCvvXvovvvvvvPvpvhPBsum4wCvvBvpvpZ&callback=json_tbc_rate_summary
+https://rate.taobao.com/detailCommon.htm?userNumId=372553982&auctionNumId=555261924638&siteID=4&spuId=0
+//feed
+https://rate.taobao.com/feedRateList.htm?auctionNumId=555261924638&userNumId=372553982&currentPageNum=1&pageSize=20&rateType=&orderType=sort_weight&attribute=&sku=&hasSku=false&folded=0&ua=098%23E1hv4pvUvbpvUvCkvvvvvjiPP2dvljr2R2c9sjD2PmP9zjEmRsch0jimP2cvsjDPRphvChCvvvvCvpvVph9vvvvvmphvLhW7wvmFdeZvVAil%2Bb8rwo1YVVzWd3wFoAHL2f6A%2B9Hl4vlrg8TZfvyf8jc6%2Bul1bVxB%2BE7rV369EcqWaBOANZr1B%2BoQRqwiL7CpqU0ivpvUphvhJanpNH7EvpvVpyUU2C%2BOKphv8hCvvHQvvhChphvZw9vvpnXvpComvvC216CvHjUvvhWKphvZw9vvpAgPvpvhPBsum4wCvvBvpvpZ&_ksTS=1506050849954_1346&callback=jsonp_tbcrate_reviews_list
+https://rate.taobao.com/feedRateList.htm?userNumId=372553982&auctionNumId=555261924638&siteId=4&spuId=0&currentPageNum=1&pageSize=20&
+
+
+#https:////rate.taobao.com/detail_rate.htm?userNumId=372553982&auctionNumId=555261924638&showContent=1&currentPage=1&ismore=0&siteID=4&currentPageNum=1&pageSize=20&
+
+
+       data-reviewApi = "//rate.taobao.com/detail_rate.htm?userNumId=372553982&amp;auctionNumId=555261924638&amp;showContent=1&amp;currentPage=1&amp;ismore=0&amp;siteID=4"
+     data-reviewCountApi = ""
+     data-listApi = "//rate.taobao.com/feedRateList.htm?userNumId=372553982&amp;auctionNumId=555261924638&amp;siteId=4&amp;spuId=0"
+     data-commonApi = "//rate.taobao.com/detailCommon.htm?userNumId=372553982&amp;auctionNumId=555261924638&amp;siteID=4&amp;spuId=0"
+     data-usefulApi = "//rate.taobao.com/vote_useful.htm?userNumId=372553982&amp;auctionNumId=555261924638">
+
+target
+https://item.taobao.com/item.htm?id=524726886573
+
+https://77741896.taobao.com/category-1010290117.htm?search=y&catName=%B7%A2%BF%A8%5C%CD%B7%B9%BF
+ patid='href="(//77741896.taobao.com/category-.*?)"'
+
+
+reference:
+http://bbs.51cto.com/thread-1481651-1-1.html
+
+http://blog.csdn.net/osawatari/article/details/53716836
+http://cuiqingcai.com/1076.html
+
+
+#写文件
+import codecs
+body=response.body.decode("utf-8","ignore")
+f = codecs.open("data-detail-item.txt", "w", "utf-8")
+f.write(body)
+
+
+schema
+#shop info
+sellid,sellnick,shopid,title,shopUrl,provcity,totalsold,goodratePercent,
+
+#shop cat
+shopid,catname
+
+#item info
+itemid,shopid,itemName,sPrice,cPrice,saledNum,stockNum,
