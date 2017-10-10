@@ -76,3 +76,8 @@ shopid,catname
 
 #item info
 itemid,shopid,itemName,sPrice,cPrice,saledNum,stockNum,
+
+start_logstash
+/Users/seki/work/lib/elk/logstash/bin/logstash -f /Users/seki/work/lib/elk/logstash/logstash_start.conf &
+
+

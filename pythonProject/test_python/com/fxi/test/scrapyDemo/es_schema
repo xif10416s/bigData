@@ -1,0 +1,89 @@
+curl -XPOST http://localhost:9200/index/shop/_mapping -d'
+{
+        "properties": {
+            "sellId": {
+                "type": "long"
+            },
+            "title": {
+                "type": "text",
+                "analyzer": "ik_max_word",
+                "search_analyzer": "ik_max_word",
+                "fielddata": true
+            },
+            "provcity": {
+                            "type": "text",
+                            "index": "not_analyzed"
+                        },
+            "totalsold": {
+                            "type": "long"
+                         },
+            "goodratePercent": {
+                            "type": "double"
+                         },
+            "shopId": {
+                                        "type": "long"
+                                     }
+        }
+
+}'
+
+curl -XPOST http://localhost:9200/index/shopCat/_mapping -d'
+{
+        "properties": {
+            "catgory": {
+                            "type": "text",
+                            "analyzer": "ik_max_word",
+                            "search_analyzer": "ik_max_word",
+                            "fielddata": true
+                        },
+            "shopId": {
+                                        "type": "long"
+                                     }
+        }
+
+}'
+
+curl -XPOST http://localhost:9200/index/item/_mapping -d'
+{
+        "properties": {
+            "shopId": {
+                            "type": "long"
+                        },
+            "itemId": {
+                            "type": "long"
+                       },
+            "itemName": {
+                             "type": "text",
+                             "analyzer": "ik_max_word",
+                             "search_analyzer": "ik_max_word",
+                             "fielddata": true
+                       },
+            "cPrice": {
+                              "type": "double"
+                        },
+            "sPrice": {
+                              "type": "double"
+                        },
+            "saleNum": {
+                              "type": "long"
+                        },
+            "totalCom": {
+                              "type": "long"
+                        },
+            "goodCom": {
+                              "type": "long"
+                        },
+            "normalCom": {
+                              "type": "long"
+                        },
+            "badCom": {
+                              "type": "long"
+                        },
+            "additionalCom": {
+                              "type": "long"
+                        },
+            "picCom": {
+                              "type": "long"
+                        }
+        }
+}'

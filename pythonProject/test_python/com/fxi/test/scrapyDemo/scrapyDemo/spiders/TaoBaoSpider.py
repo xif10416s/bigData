@@ -27,6 +27,7 @@ class QuotesSpider(scrapy.Spider):
 
 
     fShop = codecs.open( dataDir+"/shops.txt", "a", "utf-8")
+
     fShopCat = codecs.open( dataDir+"/shopCats.txt", "a", "utf-8")
     fShopItem = codecs.open( dataDir+"/shopItems.txt", "a", "utf-8")
 
@@ -44,7 +45,7 @@ class QuotesSpider(scrapy.Spider):
     # shop list
     def shopListParse(self, response):
         body=response.body.decode("utf-8","ignore")
-        rr = re.compile(r'{"uid":"(.*?)","title":"(.*?)","nick":".*?","provcity":"(.*?)","totalsold":(.*?),"procnt":.*?,"encodeNick":".*?","goodratePercent":"(.*?)","shopUrl":"//shop(.*?).taobao.com"')
+        rr = re.compile(r'{"uid":"(.*?)","title":"(.*?)","nick":".*?","provcity":"(.*?)","totalsold":(.*?),"procnt":.*?,"encodeNick":".*?","goodratePercent":"(.*?)%","shopUrl":"//shop(.*?).taobao.com"')
         shopInfoList = rr.findall(body)
         for j in range(0, 1): #todo len(shopInfoList)
             shopId = shopInfoList[j][5]
@@ -155,6 +156,6 @@ class QuotesSpider(scrapy.Spider):
         if(i == None):
             return d
         else:
-            return i
+            return i.replace("," , "")
 
 
