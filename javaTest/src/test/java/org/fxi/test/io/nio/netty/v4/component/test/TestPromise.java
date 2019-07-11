@@ -42,7 +42,7 @@ public class TestPromise {
             }
         });
         System.out.println("execute new task end..." + Thread.currentThread().getName());
-        promise.sync();
         System.out.println("main thread end..." + Thread.currentThread().getName());
+        promise.sync();
     }
 }

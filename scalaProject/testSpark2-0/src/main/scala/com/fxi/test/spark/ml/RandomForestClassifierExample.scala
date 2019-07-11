@@ -31,11 +31,12 @@ object RandomForestClassifierExample {
     val spark = SparkSession
       .builder
       .appName("RandomForestClassifierExample")
+      .master("local[*]")
       .getOrCreate()
 
     // $example on$
     // Load and parse the data file, converting it to a DataFrame.
-    val data = spark.read.format("libsvm").load("data/mllib/sample_libsvm_data.txt")
+    val data = spark.read.format("libsvm").load("/Users/seki/git/learn/bigData/spark/data/mllib/sample_libsvm_data.txt")
 
     // Index labels, adding metadata to the label column.
     // Fit on whole dataset to include all labels in index.

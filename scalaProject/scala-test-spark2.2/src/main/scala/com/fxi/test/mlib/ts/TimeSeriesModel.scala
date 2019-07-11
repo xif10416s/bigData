@@ -1,20 +1,20 @@
 package com.fxi.test.mlib.ts
 
 import java.text.SimpleDateFormat
+import java.time.{ZoneId, ZonedDateTime}
 import java.util.Calendar
 
-import com.cloudera.sparkts.TimeSeriesRDD
 import com.cloudera.sparkts.models.{ARIMA, HoltWinters}
+import com.cloudera.sparkts._
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{Row, SparkSession, types}
 import org.apache.spark.mllib.stat.Statistics
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.{Row, SparkSession, types}
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-class TimeSeriesModel {
+class TimeSeriesModel extends Serializable {
   //预测后面N个值
   private var predictedN = 1
   //存放的表名字
@@ -439,5 +439,50 @@ class TimeSeriesModel {
         e.printStackTrace()
     }
     null
+  }
+
+
+  import java.text.SimpleDateFormat
+
+  def fromatData(time: String, format: SimpleDateFormat): String = {
+    try {
+      val formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+      return formatter.format(format.parse(time))
+    } catch {
+      case e: Exception =>
+        e.printStackTrace
+    }
+    null
+  }
+
+  /**
+    * 获取时间区间与时间跨度
+    *
+    * @param timeSpanType
+    * @param timeSpan
+    * @param sdf
+    * @param startTime
+    * @param endTime
+    */
+  def getTimeSpan(startTime: String, endTime: String, timeSpanType: String, timeSpan: Int, sdf: SimpleDateFormat): UniformDateTimeIndex = {
+    val start = fromatData(startTime, sdf)
+    val end = fromatData(endTime, sdf)
+
+    val zone = ZoneId.systemDefault()
+    val frequency = timeSpanType match {
+      case "year" => new YearFrequency(timeSpan);
+      case "month" => new MonthFrequency(timeSpan);
+      case "day" => new DayFrequency(timeSpan);
+      case "hour" => new HourFrequency(timeSpan);
+      case "minute" => new MinuteFrequency(timeSpan);
+    }
+
+    val dtIndex = DateTimeIndex.uniformFromInterval(
+      ZonedDateTime.of(start.substring(0, 4).toInt, start.substring(5, 7).toInt, start.substring(8, 10).toInt,
+        start.substring(11, 13).toInt, start.substring(14, 16).toInt, 0, 0, zone),
+      ZonedDateTime.of(end.substring(0, 4).toInt, end.substring(5, 7).toInt, end.substring(8, 10).toInt,
+        end.substring(11, 13).toInt, end.substring(14, 16).toInt, 0, 0, zone),
+      frequency)
+    return dtIndex
   }
 }

@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>scala-spark</module>
-        <module>scala-test-spark2.0</module>
+        <!--<module>scala-test-spark2.0</module>-->
         <module>scala-test-spark2.2</module>
     </modules>
     <packaging>pom</packaging>

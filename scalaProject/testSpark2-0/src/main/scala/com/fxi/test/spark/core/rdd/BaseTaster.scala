@@ -12,22 +12,52 @@ object BaseTaster {
 
 
   def main(args: Array[String]): Unit = {
+    test03()
+  }
+
+  def test01() ={
     val spark = SparkSession
       .builder
       .appName("Spark Pi")
-      .config("spark.jars","scalaProject/testSpark2-0/target/scala-test-spark2.0-1.0-SNAPSHOT.jar")
-      .master("spark://192.168.70.176:61070")
+      .master("local[*]")
       .getOrCreate()
     val slices = 2
     val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
-    val count = spark.sparkContext.parallelize(1 until n, slices).map { i =>
-        val x = random * 2 - 1
-        val y = random * 2 - 1
-        if (x * x + y * y < 1) 1 else 0
-      }.reduce(_ + _)
-    println("Pi is roughly " + 4.0 * count / (n - 1))
+    val groupRdd = spark.sparkContext.parallelize(1 until n, slices)
+        .groupBy(f => f)
+    groupRdd.collect()
+      .foreach(println _)
     spark.stop()
   }
 
+
+  def test02() ={
+    val spark = SparkSession
+      .builder
+      .appName("Spark Pi")
+      .master("local[*]")
+      .getOrCreate()
+    val slices = 2
+    val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
+    val groupRdd = spark.sparkContext.parallelize(1 until n, slices)
+        .groupBy(f => f)
+        .map(_._1)
+    groupRdd.collect()
+      .foreach(println _)
+    spark.stop()
+  }
+
+
+  def test03() ={
+    val spark = SparkSession
+      .builder
+      .appName("Spark Pi")
+      .master("spark://xifeideMacBook-Pro.local:7077")
+      .config("spark.jars", "/Users/seki/git/learn/spark/examples/target/original-spark-examples_2.11-2.2.1-SNAPSHOT.jar")
+      .getOrCreate()
+    val count = spark.sparkContext.parallelize(Seq(0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3), 4)
+      .groupBy(f => f)
+    count.collect().foreach(println _)
+  }
 
 }

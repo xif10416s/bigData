@@ -21,6 +21,11 @@ package com.fxi.test.spark.ml
 // $example on$
 import org.apache.spark.ml.evaluation.RegressionEvaluator
 import org.apache.spark.ml.recommendation.ALS
+import org.apache.spark.sql.types.{FloatType, IntegerType, ArrayType, StructType}
+
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
+
 // $example off$
 import org.apache.spark.sql.SparkSession
 
@@ -45,12 +50,13 @@ object ALSExample {
   def main(args: Array[String]) {
     val spark = SparkSession
       .builder
+      .master("local[6]")
       .appName("ALSExample")
       .getOrCreate()
     import spark.implicits._
 
     // $example on$
-    val ratings = spark.read.textFile("data/mllib/als/sample_movielens_ratings.txt")
+    val ratings = spark.read.textFile("../spark/data/mllib/als/sample_movielens_ratings.txt")
       .map(parseRating)
       .toDF()
     val Array(training, test) = ratings.randomSplit(Array(0.8, 0.2))
@@ -66,6 +72,7 @@ object ALSExample {
 
     // Evaluate the model by computing the RMSE on the test data
     val predictions = model.transform(test)
+    predictions.show()
 
     val evaluator = new RegressionEvaluator()
       .setMetricName("rmse")
@@ -74,9 +81,36 @@ object ALSExample {
     val rmse = evaluator.evaluate(predictions)
     println(s"Root-mean-square error = $rmse")
     // $example off$
+    val recDf = model.recommendForAllUsers(10)
+    recDf.collect().foreach(println _)
+
+    recDf.printSchema()
+    recDf.show()
+
+    val userRecommendDf = recDf.select("userId","recommendations.movieId")
+    userRecommendDf.show()
+
+
+
+    val userActionHistoryDf = ratings.select("userId","movieId").groupByKey(_.getAs[Int](0)).mapGroups((f1,f2) =>{
+      T(f1,f2.map(_.getAs[Int]("movieId")).toArray[Int])
+    })
+
+    val df = userRecommendDf.join(userActionHistoryDf, userRecommendDf.col("userId") === userActionHistoryDf.col("userId"),
+      "left_outer")
+    df.show()
+    df.map((f) =>{
+       val userId = f.getAs[Int](0)
+       var recommendArray = ArrayBuffer[Int]()
+       recommendArray ++=f.getAs[mutable.WrappedArray[Int]](1)
+       val actionHistoryArray = f.getAs[mutable.WrappedArray[Int]](3)
+       recommendArray --= actionHistoryArray
+       T(userId,recommendArray.toArray)
+    }).show()
+
 
     spark.stop()
   }
 }
 // scalastyle:on println
-
+case  class T(userId:Int,movieIds:Array[Int])

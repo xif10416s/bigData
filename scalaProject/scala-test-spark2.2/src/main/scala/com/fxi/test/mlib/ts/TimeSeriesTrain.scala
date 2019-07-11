@@ -103,19 +103,4 @@ object TimeSeriesTrain {
       endTime, "day", 1,sdf)
   }
 
-
-  def yahooStringToTimeSeries(
-                               text: String,
-                               keyPrefix: String = "",
-                               zone: ZoneId = ZoneId.systemDefault())
-  : TimeSeries[String] = {
-    val lines = text.split('\n')
-    val labels = lines(0).split(',').tail.map(keyPrefix + _)
-    val samples = lines.tail.map { line =>
-      val tokens = line.split(',')
-      val dt = LocalDate.parse(tokens.head).atStartOfDay(zone)
-      (dt, tokens.tail.map(_.toDouble))
-    }.reverse
-    timeSeriesFromIrregularSamples(samples, labels, zone)
-  }
 }
