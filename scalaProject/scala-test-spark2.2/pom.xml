@@ -18,7 +18,7 @@
         <scala.version>2.11.8</scala.version>
         <kafka_version>0.8.2-beta</kafka_version>
         <scala.binary.version>2.11</scala.binary.version>
-        <postgresql.version>42.2.5</postgresql.version>
+        <postgresql.version>42.2.25</postgresql.version>
     </properties>
     <dependencyManagement>
         <dependencies>
